@@ -3,19 +3,14 @@ package io.flutter.plugins.google_pay_mobile
 import android.app.Activity
 import android.content.Intent
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.wallet.AutoResolveHelper
-import com.google.android.gms.wallet.IsReadyToPayRequest
-import com.google.android.gms.wallet.PaymentData
-import com.google.android.gms.wallet.PaymentDataRequest
-import com.google.android.gms.wallet.PaymentsClient
-import com.google.android.gms.wallet.Wallet
-import com.google.android.gms.wallet.WalletConstants
+import com.google.android.gms.wallet.*
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 import org.json.JSONObject
+import java.util.*
 
-public class GooglePayHandler(val activity: Activity) :
-    PluginRegistry.ActivityResultListener {
+class GooglePayHandler(val activity: Activity) :
+        PluginRegistry.ActivityResultListener {
 
     // Arbitrary constant to track a request in the activity result
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
@@ -23,36 +18,33 @@ public class GooglePayHandler(val activity: Activity) :
 
     private var loadPaymentDataResult: Result? = null
 
-    private fun payentClientForProfile(
-        paymentProfile: Map<String, Any>
+    private fun paymentClientForProfile(
+            paymentProfile: Map<String, Any>,
     ): PaymentsClient {
 
-        val lowerCaseEnvironment = (paymentProfile["environment"] as? String)?.toLowerCase()
-        val environmentConstant = environmentForString(lowerCaseEnvironment)
-
+        val environmentConstant = environmentForString(paymentProfile["environment"] as? String)
         return Wallet.getPaymentsClient(
-            activity,
-            Wallet.WalletOptions.Builder()
-                .setEnvironment(environmentConstant)
-                .build()
+                activity,
+                Wallet.WalletOptions.Builder()
+                        .setEnvironment(environmentConstant)
+                        .build()
         )
     }
 
     fun isReadyToPay(result: Result, paymentProfile: Map<String, Any>) {
 
-        val requestObject = JSONObject(paymentProfile)
-        val rtpRequest = IsReadyToPayRequest.fromJson(requestObject.toString())
+        val client = paymentClientForProfile(paymentProfile)
 
-        val client = payentClientForProfile(paymentProfile)
+        val rtpRequest = IsReadyToPayRequest.fromJson(JSONObject(paymentProfile).toString())
         val task = client.isReadyToPay(rtpRequest)
         task.addOnCompleteListener { completedTask ->
             try {
                 result.success(completedTask.getResult(ApiException::class.java))
             } catch (exception: Exception) {
                 result.error(
-                    statusCodeForException(exception).toString(),
-                    exception.message,
-                    null
+                        statusCodeForException(exception).toString(),
+                        exception.message,
+                        null
                 )
             }
         }
@@ -66,51 +58,50 @@ public class GooglePayHandler(val activity: Activity) :
 
         // Add payment information
         val transactionInfo =
-            paymentProfile["transactionInfo"] as Map<String, Any> +
-            mapOf("totalPrice" to "1000", "totalPriceStatus" to "FINAL")
+                paymentProfile["transactionInfo"] as Map<*, *> +
+                        mapOf("totalPrice" to "1000", "totalPriceStatus" to "FINAL")
 
         val requestObject = JSONObject(
-            paymentProfile + mapOf("transactionInfo" to transactionInfo))
+                paymentProfile + mapOf("transactionInfo" to transactionInfo))
         val ldpRequest = PaymentDataRequest.fromJson(requestObject.toString())
 
-        val client = payentClientForProfile(paymentProfile)
+        val client = paymentClientForProfile(paymentProfile)
         AutoResolveHelper.resolveTask(
-            client.loadPaymentData(ldpRequest),
-            activity,
-            LOAD_PAYMENT_DATA_REQUEST_CODE)
+                client.loadPaymentData(ldpRequest),
+                activity,
+                LOAD_PAYMENT_DATA_REQUEST_CODE)
     }
 
     // To utils
     private fun statusCodeForException(exception: Exception): Int {
-        return when (exception) {
-            is ApiException -> exception.statusCode
+        return when {
+            exception is ApiException -> exception.statusCode
             else -> -1
         }
     }
 
     // To utils
     private fun environmentForString(environmentString: String?): Int {
-        return when (environmentString) {
+        return when (environmentString?.toLowerCase(Locale.ROOT)) {
             "test" -> WalletConstants.ENVIRONMENT_TEST
             "production" -> WalletConstants.ENVIRONMENT_PRODUCTION
             else -> throw IllegalArgumentException(
-                "Environment must be one of TEST or PRODUCTION"
+                    "Environment must be one of TEST or PRODUCTION"
             )
         }
     }
 
     override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
+            requestCode: Int,
+            resultCode: Int,
+            data: Intent?,
     ): Boolean {
         when (requestCode) {
             LOAD_PAYMENT_DATA_REQUEST_CODE -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
                         data?.let { intent ->
-                            PaymentData.getFromIntent(intent)
-                                ?.let(::handlePaymentSuccess)
+                            PaymentData.getFromIntent(intent).let(::handlePaymentSuccess)
                         }
                         loadPaymentDataResult = null
                         return true
@@ -123,8 +114,8 @@ public class GooglePayHandler(val activity: Activity) :
                     }
 
                     AutoResolveHelper.RESULT_ERROR -> {
-                        AutoResolveHelper.getStatusFromIntent(data)?.let {
-                            handleError(it.statusCode)
+                        AutoResolveHelper.getStatusFromIntent(data)?.let { status ->
+                            handleError(status.statusCode)
                         }
                         loadPaymentDataResult = null
                         return true
@@ -150,7 +141,7 @@ public class GooglePayHandler(val activity: Activity) :
      * @see [Payment
      * Data](https://developers.google.com/pay/api/android/reference/object.PaymentData)
      */
-    private fun handlePaymentSuccess(paymentData: PaymentData) {
+    private fun handlePaymentSuccess(paymentData: PaymentData?) {
         if (paymentData != null) {
             loadPaymentDataResult!!.success(paymentData.toJson())
         } else {
@@ -167,7 +158,6 @@ public class GooglePayHandler(val activity: Activity) :
      * @see [
      * Wallet Constants Library](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants.constant-summary)
      */
-    private fun handleError(statusCode: Int) {
-        loadPaymentDataResult!!.error(statusCode.toString(), "", null)
-    }
+    private fun handleError(statusCode: Int) =
+            loadPaymentDataResult!!.error(statusCode.toString(), "", null)
 }

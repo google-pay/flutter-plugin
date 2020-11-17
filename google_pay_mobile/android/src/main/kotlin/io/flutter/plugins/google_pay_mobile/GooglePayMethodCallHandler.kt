@@ -12,8 +12,8 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 class GooglePayMethodCallHandler private constructor(
-    val messenger: BinaryMessenger,
-    val activity: Activity
+        messenger: BinaryMessenger,
+        activity: Activity,
 ) : MethodCallHandler {
 
     private val METHOD_CHANNEL_NAME = "plugins.flutter.io/google_pay_mobile"
@@ -24,35 +24,33 @@ class GooglePayMethodCallHandler private constructor(
     private val channel: MethodChannel
     private val googlePayHandler: GooglePayHandler
 
-    constructor(registrar: Registrar) :
-        this(registrar.messenger(), registrar.activity()) {
-            registrar.addActivityResultListener(googlePayHandler)
-        }
-
-    constructor(
-        flutterBinding: FlutterPlugin.FlutterPluginBinding,
-        activityBinding: ActivityPluginBinding
-    ) : this(flutterBinding.getBinaryMessenger(), activityBinding.getActivity()) {
-        activityBinding.addActivityResultListener(googlePayHandler)
-    }
-
     init {
         googlePayHandler = GooglePayHandler(activity)
         channel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
         channel.setMethodCallHandler(this)
     }
 
-    override fun onMethodCall(
-        @NonNull call: MethodCall,
-        @NonNull result: Result
-    ) {
+    constructor(registrar: Registrar) :
+            this(registrar.messenger(), registrar.activity()) {
+        registrar.addActivityResultListener(googlePayHandler)
+    }
+
+    constructor(
+            flutterBinding: FlutterPlugin.FlutterPluginBinding,
+            activityBinding: ActivityPluginBinding,
+    ) : this(flutterBinding.binaryMessenger, activityBinding.activity) {
+        activityBinding.addActivityResultListener(googlePayHandler)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
 
         when (call.method) {
             METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(
-                result, call.arguments as Map<String, Any>)
+                    result, call.arguments as Map<String, Any>)
 
             METHOD_SHOW_PAYMENT_SELECTOR -> googlePayHandler.loadPaymentData(
-                result, call.arguments as Map<String, Any>)
+                    result, call.arguments as Map<String, Any>)
 
             else -> result.notImplemented()
         }
