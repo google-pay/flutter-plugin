@@ -22,16 +22,14 @@ class GooglePayMethodCallHandler private constructor(
     private val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
 
     private val channel: MethodChannel
-    private val googlePayHandler: GooglePayHandler
+    private val googlePayHandler: GooglePayHandler = GooglePayHandler(activity)
 
     init {
-        googlePayHandler = GooglePayHandler(activity)
         channel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
         channel.setMethodCallHandler(this)
     }
 
-    constructor(registrar: Registrar) :
-            this(registrar.messenger(), registrar.activity()) {
+    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()) {
         registrar.addActivityResultListener(googlePayHandler)
     }
 
@@ -41,6 +39,8 @@ class GooglePayMethodCallHandler private constructor(
     ) : this(flutterBinding.binaryMessenger, activityBinding.activity) {
         activityBinding.addActivityResultListener(googlePayHandler)
     }
+
+    fun stopListening() = channel.setMethodCallHandler(null)
 
     @Suppress("UNCHECKED_CAST")
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -54,9 +54,5 @@ class GooglePayMethodCallHandler private constructor(
 
             else -> result.notImplemented()
         }
-    }
-
-    fun stopListening() {
-        channel.setMethodCallHandler(null)
     }
 }

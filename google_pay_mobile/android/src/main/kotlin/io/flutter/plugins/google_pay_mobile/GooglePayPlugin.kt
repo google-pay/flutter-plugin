@@ -24,15 +24,10 @@ class GooglePayPlugin : FlutterPlugin, ActivityAware {
         this.flutterPluginBinding = flutterPluginBinding
     }
 
-    override fun onDetachedFromEngine(
-            @NonNull binding: FlutterPlugin.FlutterPluginBinding,
-    ) = Unit
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
-    override fun onAttachedToActivity(
-            @NonNull activityPluginBinding: ActivityPluginBinding,
-    ) {
-        methodCallHandler = GooglePayMethodCallHandler(
-                flutterPluginBinding, activityPluginBinding)
+    override fun onAttachedToActivity(@NonNull activityPluginBinding: ActivityPluginBinding) {
+        methodCallHandler = GooglePayMethodCallHandler(flutterPluginBinding, activityPluginBinding)
     }
 
     override fun onDetachedFromActivity() = methodCallHandler.stopListening()
@@ -41,6 +36,5 @@ class GooglePayPlugin : FlutterPlugin, ActivityAware {
             @NonNull activityPluginBinding: ActivityPluginBinding,
     ) = onAttachedToActivity(activityPluginBinding)
 
-    override fun onDetachedFromActivityForConfigChanges() =
-            onDetachedFromActivity()
+    override fun onDetachedFromActivityForConfigChanges() = onDetachedFromActivity()
 }
