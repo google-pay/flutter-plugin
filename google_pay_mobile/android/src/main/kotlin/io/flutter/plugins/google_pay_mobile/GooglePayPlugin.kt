@@ -1,7 +1,6 @@
 package io.flutter.plugins.google_pay_mobile
 
 import androidx.annotation.NonNull
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -26,7 +25,8 @@ public class GooglePayPlugin : FlutterPlugin, ActivityAware {
     }
 
     override fun onDetachedFromEngine(
-        @NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
+        @NonNull binding: FlutterPlugin.FlutterPluginBinding
+    ) = Unit
 
     override fun onAttachedToActivity(
         @NonNull activityPluginBinding: ActivityPluginBinding
@@ -38,9 +38,9 @@ public class GooglePayPlugin : FlutterPlugin, ActivityAware {
     override fun onDetachedFromActivity() = methodCallHandler.stopListening()
 
     override fun onReattachedToActivityForConfigChanges(
-        @NonNull activityPluginBinding: ActivityPluginBinding) =
-            onAttachedToActivity(activityPluginBinding)
+        @NonNull activityPluginBinding: ActivityPluginBinding
+    ) = onAttachedToActivity(activityPluginBinding)
 
     override fun onDetachedFromActivityForConfigChanges() =
-        onDetachedFromActivity() 
+        onDetachedFromActivity()
 }

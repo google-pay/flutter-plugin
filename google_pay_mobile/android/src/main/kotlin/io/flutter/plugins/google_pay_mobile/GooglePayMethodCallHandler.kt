@@ -1,21 +1,14 @@
 package io.flutter.plugins.google_pay_mobile
 
 import android.app.Activity
-import android.content.Intent
 import androidx.annotation.NonNull
-
-import com.google.android.gms.wallet.AutoResolveHelper
-import com.google.android.gms.wallet.PaymentData
-
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 class GooglePayMethodCallHandler private constructor(
@@ -31,8 +24,8 @@ class GooglePayMethodCallHandler private constructor(
     private val channel: MethodChannel
     private val googlePayHandler: GooglePayHandler
 
-    constructor(registrar: Registrar)
-        : this(registrar.messenger(), registrar.activity()) {
+    constructor(registrar: Registrar) :
+        this(registrar.messenger(), registrar.activity()) {
             registrar.addActivityResultListener(googlePayHandler)
         }
 
@@ -66,6 +59,6 @@ class GooglePayMethodCallHandler private constructor(
     }
 
     fun stopListening() {
-        channel.setMethodCallHandler(null);
+        channel.setMethodCallHandler(null)
     }
 }
