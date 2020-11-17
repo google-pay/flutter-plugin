@@ -19,3 +19,8 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+google_pay_platform_interface/.idea
+.flutter-plugins
+.flutter-plugins-dependencies
+google_pay_mobile/.idea
+google_pay_mobile/android/.idea
