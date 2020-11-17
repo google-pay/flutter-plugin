@@ -26,10 +26,9 @@ class GooglePaySampleApp extends StatefulWidget {
 }
 
 class _GooglePaySampleAppState extends State<GooglePaySampleApp> {
-
   void googlePayButtonPressed() async {
-      var result = await _googlePayClient.showPaymentSelector();
-      debugPrint(result.toString());
+    var result = await _googlePayClient.showPaymentSelector();
+    debugPrint(result.toString());
   }
 
   Widget _getPaymentButtons() {
@@ -40,9 +39,7 @@ class _GooglePaySampleAppState extends State<GooglePaySampleApp> {
           if (snapshot.data == true) {
             return SizedBox(
                 width: double.infinity,
-                child: GooglePayButton(onPressed: googlePayButtonPressed)
-            );
-
+                child: GooglePayButton(onPressed: googlePayButtonPressed));
           } else if (snapshot.hasError) {
             PlatformException exc = snapshot.error;
             return Text(exc.message);
@@ -57,48 +54,43 @@ class _GooglePaySampleAppState extends State<GooglePaySampleApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Pay T-shirt Shop'),
-      ),
-      backgroundColor: Colors.white,
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        children: [
+        appBar: AppBar(
+          title: const Text('Google Pay T-shirt Shop'),
+        ),
+        backgroundColor: Colors.white,
+        body:
+            ListView(padding: EdgeInsets.symmetric(horizontal: 20), children: [
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            child: Image(
-                image: AssetImage('assets/images/ts_10_11019a.jpg'),
-                height: 350
-            )
-          ),
-          Text('Amanda\'s Polo Shirt',
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              child: Image(
+                  image: AssetImage('assets/images/ts_10_11019a.jpg'),
+                  height: 350)),
+          Text(
+            'Amanda\'s Polo Shirt',
             style: TextStyle(
-              fontSize: 20,
+                fontSize: 20,
                 color: Color(0xff333333),
-                fontWeight:FontWeight.bold
-            ),
-          ),
-          SizedBox(height: 5),
-          Text('\$50.20',
-            style: TextStyle(color: Color(0xff777777), fontSize: 15),
-          ),
-          SizedBox(height: 15),
-          Text('Description',
-            style: TextStyle(
-                fontSize: 15,
-                color: Color(0xff333333),
-                fontWeight:FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5),
           Text(
-            'A versatile full-zip that you can wear all day long and even...',
-            style: TextStyle(color: Color(0xff777777), fontSize: 15)
+            '\$50.20',
+            style: TextStyle(color: Color(0xff777777), fontSize: 15),
           ),
           SizedBox(height: 15),
+          Text(
+            'Description',
+            style: TextStyle(
+                fontSize: 15,
+                color: Color(0xff333333),
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Text(
+              'A versatile full-zip that you can wear all day long and even...',
+              style: TextStyle(color: Color(0xff777777), fontSize: 15)),
+          SizedBox(height: 15),
           Center(child: _getPaymentButtons())
-        ]
-      )
-    );
+        ]));
   }
 }
