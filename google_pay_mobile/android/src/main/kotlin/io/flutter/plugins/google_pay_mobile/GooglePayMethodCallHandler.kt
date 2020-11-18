@@ -46,11 +46,9 @@ class GooglePayMethodCallHandler private constructor(
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
 
         when (call.method) {
-            METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(
-                    result, call.arguments as Map<String, Any>)
-
+            METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments())
             METHOD_SHOW_PAYMENT_SELECTOR -> googlePayHandler.loadPaymentData(
-                    result, call.arguments as Map<String, Any>)
+                    result, call.arguments())
 
             else -> result.notImplemented()
         }
