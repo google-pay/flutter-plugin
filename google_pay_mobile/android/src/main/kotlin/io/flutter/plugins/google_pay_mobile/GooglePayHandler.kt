@@ -14,28 +14,22 @@ class GooglePayHandler(val activity: Activity) :
 
     // Arbitrary constant to track a request in the activity result
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
-    private val VALID_ENVIRONMENTS = listOf("test", "production")
-
     private var loadPaymentDataResult: Result? = null
 
-    private fun paymentClientForProfile(
-            paymentProfile: Map<String, Any>,
-    ): PaymentsClient {
-
-        val environmentConstant = environmentForString(paymentProfile["environment"] as? String)
+    private fun paymentClientForProfile(paymentProfile: JSONObject): PaymentsClient {
+        val environmentConstant = environmentForString(paymentProfile["environment"] as String?)
         return Wallet.getPaymentsClient(
                 activity,
                 Wallet.WalletOptions.Builder()
                         .setEnvironment(environmentConstant)
-                        .build()
-        )
+                        .build())
     }
 
-    fun isReadyToPay(result: Result, paymentProfile: Map<String, Any>) {
+    fun isReadyToPay(result: Result, paymentProfileString: String) {
 
-        val client = paymentClientForProfile(paymentProfile)
+        val client = paymentClientForProfile(JSONObject(paymentProfileString))
 
-        val rtpRequest = IsReadyToPayRequest.fromJson(JSONObject(paymentProfile).toString())
+        val rtpRequest = IsReadyToPayRequest.fromJson(paymentProfileString)
         val task = client.isReadyToPay(rtpRequest)
         task.addOnCompleteListener { completedTask ->
             try {
@@ -44,28 +38,26 @@ class GooglePayHandler(val activity: Activity) :
                 result.error(
                         statusCodeForException(exception).toString(),
                         exception.message,
-                        null
-                )
+                        null)
             }
         }
     }
 
-    fun loadPaymentData(result: Result, paymentProfile: Map<String, Any>) {
+    fun loadPaymentData(result: Result, paymentProfileString: String) {
 
         // Only proceed if there is no other request is active
         if (loadPaymentDataResult != null) return
         loadPaymentDataResult = result
 
         // Add payment information
-        val transactionInfo =
-                paymentProfile["transactionInfo"] as Map<*, *> +
-                        mapOf("totalPrice" to "1000", "totalPriceStatus" to "FINAL")
-
-        val requestObject = JSONObject(
-                paymentProfile + mapOf("transactionInfo" to transactionInfo))
-        val ldpRequest = PaymentDataRequest.fromJson(requestObject.toString())
+        val paymentProfile = JSONObject(paymentProfileString)
+        paymentProfile.getJSONObject("transactionInfo").apply {
+            put("totalPrice", "1000")
+            put("totalPriceStatus", "FINAL")
+        }
 
         val client = paymentClientForProfile(paymentProfile)
+        val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
         AutoResolveHelper.resolveTask(
                 client.loadPaymentData(ldpRequest),
                 activity,
@@ -74,8 +66,8 @@ class GooglePayHandler(val activity: Activity) :
 
     // To utils
     private fun statusCodeForException(exception: Exception): Int {
-        return when {
-            exception is ApiException -> exception.statusCode
+        return when (exception) {
+            is ApiException -> exception.statusCode
             else -> -1
         }
     }
@@ -86,8 +78,7 @@ class GooglePayHandler(val activity: Activity) :
             "test" -> WalletConstants.ENVIRONMENT_TEST
             "production" -> WalletConstants.ENVIRONMENT_PRODUCTION
             else -> throw IllegalArgumentException(
-                    "Environment must be one of TEST or PRODUCTION"
-            )
+                    "Environment must be one of TEST or PRODUCTION")
         }
     }
 
