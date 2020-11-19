@@ -8,5 +8,5 @@ abstract class GooglePayPlatform {
    * TBA
    */
   Future<Map<String, dynamic>> showPaymentSelector(
-      Map<String, dynamic> paymentData);
+      Map<String, dynamic> paymentProfile, String priceString);
 }

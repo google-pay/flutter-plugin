@@ -30,7 +30,7 @@ class GooglePay {
     return _googlePayPlatform.userCanPay(_paymentProfile);
   }
 
-  Future<Map<String, dynamic>> showPaymentSelector() {
-    return _googlePayPlatform.showPaymentSelector(_paymentProfile);
+  Future<Map<String, dynamic>> showPaymentSelector(String priceString) {
+    return _googlePayPlatform.showPaymentSelector(_paymentProfile, priceString);
   }
 }

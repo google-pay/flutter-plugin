@@ -44,7 +44,7 @@ class GooglePayHandler(val activity: Activity) :
         }
     }
 
-    fun loadPaymentData(result: Result, paymentProfileString: String) {
+    fun loadPaymentData(result: Result, paymentProfileString: String, priceString: String) {
 
         // Only proceed if there is no other request is active
         if (loadPaymentDataResult != null) return
@@ -53,7 +53,7 @@ class GooglePayHandler(val activity: Activity) :
         // Add payment information
         val paymentProfile = JSONObject(paymentProfileString)
         paymentProfile.getJSONObject("transactionInfo").apply {
-            put("totalPrice", "1000")
+            put("totalPrice", priceString)
             put("totalPriceStatus", "FINAL")
         }
 
