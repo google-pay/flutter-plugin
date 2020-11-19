@@ -6,7 +6,7 @@ class GooglePay {
 
   Map<String, dynamic> _paymentProfile;
 
-  GooglePay(String paymentProfileAsset)
+  GooglePay({@required String paymentProfileAsset})
       : _googlePayPlatform = GooglePayMobileChannel() {
     _initializationFuture = _initializeClient(paymentProfileAsset);
   }

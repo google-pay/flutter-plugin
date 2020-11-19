@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_pay/google_pay.dart';
 
-GooglePay _googlePayClient = GooglePay('default_payment_profile.json');
+GooglePay _googlePayClient =
+    GooglePay(paymentProfileAsset: 'default_payment_profile.json');
 
 void main() {
   runApp(GooglePayMaterialApp());
