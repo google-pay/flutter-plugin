@@ -18,7 +18,7 @@ class GooglePayChannel extends GooglePayPlatform {
 
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
-      Map<String, dynamic> paymentProfile, String priceString) {
+      Map<String, dynamic> paymentProfile, String price) {
     throw UnimplementedError('showPaymentSelector() has not been implemented.');
   }
 }

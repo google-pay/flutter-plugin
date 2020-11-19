@@ -28,7 +28,7 @@ class GooglePaySampleApp extends StatefulWidget {
 
 class _GooglePaySampleAppState extends State<GooglePaySampleApp> {
   void googlePayButtonPressed() async {
-    var result = await _googlePayClient.showPaymentSelector("99.99");
+    var result = await _googlePayClient.showPaymentSelector(price: '99.99');
     debugPrint(result.toString());
   }
 

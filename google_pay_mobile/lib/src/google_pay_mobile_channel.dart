@@ -8,10 +8,8 @@ class GooglePayMobileChannel extends GooglePayChannel {
 
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
-          Map<String, dynamic> paymentProfile, String priceString) async =>
+          Map<String, dynamic> paymentProfile, String price) async =>
       jsonDecode(await GooglePayChannel.channel.invokeMethod(
-          'showPaymentSelector', {
-        'payment_profile': jsonEncode(paymentProfile),
-        'price': priceString
-      }));
+          'showPaymentSelector',
+          {'payment_profile': jsonEncode(paymentProfile), 'price': price}));
 }
