@@ -6,8 +6,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.*
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
+import io.flutter.plugins.google_pay_mobile.util.PaymentsUtil
 import org.json.JSONObject
-import java.util.*
 
 class GooglePayHandler(val activity: Activity) :
         PluginRegistry.ActivityResultListener {
@@ -17,7 +17,8 @@ class GooglePayHandler(val activity: Activity) :
     private var loadPaymentDataResult: Result? = null
 
     private fun paymentClientForProfile(paymentProfile: JSONObject): PaymentsClient {
-        val environmentConstant = environmentForString(paymentProfile["environment"] as String?)
+        val environmentConstant = PaymentsUtil
+                .environmentForString(paymentProfile["environment"] as String?)
         return Wallet.getPaymentsClient(
                 activity,
                 Wallet.WalletOptions.Builder()
@@ -36,7 +37,7 @@ class GooglePayHandler(val activity: Activity) :
                 result.success(completedTask.getResult(ApiException::class.java))
             } catch (exception: Exception) {
                 result.error(
-                        statusCodeForException(exception).toString(),
+                        PaymentsUtil.statusCodeForException(exception).toString(),
                         exception.message,
                         null)
             }
@@ -62,24 +63,6 @@ class GooglePayHandler(val activity: Activity) :
                 client.loadPaymentData(ldpRequest),
                 activity,
                 LOAD_PAYMENT_DATA_REQUEST_CODE)
-    }
-
-    // To utils
-    private fun statusCodeForException(exception: Exception): Int {
-        return when (exception) {
-            is ApiException -> exception.statusCode
-            else -> -1
-        }
-    }
-
-    // To utils
-    private fun environmentForString(environmentString: String?): Int {
-        return when (environmentString?.toLowerCase(Locale.ROOT)) {
-            "test" -> WalletConstants.ENVIRONMENT_TEST
-            "production" -> WalletConstants.ENVIRONMENT_PRODUCTION
-            else -> throw IllegalArgumentException(
-                    "Environment must be one of TEST or PRODUCTION")
-        }
     }
 
     override fun onActivityResult(
