@@ -16,7 +16,7 @@ class GooglePayMethodCallHandler private constructor(
         activity: Activity,
 ) : MethodCallHandler {
 
-    private val METHOD_CHANNEL_NAME = "plugins.flutter.io/google_pay_mobile"
+    private val METHOD_CHANNEL_NAME = "plugins.flutter.io/google_pay_channel"
 
     private val METHOD_USER_CAN_PAY = "userCanPay"
     private val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
