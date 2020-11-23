@@ -25,8 +25,10 @@ class GooglePayButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
-        padding: EdgeInsets.symmetric(vertical: 11, horizontal: 15),
-        child: SizedBox.expand(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        child: SizedBox(
+            width: 134,
+            height: 22,
             child: SvgPicture.asset('assets/buy_with_gpay_dark.svg',
                 package: 'google_pay_mobile',
                 semanticsLabel: 'Buy with Google Pay text')));
