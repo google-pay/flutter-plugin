@@ -28,6 +28,11 @@ class GooglePay {
     };
   }
 
+  Future<String> get environment async {
+    await _initializationFuture;
+    return _paymentProfile['environment'];
+  }
+
   Future<bool> userCanPay() async {
     // Wait for the client to finish instantiation before issuing calls
     await _initializationFuture;
