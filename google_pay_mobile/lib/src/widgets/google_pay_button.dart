@@ -17,8 +17,6 @@ class GooglePayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Widget rawButton = RawMaterialButton(
         fillColor: Colors.black,
-        constraints: BoxConstraints(
-            minWidth: _minWidthLong, minHeight: _height, maxHeight: _height),
         elevation: 0,
         focusElevation: 0,
         hoverElevation: 0,
@@ -33,6 +31,7 @@ class GooglePayButton extends StatelessWidget {
                 package: 'google_pay_mobile',
                 semanticsLabel: 'Buy with Google Pay text')));
 
-    return SizedBox(width: _defaultWidthLong, child: rawButton);
+    return SizedBox(
+        width: _defaultWidthLong, height: _height, child: rawButton);
   }
 }
