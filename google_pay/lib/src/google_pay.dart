@@ -6,21 +6,25 @@ class GooglePay {
 
   Map<String, dynamic> _paymentProfile;
 
-  GooglePay({@required String paymentProfileAsset})
+  GooglePay(
+      {@required String paymentProfileAsset,
+      Future<Map<String, dynamic>> profileLoader(String value) =
+          _defaultProfileLoader})
       : _googlePayPlatform = GooglePayMobileChannel() {
-    _initializationFuture = _initializeClient(paymentProfileAsset);
+    _initializationFuture =
+        _initializeClient(paymentProfileAsset, profileLoader);
   }
 
-  Future _initializeClient(String paymentProfileAsset) async {
-    // Load configuration from file
-    String jsonData =
-        await rootBundle.loadString('assets/$paymentProfileAsset');
-    _paymentProfile = jsonDecode(jsonData);
+  static Future<Map<String, dynamic>> _defaultProfileLoader(
+          String paymentProfileAsset) async =>
+      await rootBundle.loadStructuredData(
+          'assets/$paymentProfileAsset', (s) async => jsonDecode(s));
 
-    // Add merchant info
-    _paymentProfile['merchantInfo']['softwareInfo'] = {
-      'id': 'google-pay-flutter-plug-in',
-      'version': '0.9.9'
+  Future _initializeClient(String paymentProfileAsset,
+      Future<Map<String, dynamic>> profileLoader(String value)) async {
+    _paymentProfile = {
+      ...(await profileLoader(paymentProfileAsset)),
+      ...{'id': 'google-pay-flutter-plug-in', 'version': '0.9.9'},
     };
   }
 
