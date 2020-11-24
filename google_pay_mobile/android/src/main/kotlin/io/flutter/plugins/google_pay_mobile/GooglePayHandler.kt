@@ -3,6 +3,7 @@ package io.flutter.plugins.google_pay_mobile
 import android.app.Activity
 import android.content.Intent
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.wallet.*
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
@@ -19,6 +20,7 @@ class GooglePayHandler(val activity: Activity) :
     private fun paymentClientForProfile(paymentProfile: JSONObject): PaymentsClient {
         val environmentConstant = PaymentsUtil
                 .environmentForString(paymentProfile["environment"] as String?)
+
         return Wallet.getPaymentsClient(
                 activity,
                 Wallet.WalletOptions.Builder()
@@ -119,7 +121,10 @@ class GooglePayHandler(val activity: Activity) :
         if (paymentData != null) {
             loadPaymentDataResult!!.success(paymentData.toJson())
         } else {
-            loadPaymentDataResult!!.error("", "", null)
+            loadPaymentDataResult!!.error(
+                    CommonStatusCodes.INTERNAL_ERROR.toString(),
+                    "Unexpected empty result data.",
+                    null)
         }
     }
 
