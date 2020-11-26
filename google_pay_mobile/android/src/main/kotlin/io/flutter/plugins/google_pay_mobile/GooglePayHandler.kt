@@ -46,10 +46,10 @@ class GooglePayHandler(val activity: Activity) :
         }
     }
 
-    fun loadPaymentData(result: Result, paymentProfileString: String, price: String) {
+    fun loadPaymentData(result: Result, paymentProfileString: String, price: String): Boolean {
 
         // Only proceed if there is no other request is active
-        if (loadPaymentDataResult != null) return
+        if (loadPaymentDataResult != null) return false
         loadPaymentDataResult = result
 
         // Add payment information
@@ -65,6 +65,8 @@ class GooglePayHandler(val activity: Activity) :
                 client.loadPaymentData(ldpRequest),
                 activity,
                 LOAD_PAYMENT_DATA_REQUEST_CODE)
+
+        return true
     }
 
     override fun onActivityResult(
