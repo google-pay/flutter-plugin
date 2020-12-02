@@ -9,7 +9,7 @@ environment:
 flutter:
   uses-material-design: true
   assets:
-    - assets/default_payment_profile.json
+    - assets/
     - assets/images/
 
 dependencies:
@@ -27,4 +27,4 @@ dev_dependencies:
     sdk: flutter
   flutter_driver:
    sdk: flutter
-  e2e: ^0.2.1
+  integration_test: ^0.9.2

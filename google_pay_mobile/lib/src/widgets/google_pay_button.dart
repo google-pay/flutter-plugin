@@ -11,7 +11,11 @@ class GooglePayButton extends StatelessWidget {
   final String color;
 
   GooglePayButton(
-      {@required this.onPressed, this.type = 'pay', this.color = 'black'});
+      {Key key,
+      @required this.onPressed,
+      this.type = 'pay',
+      this.color = 'black'})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

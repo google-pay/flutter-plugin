@@ -22,16 +22,23 @@ class GooglePay {
 
   Future _initializeClient(String paymentProfileAsset,
       Future<Map<String, dynamic>> profileLoader(String value)) async {
-    _paymentProfile = {
-      ...(await profileLoader(paymentProfileAsset)),
-      ...{'id': 'google-pay-flutter-plug-in', 'version': '0.9.9'},
+    var paymentProfile = await profileLoader(paymentProfileAsset);
+    var map = {
+      ...paymentProfile['merchantInfo'] ?? {},
+      'softwareInfo': {'id': 'google-pay-flutter-plug-in', 'version': '0.9.9'}
     };
+    var updatedMerchantInfo = map;
+
+    _paymentProfile = Map.unmodifiable(
+        {...paymentProfile, 'merchantInfo': updatedMerchantInfo});
   }
 
-  Future<String> get environment async {
+  Future<Map> get paymentProfile async {
     await _initializationFuture;
-    return _paymentProfile['environment'];
+    return _paymentProfile;
   }
+
+  Future<String> get environment async => (await paymentProfile)['environment'];
 
   Future<bool> userCanPay() async {
     // Wait for the client to finish instantiation before issuing calls
@@ -39,7 +46,9 @@ class GooglePay {
     return _googlePayPlatform.userCanPay(_paymentProfile);
   }
 
-  Future<Map<String, dynamic>> showPaymentSelector({@required String price}) {
+  Future<Map<String, dynamic>> showPaymentSelector(
+      {@required String price}) async {
+    await _initializationFuture;
     return _googlePayPlatform.showPaymentSelector(_paymentProfile, price);
   }
 }

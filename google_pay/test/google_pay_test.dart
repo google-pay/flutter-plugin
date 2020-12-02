@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_pay/google_pay.dart';
 
 String _fixtureAsset(String name) {
-  var dir = Directory.current.path;
-  if (dir.endsWith('/test')) {
-    dir = dir.replaceAll('/test', '');
-  }
+  var currentPath = Directory.current.path;
+  var dir = currentPath.endsWith('/test')
+      ? Directory.current.parent.path
+      : currentPath;
 
   return File('$dir/test/assets/$name').readAsStringSync();
 }
@@ -37,6 +37,21 @@ void main() {
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'PRODUCTION');
+  });
+
+  test('Verify that software info is included in the requests', () async {
+    GooglePay client = GooglePay(
+        paymentProfileAsset: 'default_payment_profile.json',
+        profileLoader: _testProfileLoader);
+
+    var paymentProfile = await client.paymentProfile;
+    expect(paymentProfile.containsKey('merchantInfo'), isTrue);
+    expect(paymentProfile['merchantInfo'].containsKey('softwareInfo'), isTrue);
+
+    Map<String, String> softwareInfo =
+        paymentProfile['merchantInfo']['softwareInfo'];
+    expect(softwareInfo.containsKey('id'), isTrue);
+    expect(softwareInfo.containsKey('version'), isTrue);
   });
 
   tearDown(() async {});

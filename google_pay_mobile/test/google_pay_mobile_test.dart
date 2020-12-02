@@ -2,7 +2,6 @@
 
 import 'package:google_pay_mobile/google_pay_mobile.dart';
 import 'package:flutter/services.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

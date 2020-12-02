@@ -20,8 +20,7 @@ import org.mockito.Mockito.anyInt
 class GooglePayHandlerTest {
 
     abstract class AutoResolvableTask : Task<AutoResolvableResult>()
-
-    private val invalidPaymentProfile = "{environment: 'TEST', transactionInfo: {}}"
+    private val basicPaymentProfile = "{environment: 'TEST', transactionInfo: {}}"
     private val invalidPrice = "-1"
 
     private lateinit var googlePayHandler: GooglePayHandler
@@ -35,7 +34,7 @@ class GooglePayHandlerTest {
     fun setUp() {
         googlePayHandler = GooglePayHandler(mock(Activity::class.java))
         loadPaymentDataCall = {
-            googlePayHandler.loadPaymentData(mockMethodChannel, invalidPaymentProfile, invalidPrice)
+            googlePayHandler.loadPaymentData(mockMethodChannel, basicPaymentProfile, invalidPrice)
         }
 
         initializeMocks()
