@@ -5,25 +5,40 @@ double _minWidthLong = 152;
 double _defaultWidthLong = 200;
 double _height = 43;
 
+enum ButtonType { pay, checkout, donate }
 enum ButtonColor { black, white, flat }
 
-extension ButtonColorAsset on ButtonColor {
+extension ButtonTypeAsset on ButtonType {
   String get asset => {
-        ButtonColor.black: 'buy_with_gpay_dark.svg',
-        ButtonColor.white: 'buy_with_gpay_clear.svg',
-        ButtonColor.flat: 'buy_with_gpay_clear.svg',
+        ButtonType.pay: 'buy_with_gpay',
+        ButtonType.checkout: 'gpay_logo',
+        ButtonType.donate: 'donate_with_gpay',
+      }[this];
+
+  double get assetWidth => {
+        ButtonType.pay: 104.0,
+        ButtonType.checkout: 41.0,
+        ButtonType.donate: 129.0,
+      }[this];
+}
+
+extension ButtonColorAsset on ButtonColor {
+  String get assetSuffix => {
+        ButtonColor.black: '_dark',
+        ButtonColor.white: '_clear',
+        ButtonColor.flat: '_clear',
       }[this];
 }
 
 class GooglePayButton extends StatelessWidget {
   final GestureTapCallback onPressed;
-  final String type;
+  final ButtonType type;
   final ButtonColor color;
 
   GooglePayButton(
       {Key key,
       @required this.onPressed,
-      this.type = 'pay',
+      this.type = ButtonType.pay,
       this.color = ButtonColor.black})
       : super(key: key);
 
@@ -44,9 +59,10 @@ class GooglePayButton extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: SizedBox(
-            width: 134,
+            width: type.assetWidth + 30,
             height: 22,
-            child: SvgPicture.asset('assets/${color.asset}',
+            child: SvgPicture.asset(
+                'assets/${type.asset}${color.assetSuffix}.svg',
                 package: 'google_pay_mobile',
                 semanticsLabel: 'Buy with Google Pay text')));
 

@@ -42,6 +42,7 @@ class _GooglePaySampleAppState extends State<GooglePaySampleApp> {
                 width: double.infinity,
                 child: GooglePayButton(
                     color: ButtonColor.flat,
+                    type: ButtonType.pay,
                     onPressed: googlePayButtonPressed));
           } else if (snapshot.hasError) {
             PlatformException exc = snapshot.error;
