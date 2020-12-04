@@ -1,8 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="io.flutter.plugins.google_pay_mobile">
-  <application>
-    <meta-data
-      android:name="com.google.android.gms.wallet.api.enabled"
-      android:value="true" />
-  </application>
-</manifest>
