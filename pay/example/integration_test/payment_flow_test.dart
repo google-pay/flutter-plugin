@@ -7,6 +7,6 @@ void main() {
 
   testWidgets("correctly creates an instance of the client", (_) async {
     Pay client = Pay(paymentProfileAsset: 'default_payment_profile.json');
-    expect(client, isNotNull);
+    await expectLater(client, isNotNull);
   });
 }

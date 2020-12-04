@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.flutter.plugins.google_pay_mobile.util
+package io.flutter.plugins.pay_mobile.util
 
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.WalletConstants

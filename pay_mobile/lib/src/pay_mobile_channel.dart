@@ -1,6 +1,6 @@
-part of '../google_pay_mobile.dart';
+part of '../pay_mobile.dart';
 
-class GooglePayMobileChannel extends GooglePayChannel {
+class PayMobileChannel extends PayChannel {
   @override
   Future<bool> userCanPay(Map<String, dynamic> paymentProfile) async =>
       await channel.invokeMethod('userCanPay', jsonEncode(paymentProfile));

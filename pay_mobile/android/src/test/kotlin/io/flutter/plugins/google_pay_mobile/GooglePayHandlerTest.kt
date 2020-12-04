@@ -1,4 +1,4 @@
-package io.flutter.plugins.google_pay_mobile
+package io.flutter.plugins.pay_mobile
 
 import android.app.Activity
 import androidx.test.ext.junit.runners.AndroidJUnit4
