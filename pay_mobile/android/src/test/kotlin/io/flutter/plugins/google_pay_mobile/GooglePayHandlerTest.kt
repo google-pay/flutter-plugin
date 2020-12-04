@@ -1,6 +1,8 @@
 package io.flutter.plugins.pay_mobile
 
 import android.app.Activity
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wallet.*
@@ -11,37 +13,48 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.MockedStatic
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.mockStatic
-import org.mockito.Mockito.any
-import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.*
+
 
 @RunWith(AndroidJUnit4::class)
 class GooglePayHandlerTest {
 
     abstract class AutoResolvableTask : Task<AutoResolvableResult>()
     private val basicPaymentProfile = "{environment: 'TEST', transactionInfo: {}}"
-    private val invalidPrice = "-1"
+    private val itemPrice = "0"
+    private val versionName = "0.0.0"
 
     private lateinit var googlePayHandler: GooglePayHandler
-    private lateinit var mockMethodChannel: MethodChannel.Result
     private lateinit var loadPaymentDataCall: () -> Boolean
 
+    private lateinit var mockedActivity: Activity
+    private lateinit var mockedPackageManager: PackageManager
+    private lateinit var mockedPackageInfo: PackageInfo
+    private lateinit var mockedMethodChannel: MethodChannel.Result
     private lateinit var mockedResolveHelper: MockedStatic<AutoResolveHelper>
     private lateinit var mockedWallet: MockedStatic<Wallet>
 
     @Before
     fun setUp() {
-        googlePayHandler = GooglePayHandler(mock(Activity::class.java))
-        loadPaymentDataCall = {
-            googlePayHandler.loadPaymentData(mockMethodChannel, basicPaymentProfile, invalidPrice)
-        }
-
         initializeMocks()
+
+        googlePayHandler = GooglePayHandler(mockedActivity)
+        loadPaymentDataCall = {
+            googlePayHandler.loadPaymentData(mockedMethodChannel, basicPaymentProfile, itemPrice)
+        }
     }
 
     private fun initializeMocks() {
-        mockMethodChannel = mock(MethodChannel.Result::class.java)
+        mockedPackageInfo = PackageInfo()
+        mockedPackageInfo.versionName = versionName
+
+        mockedActivity = mock(Activity::class.java)
+        mockedPackageManager = mock(PackageManager::class.java)
+        `when`(mockedActivity.packageManager).thenReturn(mockedPackageManager)
+        `when`(mockedPackageManager.getPackageInfo(mockedActivity.packageName, 0))
+                .thenReturn(mockedPackageInfo)
+
+        mockedMethodChannel = mock(MethodChannel.Result::class.java)
 
         mockedResolveHelper = mockStatic(AutoResolveHelper::class.java)
         mockedResolveHelper.`when`<Any> {
@@ -56,6 +69,30 @@ class GooglePayHandlerTest {
                     any(Activity::class.java),
                     any(Wallet.WalletOptions::class.java))
         }.thenReturn(mock(PaymentsClient::class.java))
+    }
+
+    @Test
+    fun addsSoftwareInfoToLoadPaymentData() {
+        val paymentProfile = GooglePayHandler
+                .buildPaymentProfile(mockedActivity, basicPaymentProfile)
+        assertThat(paymentProfile.has("merchantInfo")).isTrue()
+
+        val merchantInfo = paymentProfile.getJSONObject("merchantInfo")
+        assertThat(merchantInfo.has("softwareInfo")).isTrue()
+
+        val softwareInfo = merchantInfo.getJSONObject("softwareInfo")
+        assertThat(softwareInfo.optString("id")).isNotNull()
+        assertThat(softwareInfo.optString("version")).isEqualTo(versionName)
+    }
+
+    @Test
+    fun loadPaymentDataRequestContainsTheRightPrice() {
+        val paymentProfile = GooglePayHandler
+                .buildPaymentProfile(mockedActivity, basicPaymentProfile, itemPrice)
+
+        val transactionInfo = paymentProfile.getJSONObject("transactionInfo")
+        assertThat(transactionInfo.optString("totalPriceStatus")).isEqualTo("FINAL")
+        assertThat(transactionInfo.optString("totalPrice")).isEqualTo(itemPrice)
     }
 
     @Test

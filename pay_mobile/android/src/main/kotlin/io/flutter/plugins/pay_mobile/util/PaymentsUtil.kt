@@ -16,6 +16,7 @@
 
 package io.flutter.plugins.pay_mobile.util
 
+import android.content.Context
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.WalletConstants
 import java.math.BigDecimal
@@ -45,6 +46,14 @@ object PaymentsUtil {
                 else -> throw IllegalArgumentException(
                         "Environment must be one of TEST or PRODUCTION")
             }
+
+    fun createSoftwareInfo(context: Context): Map<String, String> {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        return mapOf(
+                "id" to "pay-flutter-plug-in",
+                "version" to packageInfo.versionName
+        )
+    }
 }
 
 /**

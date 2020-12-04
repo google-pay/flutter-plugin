@@ -1,6 +1,7 @@
 package io.flutter.plugins.pay_mobile
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
@@ -10,12 +11,40 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.pay_mobile.util.PaymentsUtil
 import org.json.JSONObject
 
+
 class GooglePayHandler(val activity: Activity) :
         PluginRegistry.ActivityResultListener {
 
     // Arbitrary constant to track a request in the activity result
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
     private var loadPaymentDataResult: Result? = null
+
+    companion object {
+        @JvmStatic
+        fun buildPaymentProfile(
+                context: Context,
+                paymentProfileString: String,
+                price: String? = null
+        ): JSONObject {
+            val paymentProfile = JSONObject(paymentProfileString)
+
+            // Add software info
+            val softwareInfoObject = JSONObject(PaymentsUtil.createSoftwareInfo(context))
+            val merchantInfo = paymentProfile.optJSONObject("merchantInfo") ?: JSONObject()
+            paymentProfile.put("merchantInfo",
+                    merchantInfo.put("softwareInfo", softwareInfoObject))
+
+            // Add payment information
+            price.let {
+                paymentProfile.optJSONObject("transactionInfo").apply {
+                    put("totalPrice", it)
+                    put("totalPriceStatus", "FINAL")
+                }
+            }
+
+            return paymentProfile
+        }
+    }
 
     private fun paymentClientForProfile(paymentProfile: JSONObject): PaymentsClient {
         val environmentConstant = PaymentsUtil
@@ -30,7 +59,8 @@ class GooglePayHandler(val activity: Activity) :
 
     fun isReadyToPay(result: Result, paymentProfileString: String) {
 
-        val client = paymentClientForProfile(JSONObject(paymentProfileString))
+        val paymentProfile = buildPaymentProfile(activity, paymentProfileString)
+        val client = paymentClientForProfile(paymentProfile)
 
         val rtpRequest = IsReadyToPayRequest.fromJson(paymentProfileString)
         val task = client.isReadyToPay(rtpRequest)
@@ -52,13 +82,7 @@ class GooglePayHandler(val activity: Activity) :
         if (loadPaymentDataResult != null) return false
         loadPaymentDataResult = result
 
-        // Add payment information
-        val paymentProfile = JSONObject(paymentProfileString)
-        paymentProfile.getJSONObject("transactionInfo").apply {
-            put("totalPrice", price)
-            put("totalPriceStatus", "FINAL")
-        }
-
+        val paymentProfile = buildPaymentProfile(activity, paymentProfileString, price)
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
         AutoResolveHelper.resolveTask(
