@@ -3,16 +3,23 @@ part of '../pay.dart';
 class Pay {
   final PayPlatform _payPlatform;
   Future _initializationFuture;
-
   Map<String, dynamic> _paymentProfile;
 
-  Pay(
+  Pay._(Map<String, dynamic> paymentProfile)
+      : _payPlatform = PayMobileChannel() {
+    _paymentProfile = _populateProfile(paymentProfile);
+  }
+
+  Pay.fromJson(String paymentProfileString)
+      : this._(jsonDecode(paymentProfileString));
+
+  Pay.fromAsset(
       {@required String paymentProfileAsset,
       Future<Map<String, dynamic>> profileLoader(String value) =
           _defaultProfileLoader})
-      : _payPlatform = PayMobileChannel() {
-    _initializationFuture =
-        _initializeClient(paymentProfileAsset, profileLoader);
+      : _payPlatform = PayMobileChannel(),
+        _initializationFuture = profileLoader(paymentProfileAsset) {
+    _loadPaymentProfile();
   }
 
   static Future<Map<String, dynamic>> _defaultProfileLoader(
@@ -20,16 +27,18 @@ class Pay {
       await rootBundle.loadStructuredData(
           'assets/$paymentProfileAsset', (s) async => jsonDecode(s));
 
-  Future _initializeClient(String paymentProfileAsset,
-      Future<Map<String, dynamic>> profileLoader(String value)) async {
-    var paymentProfile = await profileLoader(paymentProfileAsset);
+  Future _loadPaymentProfile() async {
+    _paymentProfile = _populateProfile(await _initializationFuture);
+  }
+
+  Map<String, dynamic> _populateProfile(Map<String, dynamic> paymentProfile) {
     var map = {
       ...paymentProfile['merchantInfo'] ?? {},
       'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
     };
     var updatedMerchantInfo = map;
 
-    _paymentProfile = Map.unmodifiable(
+    return Map.unmodifiable(
         {...paymentProfile, 'merchantInfo': updatedMerchantInfo});
   }
 
