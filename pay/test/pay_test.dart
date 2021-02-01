@@ -19,12 +19,20 @@ Future<Map<String, dynamic>> _testProfileLoader(
         String paymentProfileAsset) async =>
     jsonDecode(_fixtureAsset(paymentProfileAsset));
 
+const String _paymentProfileString =
+    '{"environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {});
 
+  test('Load a payment profile from a string', () async {
+    Pay client = Pay.fromJson(_paymentProfileString);
+    expect(await client.environment, 'TEST');
+  });
+
   test('Load a payment profile for the test environment', () async {
-    Pay client = Pay(
+    Pay client = Pay.fromAsset(
         paymentProfileAsset: 'test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
@@ -32,7 +40,7 @@ void main() {
   });
 
   test('Load a payment profile for the producton environment', () async {
-    Pay client = Pay(
+    Pay client = Pay.fromAsset(
         paymentProfileAsset: 'prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
@@ -40,7 +48,7 @@ void main() {
   });
 
   test('Verify that software info is included in the requests', () async {
-    Pay client = Pay(
+    Pay client = Pay.fromAsset(
         paymentProfileAsset: 'default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
