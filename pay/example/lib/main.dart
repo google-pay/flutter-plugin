@@ -41,8 +41,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
             return SizedBox(
                 width: double.infinity,
                 child: GooglePayButton(
-                    color: ButtonColor.flat,
-                    type: ButtonType.pay,
+                    color: GooglePayButtonColor.flat,
+                    type: GooglePayButtonType.pay,
                     onPressed: googlePayButtonPressed));
           } else if (snapshot.hasError) {
             PlatformException exc = snapshot.error;

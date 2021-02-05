@@ -1,51 +1,52 @@
 part of '../../pay_mobile.dart';
 
-double _minWidth = 90;
-double _minWidthLong = 152;
-double _defaultWidthLong = 200;
-double _height = 43;
+enum GooglePayButtonType { pay, checkout, donate }
+enum GooglePayButtonColor { black, white, flat }
 
-enum ButtonType { pay, checkout, donate }
-enum ButtonColor { black, white, flat }
-
-extension ButtonTypeAsset on ButtonType {
+extension GooglePayButtonTypeAsset on GooglePayButtonType {
   String get asset => {
-        ButtonType.pay: 'buy_with_gpay',
-        ButtonType.checkout: 'gpay_logo',
-        ButtonType.donate: 'donate_with_gpay',
+        GooglePayButtonType.pay: 'buy_with_gpay',
+        GooglePayButtonType.checkout: 'gpay_logo',
+        GooglePayButtonType.donate: 'donate_with_gpay',
       }[this];
 
   double get assetWidth => {
-        ButtonType.pay: 104.0,
-        ButtonType.checkout: 41.0,
-        ButtonType.donate: 129.0,
+        GooglePayButtonType.pay: 104.0,
+        GooglePayButtonType.checkout: 41.0,
+        GooglePayButtonType.donate: 129.0,
       }[this];
 }
 
-extension ButtonColorAsset on ButtonColor {
+extension GooglePayButtonColorAsset on GooglePayButtonColor {
   String get assetSuffix => {
-        ButtonColor.black: '_dark',
-        ButtonColor.white: '_clear',
-        ButtonColor.flat: '_clear',
+        GooglePayButtonColor.black: '_dark',
+        GooglePayButtonColor.white: '_clear',
+        GooglePayButtonColor.flat: '_clear',
       }[this];
 }
 
 class GooglePayButton extends StatelessWidget {
+  static const double _minWidth = 90;
+  static const double _minWidthLong = 152;
+  static const double _defaultWidthLong = 200;
+  static const double _height = 43;
+
   final GestureTapCallback onPressed;
-  final ButtonType type;
-  final ButtonColor color;
+  final GooglePayButtonType type;
+  final GooglePayButtonColor color;
 
   GooglePayButton(
       {Key key,
       @required this.onPressed,
-      this.type = ButtonType.pay,
-      this.color = ButtonColor.black})
+      this.type = GooglePayButtonType.pay,
+      this.color = GooglePayButtonColor.black})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Widget rawButton = RawMaterialButton(
-        fillColor: color == ButtonColor.black ? Colors.black : Colors.white,
+        fillColor:
+            color == GooglePayButtonColor.black ? Colors.black : Colors.white,
         elevation: 0,
         focusElevation: 0,
         hoverElevation: 0,
@@ -53,7 +54,7 @@ class GooglePayButton extends StatelessWidget {
         onPressed: onPressed,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
-          side: color == ButtonColor.flat
+          side: color == GooglePayButtonColor.flat
               ? BorderSide(color: Color(0xFFDEDEDE), width: 2)
               : BorderSide.none,
         ),
@@ -67,7 +68,7 @@ class GooglePayButton extends StatelessWidget {
                 semanticsLabel: 'Buy with Google Pay text')));
 
     return Container(
-        decoration: color == ButtonColor.white
+        decoration: color == GooglePayButtonColor.white
             ? BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
