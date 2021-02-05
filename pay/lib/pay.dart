@@ -9,6 +9,6 @@ import 'package:pay_mobile/pay_mobile.dart';
 import 'package:pay_platform_interface/pay_platform_interface.dart';
 
 export 'package:pay_mobile/pay_mobile.dart'
-    show GooglePayButton, ButtonColor, ButtonType;
+    show GooglePayButton, GooglePayButtonColor, GooglePayButtonType;
 
 part 'src/pay.dart';
