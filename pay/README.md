@@ -65,4 +65,4 @@ void googlePayButtonPressed() async {
 |:---:|:---:|:---:|
 | Console | [Google Pay Business Console](https://pay.google.com/business/console/) |  (coming soon)  |
 | Reference | [API reference](https://developers.google.com/pay/api/android/reference/client)
-| Style guidelines | [Brand](https://developers.google.com/pay/api/android/guides/brand-guidelines)
+| Style guidelines | [Brand guidelines](https://developers.google.com/pay/api/android/guides/brand-guidelines)
