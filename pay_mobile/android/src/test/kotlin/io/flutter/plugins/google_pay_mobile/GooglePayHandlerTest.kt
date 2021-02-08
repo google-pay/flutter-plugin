@@ -5,7 +5,10 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.wallet.*
+import com.google.android.gms.wallet.AutoResolvableResult
+import com.google.android.gms.wallet.AutoResolveHelper
+import com.google.android.gms.wallet.PaymentsClient
+import com.google.android.gms.wallet.Wallet
 import com.google.common.truth.Truth.assertThat
 import io.flutter.plugin.common.MethodChannel
 import org.junit.After
@@ -20,12 +23,16 @@ import org.mockito.Mockito.*
 class GooglePayHandlerTest {
 
     abstract class AutoResolvableTask : Task<AutoResolvableResult>()
+
     private val basicPaymentProfile = "{environment: 'TEST', transactionInfo: {}}"
+    private val finalPaymentProfile =
+            "{environment: 'TEST', transactionInfo: {totalPriceStatus: 'FINAL'}}"
+
     private val itemPrice = "0"
     private val versionName = "0.0.0"
 
     private lateinit var googlePayHandler: GooglePayHandler
-    private lateinit var loadPaymentDataCall: () -> Boolean
+    private lateinit var basicLoadPaymentDataCall: () -> Boolean
 
     private lateinit var mockedActivity: Activity
     private lateinit var mockedPackageManager: PackageManager
@@ -39,7 +46,7 @@ class GooglePayHandlerTest {
         initializeMocks()
 
         googlePayHandler = GooglePayHandler(mockedActivity)
-        loadPaymentDataCall = {
+        basicLoadPaymentDataCall = {
             googlePayHandler.loadPaymentData(mockedMethodChannel, basicPaymentProfile, itemPrice)
         }
     }
@@ -88,7 +95,7 @@ class GooglePayHandlerTest {
     @Test
     fun loadPaymentDataRequestContainsTheRightPrice() {
         val paymentProfile = GooglePayHandler
-                .buildPaymentProfile(mockedActivity, basicPaymentProfile, itemPrice)
+                .buildPaymentProfile(mockedActivity, finalPaymentProfile, itemPrice)
 
         val transactionInfo = paymentProfile.getJSONObject("transactionInfo")
         assertThat(transactionInfo.optString("totalPriceStatus")).isEqualTo("FINAL")
@@ -97,13 +104,13 @@ class GooglePayHandlerTest {
 
     @Test
     fun onlyOnePaymentAttemptAtATime() {
-        assertThat(loadPaymentDataCall()).isTrue()
+        assertThat(basicLoadPaymentDataCall()).isTrue()
     }
 
     @Test
     fun theSecondPaymentAttemptFails() {
-        assertThat(loadPaymentDataCall()).isTrue()
-        assertThat(loadPaymentDataCall()).isFalse()
+        assertThat(basicLoadPaymentDataCall()).isTrue()
+        assertThat(basicLoadPaymentDataCall()).isFalse()
     }
 
     @After

@@ -38,7 +38,6 @@ class GooglePayHandler(val activity: Activity) :
             price.let {
                 paymentProfile.optJSONObject("transactionInfo").apply {
                     put("totalPrice", it)
-                    put("totalPriceStatus", "FINAL")
                 }
             }
 
