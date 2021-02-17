@@ -1,0 +1,17 @@
+name: pay_platform_interface
+description: A common platform interface for payment plugins for Flutter.
+version: 1.0.0
+author: Flutter Team <flutter-dev@googlegroups.com>
+homepage: TBA
+
+environment:
+  sdk: ^2.7.0
+  flutter: ^1.20.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

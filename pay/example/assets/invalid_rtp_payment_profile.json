@@ -1,0 +1,10 @@
+{
+  "apiVersion": 2,
+  "apiVersionMinor": 0,
+  "allowedPaymentMethods": [
+    {
+      "type": "CARD",
+      "parameters": {}
+    }
+  ]
+}

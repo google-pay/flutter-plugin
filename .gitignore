@@ -19,3 +19,8 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+pay_platform_interface/.idea
+.flutter-plugins
+.flutter-plugins-dependencies
+pay_mobile/.idea
+pay_mobile/android/.idea
