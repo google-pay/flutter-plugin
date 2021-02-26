@@ -88,7 +88,9 @@ class _PaySampleAppState extends State<PaySampleApp> {
                 type: GooglePayButtonType.pay,
                 onPressed: googlePayButtonPressed,
                 childOnError: Text('Google Pay is not available.'),
-                loadingIndicator: CircularProgressIndicator(),
+                loadingIndicator: Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             ),
           ),
