@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pay/pay.dart';
-
-Pay _googlePayClient = Pay.fromAsset('default_payment_profile.json');
 
 void main() {
   runApp(PayMaterialApp());
@@ -26,32 +23,9 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
-  void googlePayButtonPressed() async {
-    var result = await _googlePayClient.showPaymentSelector(price: '99.99');
+  void googlePayButtonPressed(paymentClient) async {
+    var result = await paymentClient.showPaymentSelector(price: '99.99');
     debugPrint(result.toString());
-  }
-
-  Widget _getPaymentButtons() {
-    return FutureBuilder<bool>(
-      future: _googlePayClient.userCanPay(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data == true) {
-            return SizedBox(
-                width: double.infinity,
-                child: GooglePayButton(
-                    color: GooglePayButtonColor.flat,
-                    type: GooglePayButtonType.pay,
-                    onPressed: googlePayButtonPressed));
-          } else if (snapshot.hasError) {
-            PlatformException exc = snapshot.error;
-            return Text(exc.message);
-          }
-        }
-
-        return CircularProgressIndicator();
-      },
-    );
   }
 
   @override
@@ -105,7 +79,22 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           SizedBox(height: 15),
-          Center(child: _getPaymentButtons())
-        ]));
+          Center(
+            child: SizedBox(
+              width: double.infinity,
+              child: GooglePayButtonWidget(
+                paymentConfigurationAsset: 'default_payment_profile.json',
+                color: GooglePayButtonColor.flat,
+                type: GooglePayButtonType.pay,
+                onPressed: googlePayButtonPressed,
+                childOnError: Text('Google Pay is not available.'),
+                loadingIndicator: CircularProgressIndicator(),
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+        ],
+      ),
+    );
   }
 }
