@@ -9,9 +9,13 @@ class GooglePayButtonWidget extends StatelessWidget {
   final Widget _childOnError;
   final Widget _loadingIndicator;
 
-  GooglePayButtonWidget._(Key key, this._googlePayClient, this._googlePayButton,
-      this._childOnError, this._loadingIndicator)
-      : super(key: key);
+  GooglePayButtonWidget._(
+    Key key,
+    this._googlePayClient,
+    this._googlePayButton,
+    this._childOnError,
+    this._loadingIndicator,
+  ) : super(key: key);
 
   factory GooglePayButtonWidget({
     Key key,
