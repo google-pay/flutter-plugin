@@ -27,8 +27,7 @@ Create a payment profile with the desired configuration for your payment, either
 import 'package:pay/pay.dart';
 
 // Instantiate the client for a wallet
-Pay _googlePayClient =
-    Pay.fromAsset(paymentProfileAsset: 'default_payment_profile.json');
+Pay _googlePayClient = Pay.fromAsset('default_payment_profile.json');
 
 // Show the button if supported
 Widget _getPaymentButtons() {

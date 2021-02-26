@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pay/pay.dart';
 
-Pay _googlePayClient =
-    Pay.fromAsset(paymentProfileAsset: 'default_payment_profile.json');
+Pay _googlePayClient = Pay.fromAsset('default_payment_profile.json');
 
 void main() {
   runApp(PayMaterialApp());

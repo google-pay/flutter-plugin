@@ -13,9 +13,8 @@ class Pay {
   Pay.fromJson(String paymentProfileString)
       : this._(jsonDecode(paymentProfileString));
 
-  Pay.fromAsset(
-      {@required String paymentProfileAsset,
-      Future<Map<String, dynamic>> profileLoader(String value) =
+  Pay.fromAsset(String paymentProfileAsset,
+      {Future<Map<String, dynamic>> profileLoader(String value) =
           _defaultProfileLoader})
       : _payPlatform = PayMobileChannel(),
         _initializationFuture = profileLoader(paymentProfileAsset) {

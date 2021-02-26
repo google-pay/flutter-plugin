@@ -32,24 +32,21 @@ void main() {
   });
 
   test('Load a payment profile for the test environment', () async {
-    Pay client = Pay.fromAsset(
-        paymentProfileAsset: 'test_payment_profile.json',
+    Pay client = Pay.fromAsset('test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'TEST');
   });
 
   test('Load a payment profile for the producton environment', () async {
-    Pay client = Pay.fromAsset(
-        paymentProfileAsset: 'prod_payment_profile.json',
+    Pay client = Pay.fromAsset('prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'PRODUCTION');
   });
 
   test('Verify that software info is included in the requests', () async {
-    Pay client = Pay.fromAsset(
-        paymentProfileAsset: 'default_payment_profile.json',
+    Pay client = Pay.fromAsset('default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     var paymentProfile = await client.paymentProfile;
