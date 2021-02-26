@@ -35,51 +35,61 @@ class GooglePayButton extends StatelessWidget {
   final GooglePayButtonType type;
   final GooglePayButtonColor color;
 
-  GooglePayButton(
-      {Key key,
-      @required this.onPressed,
-      this.type = GooglePayButtonType.pay,
-      this.color = GooglePayButtonColor.black})
-      : super(key: key);
+  GooglePayButton({
+    Key key,
+    @required this.onPressed,
+    this.type = GooglePayButtonType.pay,
+    this.color = GooglePayButtonColor.black,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Widget rawButton = RawMaterialButton(
-        fillColor:
-            color == GooglePayButtonColor.black ? Colors.black : Colors.white,
-        elevation: 0,
-        focusElevation: 0,
-        hoverElevation: 0,
-        highlightElevation: 0,
-        onPressed: onPressed,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-          side: color == GooglePayButtonColor.flat
-              ? BorderSide(color: Color(0xFFDEDEDE), width: 2)
-              : BorderSide.none,
+      fillColor:
+          color == GooglePayButtonColor.black ? Colors.black : Colors.white,
+      elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      onPressed: onPressed,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+        side: color == GooglePayButtonColor.flat
+            ? BorderSide(
+                color: Color(0xFFDEDEDE),
+                width: 2,
+              )
+            : BorderSide.none,
+      ),
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 15,
+      ),
+      child: SizedBox(
+        width: type.assetWidth + 30,
+        height: 22,
+        child: SvgPicture.asset(
+          'assets/${type.asset}${color.assetSuffix}.svg',
+          package: 'pay_mobile',
+          semanticsLabel: 'Buy with Google Pay text',
         ),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        child: SizedBox(
-            width: type.assetWidth + 30,
-            height: 22,
-            child: SvgPicture.asset(
-                'assets/${type.asset}${color.assetSuffix}.svg',
-                package: 'pay_mobile',
-                semanticsLabel: 'Buy with Google Pay text')));
+      ),
+    );
 
     return Container(
-        decoration: color == GooglePayButtonColor.white
-            ? BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  spreadRadius: 0,
-                  blurRadius: 2,
-                  offset: Offset(0, 1),
-                )
-              ])
-            : null,
-        width: _defaultWidthLong,
-        height: _height,
-        child: rawButton);
+      decoration: color == GooglePayButtonColor.white
+          ? BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 0,
+                blurRadius: 2,
+                offset: Offset(0, 1),
+              )
+            ])
+          : null,
+      width: _defaultWidthLong,
+      height: _height,
+      child: rawButton,
+    );
   }
 }
