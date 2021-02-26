@@ -51,14 +51,14 @@ class GooglePayButtonWidget extends StatelessWidget {
           if (snapshot.data == true) {
             return SizedBox(
               width: double.infinity,
-              child: this._googlePayButton,
+              child: _googlePayButton,
             );
           } else if (snapshot.hasError) {
-            return this._childOnError;
+            return _childOnError ?? SizedBox.shrink();
           }
         }
 
-        return this._loadingIndicator;
+        return _loadingIndicator ?? SizedBox.shrink();
       },
     );
   }
