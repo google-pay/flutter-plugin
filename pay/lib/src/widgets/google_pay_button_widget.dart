@@ -49,10 +49,7 @@ class GooglePayButtonWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
-            return SizedBox(
-              width: double.infinity,
-              child: _googlePayButton,
-            );
+            return _googlePayButton;
           } else if (snapshot.hasError) {
             return _childOnError ?? SizedBox.shrink();
           }
