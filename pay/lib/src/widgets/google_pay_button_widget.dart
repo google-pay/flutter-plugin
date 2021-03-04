@@ -2,19 +2,19 @@ part of '../../pay.dart';
 
 typedef PayGestureTapCallback = void Function(Pay client);
 
-class GooglePayButtonWidget extends StatelessWidget {
-  final Pay _googlePayClient;
-  final GooglePayButton _googlePayButton;
+class GooglePayButtonWidget extends StatefulWidget {
+  final Pay googlePayClient;
+  final GooglePayButton googlePayButton;
 
-  final Widget _childOnError;
-  final Widget _loadingIndicator;
+  final Widget childOnError;
+  final Widget loadingIndicator;
 
   GooglePayButtonWidget._(
     Key key,
-    this._googlePayClient,
-    this._googlePayButton,
-    this._childOnError,
-    this._loadingIndicator,
+    this.googlePayClient,
+    this.googlePayButton,
+    this.childOnError,
+    this.loadingIndicator,
   ) : super(key: key);
 
   factory GooglePayButtonWidget({
@@ -43,19 +43,32 @@ class GooglePayButtonWidget extends StatelessWidget {
   }
 
   @override
+  _GooglePayButtonState createState() => _GooglePayButtonState();
+}
+
+class _GooglePayButtonState extends State<GooglePayButtonWidget> {
+  Future<bool> _userCanPayFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userCanPayFuture = widget.googlePayClient.userCanPay();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: _googlePayClient.userCanPay(),
+      future: _userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
-            return _googlePayButton;
+            return widget.googlePayButton;
           } else if (snapshot.hasError) {
-            return _childOnError ?? SizedBox.shrink();
+            return widget.childOnError ?? SizedBox.shrink();
           }
         }
 
-        return _loadingIndicator ?? SizedBox.shrink();
+        return widget.loadingIndicator ?? SizedBox.shrink();
       },
     );
   }
