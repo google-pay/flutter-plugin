@@ -53,7 +53,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
             '\$50.20',
             style: TextStyle(
@@ -61,7 +61,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Text(
             'Description',
             style: TextStyle(
@@ -70,7 +70,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
             'A versatile full-zip that you can wear all day long and even...',
             style: TextStyle(
@@ -78,7 +78,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Center(
             child: GooglePayButtonWidget(
               paymentConfigurationAsset: 'default_payment_profile.json',
@@ -91,7 +91,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               ),
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
         ],
       ),
     );
