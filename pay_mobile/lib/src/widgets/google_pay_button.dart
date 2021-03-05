@@ -4,25 +4,36 @@ enum GooglePayButtonType { pay, checkout, donate }
 enum GooglePayButtonColor { black, white, flat }
 
 extension GooglePayButtonTypeAsset on GooglePayButtonType {
-  String? get asset => {
-        GooglePayButtonType.pay: 'buy_with_gpay',
-        GooglePayButtonType.checkout: 'gpay_logo',
-        GooglePayButtonType.donate: 'donate_with_gpay',
-      }[this];
+  static const _defaultAsset = 'gpay_logo';
+  static const _defaultAssetWidth = 54.0;
 
-  double? get assetWidth => {
+  String get asset =>
+      {
+        GooglePayButtonType.pay: 'buy_with_gpay',
+        GooglePayButtonType.checkout: _defaultAsset,
+        GooglePayButtonType.donate: 'donate_with_gpay',
+      }[this] ??
+      _defaultAsset;
+
+  double get assetWidth =>
+      {
         GooglePayButtonType.pay: 135.0,
-        GooglePayButtonType.checkout: 54.0,
+        GooglePayButtonType.checkout: _defaultAssetWidth,
         GooglePayButtonType.donate: 167.0,
-      }[this];
+      }[this] ??
+      _defaultAssetWidth;
 }
 
 extension GooglePayButtonColorAsset on GooglePayButtonColor {
-  String? get assetSuffix => {
-        GooglePayButtonColor.black: '_dark',
+  static const _defaultAssetSuffix = '_dark';
+
+  String get assetSuffix =>
+      {
+        GooglePayButtonColor.black: _defaultAssetSuffix,
         GooglePayButtonColor.white: '_clear',
         GooglePayButtonColor.flat: '_clear',
-      }[this];
+      }[this] ??
+      _defaultAssetSuffix;
 }
 
 class RawGooglePayButton extends StatelessWidget {
@@ -79,7 +90,7 @@ class RawGooglePayButton extends StatelessWidget {
               )
             ])
           : null,
-      width: type.assetWidth! + (2 * _minHorizontalPadding),
+      width: type.assetWidth + (2 * _minHorizontalPadding),
       height: _height,
       child: rawButton,
     );
