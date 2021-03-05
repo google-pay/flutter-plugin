@@ -12,7 +12,7 @@ void main() {
     testWidgets('defaults to type black and long', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: GooglePayButton(onPressed: () => null),
+        child: RawGooglePayButton(onPressed: () => null),
       ));
 
       expect(
@@ -29,7 +29,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Center(
-            child: GooglePayButton(onPressed: () => null),
+            child: RawGooglePayButton(onPressed: () => null),
           ),
         ),
       );

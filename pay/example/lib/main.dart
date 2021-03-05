@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pay/pay.dart';
-
-Pay _googlePayClient = Pay.fromAsset('default_payment_profile.json');
 
 void main() {
   runApp(PayMaterialApp());
@@ -26,74 +23,80 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
-  void googlePayButtonPressed() async {
-    var result = await _googlePayClient.showPaymentSelector(price: '99.99');
+  void googlePayButtonPressed(paymentClient) async {
+    var result = await paymentClient.showPaymentSelector(price: '99.99');
     debugPrint(result.toString());
-  }
-
-  Widget _getPaymentButtons() {
-    return FutureBuilder<bool>(
-      future: _googlePayClient.userCanPay(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data == true) {
-            return SizedBox(
-                width: double.infinity,
-                child: GooglePayButton(
-                    color: GooglePayButtonColor.flat,
-                    type: GooglePayButtonType.pay,
-                    onPressed: googlePayButtonPressed));
-          } else if (snapshot.hasError) {
-            PlatformException exc = snapshot.error;
-            return Text(exc.message);
-          }
-        }
-
-        return CircularProgressIndicator();
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('T-shirt Shop'),
-        ),
-        backgroundColor: Colors.white,
-        body:
-            ListView(padding: EdgeInsets.symmetric(horizontal: 20), children: [
+      appBar: AppBar(
+        title: const Text('T-shirt Shop'),
+      ),
+      backgroundColor: Colors.white,
+      body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        children: [
           Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              child: Image(
-                  image: AssetImage('assets/images/ts_10_11019a.jpg'),
-                  height: 350)),
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            child: Image(
+              image: AssetImage('assets/images/ts_10_11019a.jpg'),
+              height: 350,
+            ),
+          ),
           Text(
             'Amanda\'s Polo Shirt',
             style: TextStyle(
-                fontSize: 20,
-                color: Color(0xff333333),
-                fontWeight: FontWeight.bold),
+              fontSize: 20,
+              color: Color(0xff333333),
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
             '\$50.20',
-            style: TextStyle(color: Color(0xff777777), fontSize: 15),
+            style: TextStyle(
+              color: Color(0xff777777),
+              fontSize: 15,
+            ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Text(
             'Description',
             style: TextStyle(
-                fontSize: 15,
-                color: Color(0xff333333),
-                fontWeight: FontWeight.bold),
+              fontSize: 15,
+              color: Color(0xff333333),
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
-              'A versatile full-zip that you can wear all day long and even...',
-              style: TextStyle(color: Color(0xff777777), fontSize: 15)),
-          SizedBox(height: 15),
-          Center(child: _getPaymentButtons())
-        ]));
+            'A versatile full-zip that you can wear all day long and even...',
+            style: TextStyle(
+              color: Color(0xff777777),
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(height: 15),
+          Center(
+            child: SizedBox(
+              width: double.infinity,
+              child: GooglePayButton(
+                paymentConfigurationAsset: 'default_payment_profile.json',
+                color: GooglePayButtonColor.flat,
+                type: GooglePayButtonType.pay,
+                onPressed: googlePayButtonPressed,
+                childOnError: Text('Google Pay is not available.'),
+                loadingIndicator: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+        ],
+      ),
+    );
   }
 }

@@ -11,9 +11,9 @@ extension GooglePayButtonTypeAsset on GooglePayButtonType {
       }[this];
 
   double get assetWidth => {
-        GooglePayButtonType.pay: 104.0,
-        GooglePayButtonType.checkout: 41.0,
-        GooglePayButtonType.donate: 129.0,
+        GooglePayButtonType.pay: 135.0,
+        GooglePayButtonType.checkout: 54.0,
+        GooglePayButtonType.donate: 167.0,
       }[this];
 }
 
@@ -25,17 +25,15 @@ extension GooglePayButtonColorAsset on GooglePayButtonColor {
       }[this];
 }
 
-class GooglePayButton extends StatelessWidget {
-  static const double _minWidth = 90;
-  static const double _minWidthLong = 152;
-  static const double _defaultWidthLong = 200;
+class RawGooglePayButton extends StatelessWidget {
   static const double _height = 43;
+  static const double _minHorizontalPadding = 30;
 
   final GestureTapCallback onPressed;
   final GooglePayButtonType type;
   final GooglePayButtonColor color;
 
-  GooglePayButton({
+  RawGooglePayButton({
     Key key,
     @required this.onPressed,
     this.type = GooglePayButtonType.pay,
@@ -61,18 +59,12 @@ class GooglePayButton extends StatelessWidget {
               )
             : BorderSide.none,
       ),
-      padding: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 15,
-      ),
-      child: SizedBox(
-        width: type.assetWidth + 30,
+      child: SvgPicture.asset(
+        'assets/${type.asset}${color.assetSuffix}.svg',
+        package: 'pay_mobile',
+        semanticsLabel: 'Buy with Google Pay text',
+        width: type.assetWidth,
         height: 22,
-        child: SvgPicture.asset(
-          'assets/${type.asset}${color.assetSuffix}.svg',
-          package: 'pay_mobile',
-          semanticsLabel: 'Buy with Google Pay text',
-        ),
       ),
     );
 
@@ -87,7 +79,7 @@ class GooglePayButton extends StatelessWidget {
               )
             ])
           : null,
-      width: _defaultWidthLong,
+      width: type.assetWidth + (2 * _minHorizontalPadding),
       height: _height,
       child: rawButton,
     );

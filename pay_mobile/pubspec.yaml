@@ -24,7 +24,7 @@ dependencies:
   #pay_platform_interface: ^1.0.0
   pay_platform_interface:
     path: ../pay_platform_interface
-  flutter_svg: 0.19.1
+  flutter_svg: 0.19.3
 
 dev_dependencies:
   flutter_test:

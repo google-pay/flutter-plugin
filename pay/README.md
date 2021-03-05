@@ -26,36 +26,21 @@ Create a payment profile with the desired configuration for your payment, either
 ```dart
 import 'package:pay/pay.dart';
 
-// Instantiate the client for a wallet
-Pay _googlePayClient = Pay.fromAsset('default_payment_profile.json');
-
-// Show the button if supported
-Widget _getPaymentButtons() {
-  return FutureBuilder<bool>(
-    future: _googlePayClient.userCanPay(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
-        if (snapshot.data == true) {
-          return SizedBox(
-              width: double.infinity,
-              child: GooglePayButton(
-                  color: GooglePayButtonColor.flat,
-                  type: GooglePayButtonType.pay,
-                  onPressed: googlePayButtonPressed));
-        } else if (snapshot.hasError) {
-          // TODO: Handle error
-        }
-      }
-
-      // TODO: Show loading indicator
-      // eg.: return CircularProgressIndicator();
-    },
-  );
-}
+// Add the button to your UI
+GooglePayButton(
+  paymentConfigurationAsset: 'default_payment_profile.json',
+  color: GooglePayButtonColor.flat,
+  type: GooglePayButtonType.pay,
+  onPressed: googlePayButtonPressed,
+  childOnError: Text('Google Pay is not available.'),
+  loadingIndicator: Center(
+    child: CircularProgressIndicator(),
+  ),
+)
 
 // Respond to button taps and load payment info
-void googlePayButtonPressed() async {
-  var result = await _googlePayClient.showPaymentSelector(price: /* item price */);
+void googlePayButtonPressed(paymentClient) async {
+  var result = await paymentClient.showPaymentSelector(price: /* item price */);
 }
 ```
 
