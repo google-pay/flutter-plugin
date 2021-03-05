@@ -3,7 +3,7 @@ part of '../../pay_mobile.dart';
 enum GooglePayButtonType { pay, checkout, donate }
 enum GooglePayButtonColor { black, white, flat }
 
-extension GooglePayButtonTypeAsset on GooglePayButtonType {
+extension on GooglePayButtonType {
   static const _defaultAsset = 'gpay_logo';
   static const _defaultAssetWidth = 54.0;
 
@@ -24,7 +24,7 @@ extension GooglePayButtonTypeAsset on GooglePayButtonType {
       _defaultAssetWidth;
 }
 
-extension GooglePayButtonColorAsset on GooglePayButtonColor {
+extension on GooglePayButtonColor {
   static const _defaultAssetSuffix = '_dark';
 
   String get assetSuffix =>
