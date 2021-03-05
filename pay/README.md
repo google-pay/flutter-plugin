@@ -27,7 +27,7 @@ Create a payment profile with the desired configuration for your payment, either
 import 'package:pay/pay.dart';
 
 // Add the button to your UI
-GooglePayButtonWidget(
+GooglePayButton(
   paymentConfigurationAsset: 'default_payment_profile.json',
   color: GooglePayButtonColor.flat,
   type: GooglePayButtonType.pay,

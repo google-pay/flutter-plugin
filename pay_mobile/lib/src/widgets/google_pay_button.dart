@@ -25,7 +25,7 @@ extension GooglePayButtonColorAsset on GooglePayButtonColor {
       }[this];
 }
 
-class GooglePayButton extends StatelessWidget {
+class RawGooglePayButton extends StatelessWidget {
   static const double _height = 43;
   static const double _minHorizontalPadding = 30;
 
@@ -33,7 +33,7 @@ class GooglePayButton extends StatelessWidget {
   final GooglePayButtonType type;
   final GooglePayButtonColor color;
 
-  GooglePayButton({
+  RawGooglePayButton({
     Key key,
     @required this.onPressed,
     this.type = GooglePayButtonType.pay,

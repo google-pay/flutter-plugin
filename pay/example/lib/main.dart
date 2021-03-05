@@ -80,7 +80,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
           ),
           const SizedBox(height: 15),
           Center(
-            child: GooglePayButtonWidget(
+            child: GooglePayButton(
               paymentConfigurationAsset: 'default_payment_profile.json',
               color: GooglePayButtonColor.flat,
               type: GooglePayButtonType.pay,
