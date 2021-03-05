@@ -16,7 +16,7 @@ class PayMaterialApp extends StatelessWidget {
 }
 
 class PaySampleApp extends StatefulWidget {
-  PaySampleApp({Key key}) : super(key: key);
+  PaySampleApp({Key? key}) : super(key: key);
 
   @override
   _PaySampleAppState createState() => _PaySampleAppState();

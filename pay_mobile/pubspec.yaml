@@ -5,8 +5,8 @@ author: Flutter Team <flutter-dev@googlegroups.com>
 homepage: TBA
 
 environment:
-  sdk: ^2.7.0
-  flutter: ^1.20.0
+  sdk: ^2.12.0
+  flutter: ^2.0.0
 
 flutter:
   plugin:
@@ -24,7 +24,7 @@ dependencies:
   #pay_platform_interface: ^1.0.0
   pay_platform_interface:
     path: ../pay_platform_interface
-  flutter_svg: 0.19.3
+  flutter_svg: 0.21.0-nullsafety.0
 
 dev_dependencies:
   flutter_test:

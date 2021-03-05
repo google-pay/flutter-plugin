@@ -2,8 +2,8 @@ part of '../pay.dart';
 
 class Pay {
   final PayPlatform _payPlatform;
-  Future _initializationFuture;
-  Map<String, dynamic> _paymentProfile;
+  Future? _initializationFuture;
+  late final Map<String, dynamic> _paymentProfile;
 
   Pay._(Map<String, dynamic> paymentProfile)
       : _payPlatform = PayMobileChannel() {
@@ -54,8 +54,9 @@ class Pay {
     return _payPlatform.userCanPay(_paymentProfile);
   }
 
-  Future<Map<String, dynamic>> showPaymentSelector(
-      {@required String price}) async {
+  Future<Map<String, dynamic>> showPaymentSelector({
+    required String price,
+  }) async {
     await _initializationFuture;
     return _payPlatform.showPaymentSelector(_paymentProfile, price);
   }
