@@ -14,6 +14,8 @@ flutter:
       android:
         package: io.flutter.plugins.pay_mobile
         pluginClass: PayPlugin
+      ios:
+        pluginClass: PayPlugin
 
   assets:
     - assets/

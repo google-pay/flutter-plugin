@@ -7,4 +7,5 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pay_platform_interface/pay_channel.dart';
 
 part 'src/pay_mobile_channel.dart';
+part 'src/widgets/apple_pay_button.dart';
 part 'src/widgets/google_pay_button.dart';
