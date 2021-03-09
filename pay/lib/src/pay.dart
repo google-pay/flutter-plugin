@@ -31,11 +31,10 @@ class Pay {
   }
 
   Map<String, dynamic> _populateProfile(Map<String, dynamic> paymentProfile) {
-    var map = {
+    final updatedMerchantInfo = {
       ...paymentProfile['merchantInfo'] ?? {},
       'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
     };
-    var updatedMerchantInfo = map;
 
     return Map.unmodifiable(
         {...paymentProfile, 'merchantInfo': updatedMerchantInfo});
