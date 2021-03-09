@@ -6,11 +6,11 @@ class GooglePayButton extends StatefulWidget {
   final Pay googlePayClient;
   final RawGooglePayButton googlePayButton;
 
-  final Widget childOnError;
-  final Widget loadingIndicator;
+  final Widget? childOnError;
+  final Widget? loadingIndicator;
 
   const GooglePayButton._(
-    Key key,
+    Key? key,
     this.googlePayClient,
     this.googlePayButton,
     this.childOnError,
@@ -18,9 +18,9 @@ class GooglePayButton extends StatefulWidget {
   ) : super(key: key);
 
   factory GooglePayButton({
-    Key key,
-    @required paymentConfigurationAsset,
-    @required PayGestureTapCallback onPressed,
+    Key? key,
+    required paymentConfigurationAsset,
+    required PayGestureTapCallback onPressed,
     type,
     color,
     childOnError,
@@ -47,7 +47,7 @@ class GooglePayButton extends StatefulWidget {
 }
 
 class _GooglePayButtonState extends State<GooglePayButton> {
-  Future<bool> _userCanPayFuture;
+  late final Future<bool> _userCanPayFuture;
 
   @override
   void initState() {

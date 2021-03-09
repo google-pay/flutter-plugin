@@ -5,8 +5,8 @@ author: Flutter Team <flutter-dev@googlegroups.com>
 homepage: TBA
 
 environment:
-  sdk: ^2.7.0
-  flutter: ^1.20.0
+  sdk: ^2.12.0
+  flutter: ^2.0.0
 
 dependencies:
   flutter:

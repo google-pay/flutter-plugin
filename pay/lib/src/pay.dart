@@ -2,8 +2,8 @@ part of '../pay.dart';
 
 class Pay {
   final PayPlatform _payPlatform;
-  Future _initializationFuture;
-  Map<String, dynamic> _paymentProfile;
+  Future? _initializationFuture;
+  late final Map<String, dynamic> _paymentProfile;
 
   Pay._(Map<String, dynamic> paymentProfile)
       : _payPlatform = PayMobileChannel() {
@@ -31,11 +31,10 @@ class Pay {
   }
 
   Map<String, dynamic> _populateProfile(Map<String, dynamic> paymentProfile) {
-    var map = {
+    final updatedMerchantInfo = {
       ...paymentProfile['merchantInfo'] ?? {},
       'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
     };
-    var updatedMerchantInfo = map;
 
     return Map.unmodifiable(
         {...paymentProfile, 'merchantInfo': updatedMerchantInfo});
@@ -54,8 +53,9 @@ class Pay {
     return _payPlatform.userCanPay(_paymentProfile);
   }
 
-  Future<Map<String, dynamic>> showPaymentSelector(
-      {@required String price}) async {
+  Future<Map<String, dynamic>> showPaymentSelector({
+    required String price,
+  }) async {
     await _initializationFuture;
     return _payPlatform.showPaymentSelector(_paymentProfile, price);
   }
