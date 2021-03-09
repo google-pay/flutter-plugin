@@ -6,7 +6,7 @@ class Pay {
   late final Map<String, dynamic> _paymentProfile;
 
   Pay._(Map<String, dynamic> paymentProfile)
-      : _payPlatform = PayMobileChannel() {
+      : _payPlatform = PayAndroidChannel() {
     _paymentProfile = _populateProfile(paymentProfile);
   }
 
@@ -16,7 +16,7 @@ class Pay {
   Pay.fromAsset(String paymentProfileAsset,
       {Future<Map<String, dynamic>> profileLoader(String value) =
           _defaultProfileLoader})
-      : _payPlatform = PayMobileChannel(),
+      : _payPlatform = PayAndroidChannel(),
         _initializationFuture = profileLoader(paymentProfileAsset) {
     _loadPaymentProfile();
   }
