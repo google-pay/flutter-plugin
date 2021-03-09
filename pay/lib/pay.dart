@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:pay_mobile/pay_android.dart';
+import 'package:pay_android/pay_android.dart';
 import 'package:pay_platform_interface/pay_platform_interface.dart';
 
 export 'package:pay_android/pay_android.dart'
