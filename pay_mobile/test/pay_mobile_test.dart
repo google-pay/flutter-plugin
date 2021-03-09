@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  PayMobileChannel _mobilePlatform;
+  late final PayMobileChannel _mobilePlatform;
   const MethodChannel channel = MethodChannel('plugins.flutter.io/pay_channel');
 
-  setUp(() async {
+  setUpAll(() async {
     _mobilePlatform = PayMobileChannel();
   });
 
