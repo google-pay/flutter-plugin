@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:pay_mobile/pay_mobile.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
 import 'package:pay_platform_interface/pay_channel.dart';
 import 'package:pay_platform_interface/pay_platform_interface.dart';
