@@ -16,29 +16,29 @@ String _fixtureAsset(String name) {
 }
 
 Future<Map<String, dynamic>> _testProfileLoader(
-        String paymentProfileAsset) async =>
-    jsonDecode(_fixtureAsset(paymentProfileAsset));
+        String paymentConfigurationAsset) async =>
+    jsonDecode(_fixtureAsset(paymentConfigurationAsset));
 
-const String _paymentProfileString =
+const String _paymentConfigurationString =
     '{"environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {});
 
-  test('Load a payment profile from a string', () async {
-    Pay client = Pay.fromJson(_paymentProfileString);
+  test('Load payment configuration from a string', () async {
+    Pay client = Pay.fromJson(_paymentConfigurationString);
     expect(await client.environment, 'TEST');
   });
 
-  test('Load a payment profile for the test environment', () async {
+  test('Load payment configuration for the test environment', () async {
     Pay client = Pay.fromAsset('test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'TEST');
   });
 
-  test('Load a payment profile for the producton environment', () async {
+  test('Load payment configuration for the producton environment', () async {
     Pay client = Pay.fromAsset('prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
@@ -49,12 +49,12 @@ void main() {
     Pay client = Pay.fromAsset('default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
-    var paymentProfile = await client.paymentProfile;
-    expect(paymentProfile.containsKey('merchantInfo'), isTrue);
-    expect(paymentProfile['merchantInfo'].containsKey('softwareInfo'), isTrue);
+    var paymentData = await client.paymentData;
+    expect(paymentData.containsKey('merchantInfo'), isTrue);
+    expect(paymentData['merchantInfo'].containsKey('softwareInfo'), isTrue);
 
     Map<String, String> softwareInfo =
-        paymentProfile['merchantInfo']['softwareInfo'];
+        paymentData['merchantInfo']['softwareInfo'];
     expect(softwareInfo.containsKey('id'), isTrue);
     expect(softwareInfo.containsKey('version'), isTrue);
   });

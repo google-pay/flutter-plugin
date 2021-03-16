@@ -1,17 +1,17 @@
 @TestOn('vm')
 
-import 'package:pay_mobile/pay_mobile.dart';
+import 'package:pay_platform_interface/pay_channel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late final PayMobileChannel _mobilePlatform;
+  late final PayMethodChannel _mobilePlatform;
   const MethodChannel channel = MethodChannel('plugins.flutter.io/pay_channel');
 
   setUpAll(() async {
-    _mobilePlatform = PayMobileChannel();
+    _mobilePlatform = PayMethodChannel();
   });
 
   group('Verify channel I/O for', () {
