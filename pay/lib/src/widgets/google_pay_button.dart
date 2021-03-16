@@ -6,6 +6,7 @@ class GooglePayButton extends StatefulWidget {
   final Pay googlePayClient;
   final RawGooglePayButton googlePayButton;
 
+  final onError;
   final Widget? childOnError;
   final Widget? loadingIndicator;
 
@@ -13,6 +14,7 @@ class GooglePayButton extends StatefulWidget {
     Key? key,
     this.googlePayClient,
     this.googlePayButton,
+    this.onError,
     this.childOnError,
     this.loadingIndicator,
   ) : super(key: key);
@@ -23,6 +25,7 @@ class GooglePayButton extends StatefulWidget {
     required PayGestureTapCallback onPressed,
     type,
     color,
+    onError,
     childOnError,
     loadingIndicator,
   }) {
@@ -37,6 +40,7 @@ class GooglePayButton extends StatefulWidget {
       key,
       googlePayClient,
       googlePayButton,
+      onError,
       childOnError,
       loadingIndicator,
     );
@@ -61,9 +65,13 @@ class _GooglePayButtonState extends State<GooglePayButton> {
       future: _userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            widget.onError(snapshot.error);
+          }
+
           if (snapshot.data == true) {
             return widget.googlePayButton;
-          } else if (snapshot.hasError) {
+          } else {
             return widget.childOnError ?? SizedBox.shrink();
           }
         }
