@@ -14,7 +14,7 @@ class Pay {
 
   Pay._(Map<String, dynamic> paymentConfiguration)
       : _payPlatform = PayMethodChannel() {
-    _paymentConfiguration = _populateConfiguration(paymentConfiguration);
+    _paymentConfiguration = PaymentConfiguration.fromMap(paymentConfiguration);
   }
 
   Pay.fromJson(String paymentConfigurationString)
@@ -34,20 +34,8 @@ class Pay {
           'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
 
   Future _loadPaymentConfiguration() async {
-    _paymentConfiguration = _populateConfiguration(await _initializationFuture);
-  }
-
-  PaymentConfiguration _populateConfiguration(
-      Map<String, dynamic> paymentConfiguration) {
-    final updatedMerchantInfo = {
-      ...paymentConfiguration['merchantInfo'] ?? {},
-      'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
-    };
-
-    final updatedPaymentConfiguration = Map<String, dynamic>.unmodifiable(
-        {...paymentConfiguration, 'merchantInfo': updatedMerchantInfo});
-
-    return PaymentConfiguration.fromMap(updatedPaymentConfiguration);
+    _paymentConfiguration =
+        PaymentConfiguration.fromMap(await _initializationFuture);
   }
 
   Future<Map<String, dynamic>> get paymentData async {

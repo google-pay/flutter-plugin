@@ -19,8 +19,8 @@ Future<Map<String, dynamic>> _testProfileLoader(
         String paymentConfigurationAsset) async =>
     jsonDecode(_fixtureAsset(paymentConfigurationAsset));
 
-const String _paymentConfigurationString =
-    '{"environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}';
+const String _paymentConfigurationString = '{"provider": "google_pay",'
+    '"data": { "environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}}';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -31,22 +31,22 @@ void main() {
     expect(await client.environment, 'TEST');
   });
 
-  test('Load payment configuration for the test environment', () async {
-    Pay client = Pay.fromAsset('test_payment_profile.json',
+  test('Load Google Pay configuration for the test environment', () async {
+    Pay client = Pay.fromAsset('google_pay_test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'TEST');
   });
 
-  test('Load payment configuration for the producton environment', () async {
-    Pay client = Pay.fromAsset('prod_payment_profile.json',
+  test('Load Google Pay configuration for the producton environment', () async {
+    Pay client = Pay.fromAsset('google_pay_prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'PRODUCTION');
   });
 
-  test('Verify that software info is included in the requests', () async {
-    Pay client = Pay.fromAsset('default_payment_profile.json',
+  test('Check that software info is included in Google Pay requests', () async {
+    Pay client = Pay.fromAsset('google_pay_default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     var paymentData = await client.paymentData;
