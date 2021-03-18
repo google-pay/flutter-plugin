@@ -95,6 +95,15 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 15),
+          if(RawApplePayButton.supported)
+          RawApplePayButton(
+            style: ApplePayButtonStyle.automatic,
+            type: ApplePayButtonType.rent,
+            onPressed: () {
+              print("Tap pay");
+            },
+          ),
+          const SizedBox(height: 15),
         ],
       ),
     );

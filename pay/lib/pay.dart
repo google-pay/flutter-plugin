@@ -17,7 +17,7 @@ export 'package:pay_mobile/pay_mobile.dart'
         GooglePayButtonColor,
         GooglePayButtonType,
         RawApplePayButton,
-        ApplePayButtonColor,
+        ApplePayButtonStyle,
         ApplePayButtonType;
 
 part 'src/pay.dart';
