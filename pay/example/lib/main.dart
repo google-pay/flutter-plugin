@@ -97,8 +97,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
           const SizedBox(height: 15),
           if(RawApplePayButton.supported)
           RawApplePayButton(
-            style: ApplePayButtonStyle.automatic,
-            type: ApplePayButtonType.rent,
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
             onPressed: () {
               print("Tap pay");
             },
