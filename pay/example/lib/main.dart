@@ -23,9 +23,8 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
-  void googlePayButtonPressed(paymentClient) async {
-    var result = await paymentClient.showPaymentSelector(price: '99.99');
-    debugPrint(result.toString());
+  void onGooglePayResult(paymentResult) {
+    debugPrint(paymentResult.toString());
   }
 
   @override
@@ -91,6 +90,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
                 loadingIndicator: Center(
                   child: CircularProgressIndicator(),
                 ),
+              onPaymentResult: onGooglePayResult,
               ),
             ),
           ),

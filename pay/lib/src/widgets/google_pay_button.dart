@@ -1,11 +1,10 @@
 part of '../../pay.dart';
 
-typedef PayGestureTapCallback = void Function(Pay client);
-
 class GooglePayButton extends StatefulWidget {
   final Pay googlePayClient;
   final RawGooglePayButton googlePayButton;
 
+  final onPaymentResult;
   final onError;
   final Widget? childOnError;
   final Widget? loadingIndicator;
@@ -14,6 +13,7 @@ class GooglePayButton extends StatefulWidget {
     Key? key,
     this.googlePayClient,
     this.googlePayButton,
+    this.onPaymentResult,
     this.onError,
     this.childOnError,
     this.loadingIndicator,
@@ -22,9 +22,10 @@ class GooglePayButton extends StatefulWidget {
   factory GooglePayButton({
     Key? key,
     required paymentConfigurationAsset,
-    required PayGestureTapCallback onPressed,
+    required onPaymentResult,
     type,
     color,
+    onPressed,
     onError,
     childOnError,
     loadingIndicator,
@@ -34,12 +35,18 @@ class GooglePayButton extends StatefulWidget {
       onPressed: () => onPressed(googlePayClient),
       type: type,
       color: color,
+      onPressed: () async {
+        onPressed?.call();
+        onPaymentResult(
+            await googlePayClient.showPaymentSelector(price: '99.99'));
+      },
     );
 
     return GooglePayButton._(
       key,
       googlePayClient,
       googlePayButton,
+      onPaymentResult,
       onError,
       childOnError,
       loadingIndicator,
