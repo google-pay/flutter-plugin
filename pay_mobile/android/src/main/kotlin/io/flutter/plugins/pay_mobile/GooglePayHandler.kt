@@ -28,12 +28,6 @@ class GooglePayHandler(val activity: Activity) :
         ): JSONObject {
             val paymentProfile = JSONObject(paymentProfileString)
 
-            // Add software info
-            val softwareInfoObject = JSONObject(PaymentsUtil.createSoftwareInfo(context))
-            val merchantInfo = paymentProfile.optJSONObject("merchantInfo") ?: JSONObject()
-            paymentProfile.put("merchantInfo",
-                    merchantInfo.put("softwareInfo", softwareInfoObject))
-
             // Add payment information
             paymentItems?.find { it["type"] == "total" }.let {
                 paymentProfile.optJSONObject("transactionInfo").apply {
