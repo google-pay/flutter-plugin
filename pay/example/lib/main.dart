@@ -77,13 +77,13 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
-          const SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
             child: GooglePayButton(
               paymentConfigurationAsset: 'default_payment_profile_ios.json',
               color: GooglePayButtonColor.flat,
               type: GooglePayButtonType.pay,
+              margin: EdgeInsets.only(top: 15.0),
               onPaymentResult: onGooglePayResult,
               loadingIndicator: Center(
                 child: CircularProgressIndicator(),

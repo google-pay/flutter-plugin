@@ -2,7 +2,9 @@ part of '../../pay.dart';
 
 class GooglePayButton extends StatefulWidget {
   final Pay googlePayClient;
+
   final RawGooglePayButton googlePayButton;
+  final EdgeInsets margin;
 
   final onPaymentResult;
   final onError;
@@ -13,6 +15,7 @@ class GooglePayButton extends StatefulWidget {
     Key? key,
     this.googlePayClient,
     this.googlePayButton,
+    this.margin,
     this.onPaymentResult,
     this.onError,
     this.childOnError,
@@ -25,6 +28,7 @@ class GooglePayButton extends StatefulWidget {
     required onPaymentResult,
     type,
     color,
+    margin = EdgeInsets.zero,
     onPressed,
     onError,
     childOnError,
@@ -32,19 +36,21 @@ class GooglePayButton extends StatefulWidget {
   }) {
     Pay googlePayClient = Pay.fromAsset(paymentConfigurationAsset);
     RawGooglePayButton googlePayButton = RawGooglePayButton(
+      type: type,
+      color: color,
+      margin: margin,
       onPressed: () async {
         onPressed?.call();
         onPaymentResult(
             await googlePayClient.showPaymentSelector(price: '99.99'));
       },
-      type: type,
-      color: color,
     );
 
     return GooglePayButton._(
       key,
       googlePayClient,
       googlePayButton,
+      margin,
       onPaymentResult,
       onError,
       childOnError,
@@ -58,6 +64,17 @@ class GooglePayButton extends StatefulWidget {
 
 class _GooglePayButtonState extends State<GooglePayButton> {
   late final Future<bool> _userCanPayFuture;
+
+  Widget containerizeChildOrShrink(child) {
+    if (child != null) {
+      return Container(
+        margin: widget.margin,
+        child: child,
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
 
   @override
   void initState() {
@@ -78,11 +95,11 @@ class _GooglePayButtonState extends State<GooglePayButton> {
           if (snapshot.data == true) {
             return widget.googlePayButton;
           } else {
-            return widget.childOnError ?? SizedBox.shrink();
+            return containerizeChildOrShrink(widget.childOnError);
           }
         }
 
-        return widget.loadingIndicator ?? SizedBox.shrink();
+        return containerizeChildOrShrink(widget.loadingIndicator);
       },
     );
   }

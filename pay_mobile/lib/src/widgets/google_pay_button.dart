@@ -43,12 +43,14 @@ class RawGooglePayButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final GooglePayButtonType type;
   final GooglePayButtonColor color;
+  final EdgeInsets margin;
 
   const RawGooglePayButton({
     Key? key,
     required this.onPressed,
     this.type = GooglePayButtonType.pay,
     this.color = GooglePayButtonColor.black,
+    this.margin = EdgeInsets.zero,
   }) : super(key: key);
 
   @override
@@ -92,6 +94,7 @@ class RawGooglePayButton extends StatelessWidget {
           : null,
       width: type.assetWidth + (2 * _minHorizontalPadding),
       height: _height,
+      margin: margin,
       child: rawButton,
     );
   }
