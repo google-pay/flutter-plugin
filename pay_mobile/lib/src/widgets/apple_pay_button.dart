@@ -3,7 +3,7 @@ part of '../../pay_mobile.dart';
 enum ApplePayButtonType { pay, checkout, donate }
 enum ApplePayButtonColor { black, white, flat }
 
-extension ApplePayButtonTypeAsset on ApplePayButtonType {
+extension _ApplePayButtonTypeAsset on ApplePayButtonType {
   String? get asset => {
         ApplePayButtonType.pay: 'buy_with_gpay',
         ApplePayButtonType.checkout: 'gpay_logo',
@@ -17,7 +17,7 @@ extension ApplePayButtonTypeAsset on ApplePayButtonType {
       }[this];
 }
 
-extension ApplePayButtonColorAsset on ApplePayButtonColor {
+extension _ApplePayButtonColorAsset on ApplePayButtonColor {
   String? get assetSuffix => {
         ApplePayButtonColor.black: '_dark',
         ApplePayButtonColor.white: '_clear',
