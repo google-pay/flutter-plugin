@@ -8,6 +8,11 @@ extension Providers on Provider {
 
   static bool isValidProvider(String providerString) =>
       Providers.fromString(providerString) != null;
+
+  String? toSimpleString() => {
+        Provider.apple_pay: 'apple_pay',
+        Provider.google_pay: 'google_pay',
+      }[this];
 }
 
 class PaymentConfiguration {

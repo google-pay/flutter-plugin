@@ -32,7 +32,6 @@ class GooglePayButton extends StatefulWidget {
   }) {
     Pay googlePayClient = Pay.fromAsset(paymentConfigurationAsset);
     RawGooglePayButton googlePayButton = RawGooglePayButton(
-      onPressed: () => onPressed(googlePayClient),
       type: type,
       color: color,
       onPressed: () async {

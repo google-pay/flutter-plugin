@@ -50,7 +50,7 @@ class Pay {
     await _initializationFuture;
 
     if (supportedProviders[Platform.operatingSystem]!
-        .contains(_paymentConfiguration.provider)) {
+        .contains(_paymentConfiguration.provider.toSimpleString())) {
       return _payPlatform.userCanPay(await paymentData);
     }
 
