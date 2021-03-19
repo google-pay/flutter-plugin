@@ -8,8 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:pay_mobile/pay_mobile.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
+import 'package:pay_platform_interface/core/payment_item.dart';
 import 'package:pay_platform_interface/pay_channel.dart';
 import 'package:pay_platform_interface/pay_platform_interface.dart';
+
+export 'package:pay_platform_interface/core/payment_item.dart'
+    show PaymentItem, PaymentItemType, PaymentItemStatus;
 
 export 'package:pay_mobile/pay_mobile.dart'
     show

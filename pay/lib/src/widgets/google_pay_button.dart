@@ -25,6 +25,7 @@ class GooglePayButton extends StatefulWidget {
   factory GooglePayButton({
     Key? key,
     required paymentConfigurationAsset,
+    required paymentItems,
     required onPaymentResult,
     type,
     color,
@@ -42,7 +43,8 @@ class GooglePayButton extends StatefulWidget {
       onPressed: () async {
         onPressed?.call();
         onPaymentResult(
-            await googlePayClient.showPaymentSelector(price: '99.99'));
+          await googlePayClient.showPaymentSelector(paymentItems: paymentItems),
+        );
       },
     );
 

@@ -58,9 +58,9 @@ class Pay {
   }
 
   Future<Map<String, dynamic>> showPaymentSelector({
-    required String price,
+    required List<PaymentItem> paymentItems,
   }) async {
     await _initializationFuture;
-    return _payPlatform.showPaymentSelector(await paymentData, price);
+    return _payPlatform.showPaymentSelector(await paymentData, paymentItems);
   }
 }

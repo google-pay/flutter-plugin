@@ -48,10 +48,10 @@ class PayMethodCallHandler private constructor(
         when (call.method) {
             METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments())
             METHOD_SHOW_PAYMENT_SELECTOR -> {
-                val arguments = call.arguments<Map<String, String>>()
+                val arguments = call.arguments<Map<String, Any>>()
                 googlePayHandler.loadPaymentData(result,
                         arguments.getValue("payment_profile"),
-                        arguments.getValue("price"))
+                        arguments.getValue("payment_items"))
             }
 
             else -> result.notImplemented()

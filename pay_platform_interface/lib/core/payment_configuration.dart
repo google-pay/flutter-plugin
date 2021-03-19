@@ -29,7 +29,7 @@ class PaymentConfiguration {
   final Map<String, dynamic> configurationData;
 
   Map<String, dynamic> toMap() => {
-        'provider': this.provider,
+        'provider': provider,
         'data': configurationData,
       };
 

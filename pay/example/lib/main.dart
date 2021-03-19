@@ -81,6 +81,12 @@ class _PaySampleAppState extends State<PaySampleApp> {
             width: double.infinity,
             child: GooglePayButton(
               paymentConfigurationAsset: 'default_payment_profile_ios.json',
+              paymentItems: [
+                PaymentItem(
+                  amount: '99.99',
+                  status: PaymentItemStatus.final_price,
+                )
+              ],
               color: GooglePayButtonColor.flat,
               type: GooglePayButtonType.pay,
               margin: EdgeInsets.only(top: 15.0),

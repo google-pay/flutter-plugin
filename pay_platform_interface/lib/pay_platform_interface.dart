@@ -1,3 +1,5 @@
+import 'package:pay_platform_interface/core/payment_item.dart';
+
 abstract class PayPlatform {
   /**
    * TBA
@@ -8,5 +10,5 @@ abstract class PayPlatform {
    * TBA
    */
   Future<Map<String, dynamic>> showPaymentSelector(
-      Map<String, dynamic> paymentProfile, String price);
+      Map<String, dynamic> paymentProfile, List<PaymentItem> paymentItems);
 }

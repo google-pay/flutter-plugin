@@ -24,7 +24,7 @@ class GooglePayHandler(val activity: Activity) :
         fun buildPaymentProfile(
                 context: Context,
                 paymentProfileString: String,
-                price: String? = null
+                paymentItems: List<Map<String, Any?>>?
         ): JSONObject {
             val paymentProfile = JSONObject(paymentProfileString)
 
@@ -35,9 +35,10 @@ class GooglePayHandler(val activity: Activity) :
                     merchantInfo.put("softwareInfo", softwareInfoObject))
 
             // Add payment information
-            price.let {
+            paymentItems?.find { it["type"] == "total" }.let {
                 paymentProfile.optJSONObject("transactionInfo").apply {
-                    put("totalPrice", it)
+                    put("totalPrice", it["amount"])
+                    put("totalPriceStatus", it["status"])
                 }
             }
 
@@ -75,13 +76,13 @@ class GooglePayHandler(val activity: Activity) :
         }
     }
 
-    fun loadPaymentData(result: Result, paymentProfileString: String, price: String): Boolean {
+    fun loadPaymentData(result: Result, paymentProfileString: String, paymentItems: List<Map<String, Any?>>): Boolean {
 
         // Only proceed if there is no other request is active
         if (loadPaymentDataResult != null) return false
         loadPaymentDataResult = result
 
-        val paymentProfile = buildPaymentProfile(activity, paymentProfileString, price)
+        val paymentProfile = buildPaymentProfile(activity, paymentProfileString, paymentItems)
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
         AutoResolveHelper.resolveTask(

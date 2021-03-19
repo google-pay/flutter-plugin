@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:pay_platform_interface/core/payment_item.dart';
 
 import 'pay_platform_interface.dart';
 
@@ -15,11 +16,12 @@ class PayMethodChannel extends PayPlatform {
 
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
-          Map<String, dynamic> paymentProfile, String price) async =>
+          Map<String, dynamic> paymentProfile,
+          List<PaymentItem> paymentItems) async =>
       jsonDecode(
         await channel.invokeMethod('showPaymentSelector', {
           'payment_profile': jsonEncode(paymentProfile),
-          'price': price,
+          'payment_items': paymentItems.map((item) => item.toMap()),
         }),
       );
 }

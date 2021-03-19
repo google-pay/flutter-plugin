@@ -30,7 +30,6 @@
       "merchantName": "Example Merchant Name"
     },
     "transactionInfo": {
-      "totalPriceStatus": "FINAL",
       "countryCode": "US",
       "currencyCode": "USD"
     }
