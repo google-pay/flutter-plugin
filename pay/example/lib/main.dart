@@ -78,19 +78,15 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 15),
-          Center(
-            child: SizedBox(
-              width: double.infinity,
-              child: GooglePayButton(
-                paymentConfigurationAsset: 'default_payment_profile.json',
-                color: GooglePayButtonColor.flat,
-                type: GooglePayButtonType.pay,
-                onPressed: googlePayButtonPressed,
-                childOnError: Text('Google Pay is not available.'),
-                loadingIndicator: Center(
-                  child: CircularProgressIndicator(),
-                ),
+          SizedBox(
+            width: double.infinity,
+            child: GooglePayButton(
+              paymentConfigurationAsset: 'default_payment_profile_ios.json',
+              color: GooglePayButtonColor.flat,
+              type: GooglePayButtonType.pay,
               onPaymentResult: onGooglePayResult,
+              loadingIndicator: Center(
+                child: CircularProgressIndicator(),
               ),
             ),
           ),
