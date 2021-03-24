@@ -2,26 +2,26 @@ PODS:
   - Flutter (1.0.0)
   - integration_test (0.0.1):
     - Flutter
-  - pay_mobile (0.0.1):
+  - pay_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - pay_mobile (from `.symlinks/plugins/pay_mobile/ios`)
+  - pay_ios (from `.symlinks/plugins/pay_ios/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  pay_mobile:
-    :path: ".symlinks/plugins/pay_mobile/ios"
+  pay_ios:
+    :path: ".symlinks/plugins/pay_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   integration_test: 6eb66a19f7104200dcfdd62bc0077e1b09686e4f
-  pay_mobile: 65e012a098e099f3b655589ac289cd9be57f7803
+  pay_ios: 9c1d13fc10db47aaa65797fb1d9276cdcbdd5862
 
 PODFILE CHECKSUM: fc81e398f362bae88bdf55239bd5cf842faad39f
 

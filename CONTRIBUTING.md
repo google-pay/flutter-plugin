@@ -109,7 +109,7 @@ The commit messages should follow this format:
 
 For example:
 
-`fix(pay_mobile): fixed a bug!`
+`fix(pay_android): fixed a bug!`
 
 Refer to the [specification][conventional-commits] for more information.
 

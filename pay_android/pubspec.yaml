@@ -1,0 +1,33 @@
+name: pay_android
+description: A plug-in to add support for payment wallets on the Android side of Flutter applications.
+version: 1.0.0-beta.1
+author: Flutter Team <flutter-dev@googlegroups.com>
+homepage: TBA
+
+environment:
+  sdk: ^2.12.0
+  flutter: ^2.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.flutter.plugins.pay_android
+        pluginClass: PayPlugin
+
+  assets:
+    - assets/
+
+dependencies:
+  flutter:
+    sdk: flutter
+  #pay_platform_interface: ^1.0.0
+  pay_platform_interface:
+    path: ../pay_platform_interface
+  flutter_svg: 0.21.0-nullsafety.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.0.0
+  test: ^1.16.5

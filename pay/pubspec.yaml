@@ -11,9 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #pay_mobile: ^1.0.0
-  pay_mobile:
-    path: ../pay_mobile
+  #pay_android: ^1.0.0
+  pay_android:
+    path: ../pay_android
+  #pay_ios: ^1.0.0
+  pay_ios:
+    path: ../pay_ios
   meta: ^1.2.4
 
 dev_dependencies:
