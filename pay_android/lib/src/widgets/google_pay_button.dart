@@ -1,7 +1,7 @@
 part of '../../pay_android.dart';
 
 enum GooglePayButtonType { pay, checkout, donate }
-enum GooglePayButtonColor { black, white, flat }
+enum GooglePayButtonStyle { black, white, flat }
 
 extension _GooglePayButtonTypeAsset on GooglePayButtonType {
   static const _defaultAsset = 'gpay_logo';
@@ -24,14 +24,14 @@ extension _GooglePayButtonTypeAsset on GooglePayButtonType {
       _defaultAssetWidth;
 }
 
-extension _GooglePayButtonColorAsset on GooglePayButtonColor {
+extension _GooglePayButtonStyleAsset on GooglePayButtonStyle {
   static const _defaultAssetSuffix = '_dark';
 
   String get assetSuffix =>
       {
-        GooglePayButtonColor.black: _defaultAssetSuffix,
-        GooglePayButtonColor.white: '_clear',
-        GooglePayButtonColor.flat: '_clear',
+        GooglePayButtonStyle.black: _defaultAssetSuffix,
+        GooglePayButtonStyle.white: '_clear',
+        GooglePayButtonStyle.flat: '_clear',
       }[this] ??
       _defaultAssetSuffix;
 }
@@ -40,24 +40,24 @@ class RawGooglePayButton extends StatelessWidget {
   static const double _height = 43;
   static const double _minHorizontalPadding = 30;
 
-  final GestureTapCallback onPressed;
-  final GooglePayButtonType type;
-  final GooglePayButtonColor color;
   final EdgeInsets margin;
+  final VoidCallback onPressed;
+  final GooglePayButtonStyle style;
+  final GooglePayButtonType type;
 
   const RawGooglePayButton({
     Key? key,
     required this.onPressed,
-    this.type = GooglePayButtonType.pay,
-    this.color = GooglePayButtonColor.black,
     this.margin = EdgeInsets.zero,
+    this.style = GooglePayButtonStyle.black,
+    this.type = GooglePayButtonType.pay,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Widget rawButton = RawMaterialButton(
       fillColor:
-          color == GooglePayButtonColor.black ? Colors.black : Colors.white,
+          style == GooglePayButtonStyle.black ? Colors.black : Colors.white,
       elevation: 0,
       focusElevation: 0,
       hoverElevation: 0,
@@ -65,7 +65,7 @@ class RawGooglePayButton extends StatelessWidget {
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
-        side: color == GooglePayButtonColor.flat
+        side: style == GooglePayButtonStyle.flat
             ? BorderSide(
                 color: Color(0xFFDEDEDE),
                 width: 2,
@@ -73,7 +73,7 @@ class RawGooglePayButton extends StatelessWidget {
             : BorderSide.none,
       ),
       child: SvgPicture.asset(
-        'assets/${type.asset}${color.assetSuffix}.svg',
+        'assets/${type.asset}${style.assetSuffix}.svg',
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
         width: type.assetWidth,
@@ -82,7 +82,7 @@ class RawGooglePayButton extends StatelessWidget {
     );
 
     return Container(
-      decoration: color == GooglePayButtonColor.white
+      decoration: style == GooglePayButtonStyle.white
           ? BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),

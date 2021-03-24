@@ -1,80 +1,181 @@
 part of '../../pay_ios.dart';
 
-enum ApplePayButtonType { pay, checkout, donate }
-enum ApplePayButtonColor { black, white, flat }
+const double _defaultButtonHeight = 48.0;
 
-extension _ApplePayButtonTypeAsset on ApplePayButtonType {
-  String? get asset => {
-        ApplePayButtonType.pay: 'buy_with_gpay',
-        ApplePayButtonType.checkout: 'gpay_logo',
-        ApplePayButtonType.donate: 'donate_with_gpay',
-      }[this];
-
-  double? get assetWidth => {
-        ApplePayButtonType.pay: 135.0,
-        ApplePayButtonType.checkout: 54.0,
-        ApplePayButtonType.donate: 167.0,
-      }[this];
+enum ApplePayButtonType {
+  plain,
+  buy,
+  setUp,
+  inStore,
+  donate,
+  checkout,
+  book,
+  subscribe,
+  reload,
+  addMoney,
+  topUp,
+  order,
+  rent,
+  support,
+  contribute,
+  tip
 }
 
-extension _ApplePayButtonColorAsset on ApplePayButtonColor {
-  String? get assetSuffix => {
-        ApplePayButtonColor.black: '_dark',
-        ApplePayButtonColor.white: '_clear',
-        ApplePayButtonColor.flat: '_clear',
-      }[this];
+enum ApplePayButtonStyle {
+  white,
+  whiteOutline,
+  black,
+  automatic,
 }
 
 class RawApplePayButton extends StatelessWidget {
-  static const double _height = 43;
-  static const double _minHorizontalPadding = 30;
-
-  final GestureTapCallback onPressed;
+  final BoxConstraints constraints;
+  final EdgeInsets margin;
+  final VoidCallback onPressed;
+  final ApplePayButtonStyle style;
   final ApplePayButtonType type;
-  final ApplePayButtonColor color;
 
   RawApplePayButton({
     Key? key,
     required this.onPressed,
-    this.type = ApplePayButtonType.pay,
-    this.color = ApplePayButtonColor.black,
-  }) : super(key: key);
+    this.margin = EdgeInsets.zero,
+    this.style = ApplePayButtonStyle.black,
+    this.type = ApplePayButtonType.plain,
+    double? width,
+    double? height = _defaultButtonHeight,
+  })  : constraints = BoxConstraints.tightFor(width: width, height: height),
+        super(key: key) {
+    assert(constraints.debugAssertIsValid());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Widget rawButton = RawMaterialButton(
-      fillColor:
-          color == ApplePayButtonColor.black ? Colors.black : Colors.white,
-      elevation: 0,
-      focusElevation: 0,
-      hoverElevation: 0,
-      highlightElevation: 0,
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-        side: color == ApplePayButtonColor.flat
-            ? BorderSide(
-                color: Color(0xFFDEDEDE),
-                width: 2,
-              )
-            : BorderSide.none,
-      ),
+    return ConstrainedBox(
+      constraints: constraints,
+      child: _platform,
     );
+  }
 
-    return Container(
-      decoration: color == ApplePayButtonColor.white
-          ? BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 0,
-                blurRadius: 2,
-                offset: Offset(0, 1),
-              )
-            ])
-          : null,
-      width: type.assetWidth! + (2 * _minHorizontalPadding),
-      height: _height,
-      child: rawButton,
+  Widget get _platform {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+        return _UiKitApplePayButton(
+          onPressed: onPressed,
+          style: style,
+          type: type,
+        );
+      default:
+        throw UnsupportedError(
+            'This platform $defaultTargetPlatform does not support Apple Pay');
+    }
+  }
+
+  static bool get supported => defaultTargetPlatform == TargetPlatform.iOS;
+}
+
+class _UiKitApplePayButton extends StatefulWidget {
+  final VoidCallback onPressed;
+  final ApplePayButtonStyle style;
+  final ApplePayButtonType type;
+
+  _UiKitApplePayButton({
+    Key? key,
+    required this.onPressed,
+    this.style = ApplePayButtonStyle.black,
+    this.type = ApplePayButtonType.plain,
+  }) : super(key: key);
+
+  @override
+  _UiKitApplePayButtonState createState() => _UiKitApplePayButtonState();
+}
+
+class _UiKitApplePayButtonState extends State<_UiKitApplePayButton> {
+  static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
+  MethodChannel? methodChannel;
+
+  @override
+  Widget build(BuildContext context) {
+    final int style = mapButtonStyle(widget.style);
+    final int type = _mapButtonType(widget.type);
+
+    return UiKitView(
+      viewType: _buttonId,
+      creationParamsCodec: StandardMessageCodec(),
+      creationParams: {'style': style, 'type': type},
+      onPlatformViewCreated: (viewId) {
+        methodChannel = MethodChannel('$_buttonId/$viewId');
+        methodChannel?.setMethodCallHandler((call) async {
+          if (call.method == 'onPressed') widget.onPressed.call();
+          return;
+        });
+      },
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant _UiKitApplePayButton oldWidget) {
+    if (widget.style != oldWidget.style || widget.type != oldWidget.type) {
+      final int style = mapButtonStyle(widget.style);
+      final int type = _mapButtonType(widget.type);
+      methodChannel?.invokeMethod('updateStyle', {
+        'style': style,
+        'type': type,
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+}
+
+int _mapButtonType(ApplePayButtonType type) {
+  switch (type) {
+    case ApplePayButtonType.plain:
+      return 0;
+    case ApplePayButtonType.buy:
+      return 1;
+    case ApplePayButtonType.setUp:
+      return 2;
+    case ApplePayButtonType.inStore:
+      return 3;
+    case ApplePayButtonType.donate:
+      return 4;
+    case ApplePayButtonType.checkout:
+      return 5;
+    case ApplePayButtonType.book:
+      return 6;
+    case ApplePayButtonType.subscribe:
+      return 7;
+    case ApplePayButtonType.reload:
+      return 8;
+    case ApplePayButtonType.addMoney:
+      return 9;
+    case ApplePayButtonType.topUp:
+      return 10;
+    case ApplePayButtonType.order:
+      return 11;
+    case ApplePayButtonType.rent:
+      return 12;
+    case ApplePayButtonType.support:
+      return 13;
+    case ApplePayButtonType.contribute:
+      return 14;
+    case ApplePayButtonType.tip:
+      return 15;
+    default:
+      return 0;
+  }
+}
+
+int mapButtonStyle(ApplePayButtonStyle style) {
+  switch (style) {
+    case ApplePayButtonStyle.white:
+      return 0;
+    case ApplePayButtonStyle.whiteOutline:
+      return 1;
+    case ApplePayButtonStyle.black:
+      return 2;
+    case ApplePayButtonStyle.automatic:
+      return 3;
+    default:
+      return 2;
   }
 }

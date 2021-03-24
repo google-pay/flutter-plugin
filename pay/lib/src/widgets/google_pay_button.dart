@@ -28,7 +28,7 @@ class GooglePayButton extends StatefulWidget {
     required paymentItems,
     required onPaymentResult,
     type,
-    color,
+    style,
     margin = EdgeInsets.zero,
     onPressed,
     onError,
@@ -38,7 +38,7 @@ class GooglePayButton extends StatefulWidget {
     Pay googlePayClient = Pay.fromAsset(paymentConfigurationAsset);
     RawGooglePayButton googlePayButton = RawGooglePayButton(
       type: type,
-      color: color,
+      style: style,
       margin: margin,
       onPressed: () async {
         onPressed?.call();

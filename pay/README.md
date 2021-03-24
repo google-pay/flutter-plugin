@@ -29,7 +29,7 @@ import 'package:pay/pay.dart';
 // Add the button to your UI
 GooglePayButton(
   paymentConfigurationAsset: 'default_payment_profile.json',
-  color: GooglePayButtonColor.flat,
+  style: GooglePayButtonStyle.flat,
   type: GooglePayButtonType.pay,
   onPressed: googlePayButtonPressed,
   childOnError: Text('Google Pay is not available.'),

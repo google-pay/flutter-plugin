@@ -88,7 +88,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
                   status: PaymentItemStatus.final_price,
                 )
               ],
-              color: GooglePayButtonColor.flat,
+              style: GooglePayButtonStyle.flat,
               type: GooglePayButtonType.pay,
               margin: EdgeInsets.only(top: 15.0),
               onPaymentResult: onGooglePayResult,
@@ -96,6 +96,15 @@ class _PaySampleAppState extends State<PaySampleApp> {
                 child: CircularProgressIndicator(),
               ),
             ),
+          ),
+          const SizedBox(height: 15),
+          if(RawApplePayButton.supported)
+          RawApplePayButton(
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
+            onPressed: () {
+              print("Tap pay");
+            },
           ),
           const SizedBox(height: 15),
         ],
