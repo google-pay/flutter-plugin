@@ -23,15 +23,15 @@ class GooglePayHandler(val activity: Activity) :
         @JvmStatic
         fun buildPaymentProfile(
                 paymentProfileString: String,
-                paymentItems: List<Map<String, Any?>>?
+                paymentItems: List<Map<String, Any?>>? = null
         ): JSONObject {
             val paymentProfile = JSONObject(paymentProfileString)
 
             // Add payment information
             paymentItems?.find { it["type"] == "total" }.let {
                 paymentProfile.optJSONObject("transactionInfo").apply {
-                    put("totalPrice", it["amount"])
-                    put("totalPriceStatus", it["status"])
+                    put("totalPrice", it?.get("amount"))
+                    put("totalPriceStatus", it?.get("status"))
                 }
             }
 
