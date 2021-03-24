@@ -22,7 +22,6 @@ class GooglePayHandler(val activity: Activity) :
     companion object {
         @JvmStatic
         fun buildPaymentProfile(
-                context: Context,
                 paymentProfileString: String,
                 paymentItems: List<Map<String, Any?>>?
         ): JSONObject {
@@ -53,7 +52,7 @@ class GooglePayHandler(val activity: Activity) :
 
     fun isReadyToPay(result: Result, paymentProfileString: String) {
 
-        val paymentProfile = buildPaymentProfile(activity, paymentProfileString)
+        val paymentProfile = buildPaymentProfile(paymentProfileString)
         val client = paymentClientForProfile(paymentProfile)
 
         val rtpRequest = IsReadyToPayRequest.fromJson(paymentProfileString)
@@ -76,7 +75,7 @@ class GooglePayHandler(val activity: Activity) :
         if (loadPaymentDataResult != null) return false
         loadPaymentDataResult = result
 
-        val paymentProfile = buildPaymentProfile(activity, paymentProfileString, paymentItems)
+        val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
         AutoResolveHelper.resolveTask(
