@@ -3,7 +3,7 @@
   "data": {
     "merchantIdentifier": "merchant.com.sams.fish",
     "displayName": "Sam's Fish",
-    "merchantCapabilities": ["supports3DS", "supportsDebit", "supportsCredit"],
+    "merchantCapabilities": ["3DS", "debit", "credit"],
     "supportedNetworks": ["amex", "visa", "discover", "masterCard"],
     "countryCode": "US",
     "currencyCode": "USD",

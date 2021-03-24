@@ -83,6 +83,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               paymentConfigurationAsset: 'default_payment_profile_ios.json',
               paymentItems: [
                 PaymentItem(
+                  label: 'Total',
                   amount: '99.99',
                   status: PaymentItemStatus.final_price,
                 )
