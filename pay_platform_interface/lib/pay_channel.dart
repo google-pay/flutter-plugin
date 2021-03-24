@@ -21,7 +21,7 @@ class PayMethodChannel extends PayPlatform {
       jsonDecode(
         await channel.invokeMethod('showPaymentSelector', {
           'payment_profile': jsonEncode(paymentProfile),
-          'payment_items': paymentItems.map((item) => item.toMap()),
+          'payment_items': paymentItems.map((item) => item.toMap()).toList(),
         }),
       );
 }
