@@ -2,21 +2,30 @@ import Flutter
 import PassKit
 import UIKit
 
-public class SwiftPayPlugin: NSObject, FlutterPlugin {
-  let paymentHandler = PaymentHandler()
-
+public class PayPlugin: NSObject, FlutterPlugin {
+  private static let methodChannelName = "plugins.flutter.io/pay_channel"
+  private let methodUserCanPay = "userCanPay"
+  private let methodShowPaymentSelector = "showPaymentSelector"
+  
+  private let paymentHandler = PaymentHandler()
+  
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "plugins.flutter.io/pay_channel", binaryMessenger: registrar.messenger())
-    let instance = SwiftPayPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
+    let channel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: registrar.messenger())
+    registrar.addMethodCallDelegate(PayPlugin(), channel: channel)
   }
-
+  
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
-    case "userCanPay":
-      // TODO: payload validation
-      result(PaymentHandler.canMakePayments(call.arguments as! String))
-    default: break
+    case methodUserCanPay:
+      result(paymentHandler.canMakePayments(call.arguments as! String))
+    case methodShowPaymentSelector:
+      let arguments = call.arguments as! [String: Any]
+      paymentHandler.startPayment(
+        result: result,
+        paymentConfiguration: arguments["payment_profile"] as! String,
+        paymentItems: arguments["payment_items"] as! [[String: Any?]])
+    default:
+      result(FlutterMethodNotImplemented)
     }
   }
 }
