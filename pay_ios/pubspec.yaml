@@ -14,9 +14,6 @@ flutter:
       ios:
         pluginClass: PayPlugin
 
-  assets:
-    - assets/
-
 dependencies:
   flutter:
     sdk: flutter
