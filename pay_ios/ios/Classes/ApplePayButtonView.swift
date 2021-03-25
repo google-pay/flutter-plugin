@@ -29,8 +29,8 @@ class ApplePayButtonViewFactory: NSObject, FlutterPlatformViewFactory {
 
 class ApplePayButtonView: NSObject, FlutterPlatformView {
   private var _view: UIView
-  var type: NSNumber?
-  var style: NSNumber?
+  var type: String
+  var style: String
   
   private var applePayButton: PKPaymentButton?
   
@@ -49,13 +49,13 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
                                    binaryMessenger: messenger)
     _view = UIView()
+
+    let arguments = args as! Dictionary<String, AnyObject>
+    type = arguments["type"] as! String
+    style = arguments["style"] as! String
+
     super.init()
     channel.setMethodCallHandler(handle)
-    
-    if let arguments = args as? Dictionary<String, AnyObject> {
-      type = arguments["type"] as? NSNumber
-      style = arguments["style"] as? NSNumber
-    }
     createApplePayView()
   }
   
@@ -75,8 +75,8 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
       applePayButton.removeFromSuperview()
     }
     
-    let paymentButtonType = PKPaymentButtonType(rawValue: self.type as? Int ?? 0) ?? .plain
-    let paymentButtonStyle = PKPaymentButtonStyle(rawValue: self.style as? Int ?? 2) ?? .black
+    let paymentButtonType = PKPaymentButtonType.fromString(type) ?? .plain
+    let paymentButtonStyle = PKPaymentButtonStyle.fromString(style) ?? .black
     self.applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
     
     if let applePayButton = self.applePayButton {
@@ -88,6 +88,67 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
       applePayButton.bottomAnchor.constraint(equalTo: _view.bottomAnchor).isActive = true
       applePayButton.leftAnchor.constraint(equalTo: _view.leftAnchor).isActive = true
       applePayButton.rightAnchor.constraint(equalTo: _view.rightAnchor).isActive = true
+    }
+  }
+}
+
+extension PKPaymentButtonType {
+  public static func fromString(_ buttonType: String) -> PKPaymentButtonType? {
+    switch buttonType {
+    case "buy":
+      return .buy
+    case "setUp":
+      return .setUp
+    case "inStore":
+      return .inStore
+    case "donate":
+      return .donate
+    case "checkout":
+      return .checkout
+    case "book":
+      return .book
+    case "subscribe":
+      return .subscribe
+    default:
+      guard #available(iOS 14.0, *) else { return .plain }
+      switch buttonType {
+      case "reload":
+        return .reload
+      case "addMoney":
+        return .addMoney
+      case "topUp":
+        return .topUp
+      case "order":
+        return .order
+      case "rent":
+        return .rent
+      case "support":
+        return .support
+      case "contribute":
+        return .contribute
+      case "tip":
+        return .tip
+      default:
+        return nil
+      }
+    }
+  }
+}
+
+extension PKPaymentButtonStyle {
+  public static func fromString(_ buttonStyle: String) -> PKPaymentButtonStyle? {
+    switch buttonStyle {
+    case "white":
+      return .white
+    case "whiteOutline":
+      return .whiteOutline
+    case "black":
+      return .black
+    case "automatic":
+      guard #available(iOS 14.0, *) else { return nil }
+      return .automatic
+    default:
+      return nil
     }
   }
 }

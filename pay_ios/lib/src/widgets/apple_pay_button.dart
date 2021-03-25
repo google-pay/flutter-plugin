@@ -80,7 +80,7 @@ class RawApplePayButton extends StatelessWidget {
 
 class _UiKitApplePayButton extends StatelessWidget {
   static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
-  late final MethodChannel? methodChannel;
+  late final MethodChannel? _methodChannel;
 
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
@@ -95,16 +95,13 @@ class _UiKitApplePayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int style = mapButtonStyle(this.style);
-    final int type = _mapButtonType(this.type);
-
     return UiKitView(
       viewType: _buttonId,
       creationParamsCodec: StandardMessageCodec(),
-      creationParams: {'style': style, 'type': type},
+      creationParams: {'style': style.enumString, 'type': type.enumString},
       onPlatformViewCreated: (viewId) {
-        methodChannel = MethodChannel('$_buttonId/$viewId');
-        methodChannel?.setMethodCallHandler((call) async {
+        _methodChannel = MethodChannel('$_buttonId/$viewId');
+        _methodChannel?.setMethodCallHandler((call) async {
           if (call.method == 'onPressed') onPressed?.call();
           return;
         });
@@ -113,56 +110,38 @@ class _UiKitApplePayButton extends StatelessWidget {
   }
 }
 
-int _mapButtonType(ApplePayButtonType type) {
-  switch (type) {
-    case ApplePayButtonType.plain:
-      return 0;
-    case ApplePayButtonType.buy:
-      return 1;
-    case ApplePayButtonType.setUp:
-      return 2;
-    case ApplePayButtonType.inStore:
-      return 3;
-    case ApplePayButtonType.donate:
-      return 4;
-    case ApplePayButtonType.checkout:
-      return 5;
-    case ApplePayButtonType.book:
-      return 6;
-    case ApplePayButtonType.subscribe:
-      return 7;
-    case ApplePayButtonType.reload:
-      return 8;
-    case ApplePayButtonType.addMoney:
-      return 9;
-    case ApplePayButtonType.topUp:
-      return 10;
-    case ApplePayButtonType.order:
-      return 11;
-    case ApplePayButtonType.rent:
-      return 12;
-    case ApplePayButtonType.support:
-      return 13;
-    case ApplePayButtonType.contribute:
-      return 14;
-    case ApplePayButtonType.tip:
-      return 15;
-    default:
-      return 0;
-  }
+extension on ApplePayButtonType {
+  static const _defaultType = 'plain';
+  String get enumString =>
+      {
+        ApplePayButtonType.plain: _defaultType,
+        ApplePayButtonType.buy: 'buy',
+        ApplePayButtonType.setUp: 'setUp',
+        ApplePayButtonType.inStore: 'inStore',
+        ApplePayButtonType.donate: 'donate',
+        ApplePayButtonType.checkout: 'checkout',
+        ApplePayButtonType.book: 'book',
+        ApplePayButtonType.subscribe: 'subscribe',
+        ApplePayButtonType.reload: 'reload',
+        ApplePayButtonType.addMoney: 'addMoney',
+        ApplePayButtonType.topUp: 'topUp',
+        ApplePayButtonType.order: 'order',
+        ApplePayButtonType.rent: 'rent',
+        ApplePayButtonType.support: 'support',
+        ApplePayButtonType.contribute: 'contribute',
+        ApplePayButtonType.tip: 'tip',
+      }[this] ??
+      _defaultType;
 }
 
-int mapButtonStyle(ApplePayButtonStyle style) {
-  switch (style) {
-    case ApplePayButtonStyle.white:
-      return 0;
-    case ApplePayButtonStyle.whiteOutline:
-      return 1;
-    case ApplePayButtonStyle.black:
-      return 2;
-    case ApplePayButtonStyle.automatic:
-      return 3;
-    default:
-      return 2;
-  }
+extension on ApplePayButtonStyle {
+  static const _defaultStyle = 'black';
+  String get enumString =>
+      {
+        ApplePayButtonStyle.white: 'white',
+        ApplePayButtonStyle.whiteOutline: 'whiteOutline',
+        ApplePayButtonStyle.black: _defaultStyle,
+        ApplePayButtonStyle.automatic: 'automatic',
+      }[this] ??
+      _defaultStyle;
 }
