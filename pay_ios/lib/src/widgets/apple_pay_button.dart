@@ -80,7 +80,7 @@ class RawApplePayButton extends StatelessWidget {
 
 class _UiKitApplePayButton extends StatelessWidget {
   static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
-  MethodChannel? methodChannel;
+  late final MethodChannel? methodChannel;
 
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
