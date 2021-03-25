@@ -63,13 +63,6 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case "updateStyle":
-          if  let arguments = call.arguments as? Dictionary<String, AnyObject> {
-            self.type = arguments["type"] as? NSNumber
-            self.style = arguments["style"] as? NSNumber
-          }
-          self.createApplePayView()
-          result(nil)
         default:
             result(FlutterMethodNotImplemented)
         }

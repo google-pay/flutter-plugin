@@ -78,8 +78,11 @@ class RawApplePayButton extends StatelessWidget {
   static bool get supported => defaultTargetPlatform == TargetPlatform.iOS;
 }
 
-class _UiKitApplePayButton extends StatefulWidget {
-  final VoidCallback onPressed;
+class _UiKitApplePayButton extends StatelessWidget {
+  static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
+  MethodChannel? methodChannel;
+
+  final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
   final ApplePayButtonType type;
 
@@ -91,17 +94,9 @@ class _UiKitApplePayButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UiKitApplePayButtonState createState() => _UiKitApplePayButtonState();
-}
-
-class _UiKitApplePayButtonState extends State<_UiKitApplePayButton> {
-  static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
-  MethodChannel? methodChannel;
-
-  @override
   Widget build(BuildContext context) {
-    final int style = mapButtonStyle(widget.style);
-    final int type = _mapButtonType(widget.type);
+    final int style = mapButtonStyle(this.style);
+    final int type = _mapButtonType(this.type);
 
     return UiKitView(
       viewType: _buttonId,
@@ -110,24 +105,11 @@ class _UiKitApplePayButtonState extends State<_UiKitApplePayButton> {
       onPlatformViewCreated: (viewId) {
         methodChannel = MethodChannel('$_buttonId/$viewId');
         methodChannel?.setMethodCallHandler((call) async {
-          if (call.method == 'onPressed') widget.onPressed.call();
+          if (call.method == 'onPressed') onPressed?.call();
           return;
         });
       },
     );
-  }
-
-  @override
-  void didUpdateWidget(covariant _UiKitApplePayButton oldWidget) {
-    if (widget.style != oldWidget.style || widget.type != oldWidget.type) {
-      final int style = mapButtonStyle(widget.style);
-      final int type = _mapButtonType(widget.type);
-      methodChannel?.invokeMethod('updateStyle', {
-        'style': style,
-        'type': type,
-      });
-    }
-    super.didUpdateWidget(oldWidget);
   }
 }
 
