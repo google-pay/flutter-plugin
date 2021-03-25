@@ -1,5 +1,7 @@
 part of '../../pay.dart';
 
+const _supportedPlatforms = [TargetPlatform.android];
+
 class GooglePayButton extends StatefulWidget {
   final Pay googlePayClient;
 
@@ -60,6 +62,9 @@ class GooglePayButton extends StatefulWidget {
     );
   }
 
+  static bool get supported =>
+      _supportedPlatforms.contains(defaultTargetPlatform);
+
   @override
   _GooglePayButtonState createState() => _GooglePayButtonState();
 }
@@ -67,7 +72,7 @@ class GooglePayButton extends StatefulWidget {
 class _GooglePayButtonState extends State<GooglePayButton> {
   late final Future<bool> _userCanPayFuture;
 
-  Widget containerizeChildOrShrink(child) {
+  Widget containerizeChildOrShrink([Widget? child]) {
     if (child != null) {
       return Container(
         margin: widget.margin,
@@ -86,6 +91,8 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
+    if (!GooglePayButton.supported) return containerizeChildOrShrink();
+
     return FutureBuilder<bool>(
       future: _userCanPayFuture,
       builder: (context, snapshot) {

@@ -80,7 +80,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
           SizedBox(
             width: double.infinity,
             child: GooglePayButton(
-              paymentConfigurationAsset: 'default_payment_profile_ios.json',
+              paymentConfigurationAsset: 'default_payment_profile.json',
               paymentItems: [
                 PaymentItem(
                   label: 'Total',
@@ -88,7 +88,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
                   status: PaymentItemStatus.final_price,
                 )
               ],
-              style: GooglePayButtonStyle.flat,
+              style: GooglePayButtonStyle.black,
               type: GooglePayButtonType.pay,
               margin: EdgeInsets.only(top: 15.0),
               onPaymentResult: onGooglePayResult,
@@ -98,14 +98,24 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 15),
-          if(RawApplePayButton.supported)
-          RawApplePayButton(
-            style: ApplePayButtonStyle.black,
-            type: ApplePayButtonType.buy,
-            onPressed: () {
-              print("Tap pay");
-            },
-          ),
+          if (RawApplePayButton.supported)
+            SizedBox(
+              width: double.infinity,
+              height: 43,
+              child: RawApplePayButton(
+                style: ApplePayButtonStyle.black,
+                type: ApplePayButtonType.buy,
+                onPressed: () {
+                  googlePayClient.showPaymentSelector(paymentItems: [
+                    PaymentItem(
+                      label: 'Total',
+                      amount: '99.99',
+                      status: PaymentItemStatus.final_price,
+                    )
+                  ]);
+                },
+              ),
+            ),
           const SizedBox(height: 15),
         ],
       ),

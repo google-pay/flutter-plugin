@@ -1,10 +1,8 @@
 part of '../pay.dart';
 
-const platformAndroid = 'android';
-const platformiOS = 'ios';
 const supportedProviders = {
-  platformAndroid: ['google_pay'],
-  platformiOS: ['apple_pay'],
+  TargetPlatform.android: ['google_pay'],
+  TargetPlatform.iOS: ['apple_pay'],
 };
 
 class Pay {
@@ -49,7 +47,7 @@ class Pay {
     // Wait for the client to finish instantiation before issuing calls
     await _initializationFuture;
 
-    if (supportedProviders[Platform.operatingSystem]!
+    if (supportedProviders[defaultTargetPlatform]!
         .contains(_paymentConfiguration.provider.toSimpleString())) {
       return _payPlatform.userCanPay(await paymentData);
     }
