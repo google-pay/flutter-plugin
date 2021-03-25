@@ -41,13 +41,13 @@ class RawGooglePayButton extends StatelessWidget {
   static const double _minHorizontalPadding = 30;
 
   final EdgeInsets margin;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final GooglePayButtonStyle style;
   final GooglePayButtonType type;
 
   const RawGooglePayButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     this.margin = EdgeInsets.zero,
     this.style = GooglePayButtonStyle.black,
     this.type = GooglePayButtonType.pay,
