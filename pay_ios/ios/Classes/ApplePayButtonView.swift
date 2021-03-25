@@ -28,7 +28,7 @@ class ApplePayButtonViewFactory: NSObject, FlutterPlatformViewFactory {
 }
 
 class ApplePayButtonView: NSObject, FlutterPlatformView {
-  private var view: UIView
+  private var _view: UIView
   var type: NSNumber?
   var style: NSNumber?
   
@@ -48,7 +48,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   ) {
     channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
                                    binaryMessenger: messenger)
-    view = UIView()
+    _view = UIView()
     super.init()
     channel.setMethodCallHandler(handle)
     
@@ -67,7 +67,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
   
   func view() -> UIView {
-    return view
+    return _view
   }
   
   func createApplePayView(){
@@ -82,12 +82,12 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     if let applePayButton = self.applePayButton {
       applePayButton.translatesAutoresizingMaskIntoConstraints = false
       applePayButton.addTarget(self, action: #selector(handleApplePayButtonTapped), for: .touchUpInside)
-      view.addSubview(applePayButton)
+      _view.addSubview(applePayButton)
       
-      applePayButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-      applePayButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-      applePayButton.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-      applePayButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+      applePayButton.topAnchor.constraint(equalTo: _view.topAnchor).isActive = true
+      applePayButton.bottomAnchor.constraint(equalTo: _view.bottomAnchor).isActive = true
+      applePayButton.leftAnchor.constraint(equalTo: _view.leftAnchor).isActive = true
+      applePayButton.rightAnchor.constraint(equalTo: _view.rightAnchor).isActive = true
     }
   }
 }
