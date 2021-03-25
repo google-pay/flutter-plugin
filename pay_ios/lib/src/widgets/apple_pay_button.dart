@@ -1,7 +1,5 @@
 part of '../../pay_ios.dart';
 
-const double _defaultButtonHeight = 48.0;
-
 enum ApplePayButtonType {
   plain,
   buy,
@@ -28,22 +26,29 @@ enum ApplePayButtonStyle {
   automatic,
 }
 
+extension _ApplePayButtonTypeAsset on ApplePayButtonType {
+  double get minimumAssetWidth => this == ApplePayButtonType.plain ? 100 : 140;
+}
+
 class RawApplePayButton extends StatelessWidget {
+  static const double _minimumButtonHeight = 30;
+
   final BoxConstraints constraints;
   final EdgeInsets margin;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
   final ApplePayButtonType type;
 
   RawApplePayButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     this.margin = EdgeInsets.zero,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
-    double? width,
-    double? height = _defaultButtonHeight,
-  })  : constraints = BoxConstraints.tightFor(width: width, height: height),
+  })  : constraints = BoxConstraints.tightFor(
+          width: type.minimumAssetWidth,
+          height: _minimumButtonHeight,
+        ),
         super(key: key) {
     assert(constraints.debugAssertIsValid());
   }
@@ -80,7 +85,7 @@ class _UiKitApplePayButton extends StatefulWidget {
 
   _UiKitApplePayButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
   }) : super(key: key);
