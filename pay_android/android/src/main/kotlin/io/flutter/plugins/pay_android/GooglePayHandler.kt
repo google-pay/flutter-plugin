@@ -29,9 +29,15 @@ class GooglePayHandler(val activity: Activity) :
 
             // Add payment information
             paymentItems?.find { it["type"] == "total" }.let {
+                val priceStatus = when (it?.get("status")) {
+                    "final_price" -> "FINAL"
+                    "pending" -> "ESTIMATED"
+                    else -> "NOT_CURRENTLY_KNOWN"
+                }
+
                 paymentProfile.optJSONObject("transactionInfo").apply {
                     put("totalPrice", it?.get("amount"))
-                    put("totalPriceStatus", it?.get("status"))
+                    put("totalPriceStatus", priceStatus)
                 }
             }
 
