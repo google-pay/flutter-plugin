@@ -10,10 +10,11 @@ public class PayPlugin: NSObject, FlutterPlugin {
   private let paymentHandler = PaymentHandler()
   
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: registrar.messenger)
+    let messenger = registrar.messenger()
+    let channel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: messenger)
     registrar.addMethodCallDelegate(PayPlugin(), channel: channel)
 
-    let buttonFactory = ApplePayButtonViewFactory(messenger: registrar.messenger)
+    let buttonFactory = ApplePayButtonViewFactory(messenger: messenger)
     registrar.register(buttonFactory, withId: "plugins.flutter.io/pay/apple_pay_button")
   }
   

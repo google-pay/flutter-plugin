@@ -46,14 +46,14 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
         arguments args: Any?,
         binaryMessenger messenger: FlutterBinaryMessenger
     ) {
-        channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay/\(viewId)",
+        channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
                                        binaryMessenger: messenger)
         
         _view = UIView()
         super.init()
         channel.setMethodCallHandler(handle)
 
-        if  let arguments = args as? Dictionary<String, AnyObject> {
+        if let arguments = args as? Dictionary<String, AnyObject> {
           type = arguments["type"] as? NSNumber
           style = arguments["style"] as? NSNumber
         }
