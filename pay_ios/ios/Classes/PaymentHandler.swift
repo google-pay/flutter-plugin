@@ -30,8 +30,8 @@ class PaymentHandler: NSObject {
     
     // Deserialize payment configuration
     guard let paymentRequest = PaymentHandler.createPaymentRequest(from: paymentConfiguration, paymentItems: paymentItems) else {
-        result(FlutterError(code: "invalidPaymentConfiguration", message: "It was not possible to create a payment request from the provided configuration. Review your payment configuration and run again", details: nil))
-        return
+      result(FlutterError(code: "invalidPaymentConfiguration", message: "It was not possible to create a payment request from the provided configuration. Review your payment configuration and run again", details: nil))
+      return
     }
     
     // Display our payment request
@@ -71,7 +71,7 @@ class PaymentHandler: NSObject {
           amount: NSDecimalNumber(string: (item["amount"] as! String)),
           type: PKPaymentSummaryItemType.fromString(statusString as! String))
       }
-        
+      
       return PKPaymentSummaryItem(
         label: item["label"] as! String,
         amount: NSDecimalNumber(string: (item["amount"] as! String)))
@@ -80,7 +80,7 @@ class PaymentHandler: NSObject {
     // Configure the payment
     paymentRequest.merchantIdentifier = paymentConfiguration["merchantIdentifier"] as! String
     if let merchantCapabilities = paymentConfiguration["merchantCapabilities"] as? Array<String> {
-        paymentRequest.merchantCapabilities = PKMerchantCapability(merchantCapabilities.compactMap { capabilityString in PKMerchantCapability.fromString(capabilityString) })
+      paymentRequest.merchantCapabilities = PKMerchantCapability(merchantCapabilities.compactMap { capabilityString in PKMerchantCapability.fromString(capabilityString) })
     }
     paymentRequest.countryCode = paymentConfiguration["countryCode"] as! String
     paymentRequest.currencyCode = paymentConfiguration["currencyCode"] as! String
