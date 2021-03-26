@@ -27,6 +27,10 @@ class _PaySampleAppState extends State<PaySampleApp> {
     debugPrint(paymentResult.toString());
   }
 
+  void onApplePayResult(paymentResult) {
+    debugPrint(paymentResult.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,26 +101,27 @@ class _PaySampleAppState extends State<PaySampleApp> {
               ),
             ),
           ),
-          const SizedBox(height: 15),
-          if (RawApplePayButton.supported)
-            SizedBox(
-              width: double.infinity,
-              height: 43,
-              child: RawApplePayButton(
-                style: ApplePayButtonStyle.black,
-                type: ApplePayButtonType.buy,
-                onPressed: () {
-                  googlePayClient.showPaymentSelector(paymentItems: [
-                    PaymentItem(
-                      label: 'Total',
-                      amount: '99.99',
-                      status: PaymentItemStatus.final_price,
-                    )
-                  ]);
-                },
+          SizedBox(
+            width: double.infinity,
+            child: ApplePayButton(
+              paymentConfigurationAsset: 'default_payment_profile_ios.json',
+              paymentItems: [
+                PaymentItem(
+                  label: 'Total',
+                  amount: '99.99',
+                  status: PaymentItemStatus.final_price,
+                )
+              ],
+              style: ApplePayButtonStyle.black,
+              type: ApplePayButtonType.buy,
+              margin: EdgeInsets.only(top: 15.0),
+              onPaymentResult: onApplePayResult,
+              loadingIndicator: Center(
+                child: CircularProgressIndicator(),
               ),
             ),
-          const SizedBox(height: 15),
+          ),
+          const SizedBox(height: 15)
         ],
       ),
     );

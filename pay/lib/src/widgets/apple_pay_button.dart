@@ -1,9 +1,9 @@
 part of '../../pay.dart';
 
-class GooglePayButton extends PayButton {
-  late final Widget _googlePayButton;
+class ApplePayButton extends PayButton {
+  late final Widget _applePayButton;
 
-  GooglePayButton({
+  ApplePayButton({
     Key? key,
     required paymentConfigurationAsset,
     required onPaymentResult,
@@ -24,12 +24,12 @@ class GooglePayButton extends PayButton {
           childOnError,
           loadingIndicator,
         ) {
-    _googlePayButton = RawGooglePayButton(
+    _applePayButton = RawApplePayButton(
         type: type,
         style: style,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 
-  List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.android];
-  Widget get _payButton => _googlePayButton;
+  List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.iOS];
+  Widget get _payButton => _applePayButton;
 }

@@ -24,4 +24,6 @@ export 'package:pay_ios/pay_ios.dart'
     show RawApplePayButton, ApplePayButtonStyle, ApplePayButtonType;
 
 part 'src/pay.dart';
+part 'src/widgets/pay_button.dart';
+part 'src/widgets/apple_pay_button.dart';
 part 'src/widgets/google_pay_button.dart';

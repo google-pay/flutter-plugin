@@ -34,7 +34,6 @@ class RawApplePayButton extends StatelessWidget {
   static const double _minimumButtonHeight = 30;
 
   final BoxConstraints constraints;
-  final EdgeInsets margin;
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
   final ApplePayButtonType type;
@@ -42,7 +41,6 @@ class RawApplePayButton extends StatelessWidget {
   RawApplePayButton({
     Key? key,
     this.onPressed,
-    this.margin = EdgeInsets.zero,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
   })  : constraints = BoxConstraints.tightFor(
