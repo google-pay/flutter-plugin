@@ -3,6 +3,8 @@ part of '../../pay.dart';
 abstract class PayButton extends StatefulWidget {
   late final Pay _payClient;
 
+  final double? width;
+  final double height;
   final EdgeInsets margin;
 
   final onPaymentResult;
@@ -14,6 +16,8 @@ abstract class PayButton extends StatefulWidget {
     Key? key,
     paymentConfigurationAsset,
     this.onPaymentResult,
+    this.width,
+    this.height,
     this.margin,
     this.onError,
     this.childOnError,
@@ -42,11 +46,13 @@ abstract class PayButton extends StatefulWidget {
 class _PayButtonState extends State<PayButton> {
   late final Future<bool> _userCanPayFuture;
 
-  Widget containerizeChildOrShrink([Widget? child]) {
+  Widget containerizeChildOrShrink({Widget? child, bool isError = false}) {
     if (child != null) {
       return Container(
         margin: widget.margin,
         child: child,
+        width: !isError ? widget.width : null,
+        height: !isError ? widget.height : null,
       );
     } else {
       return SizedBox.shrink();
@@ -61,7 +67,8 @@ class _PayButtonState extends State<PayButton> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget._isPlatformSupported) return containerizeChildOrShrink();
+    if (!widget._isPlatformSupported)
+      return containerizeChildOrShrink(isError: true);
 
     return FutureBuilder<bool>(
       future: _userCanPayFuture,
@@ -72,13 +79,15 @@ class _PayButtonState extends State<PayButton> {
           }
 
           if (snapshot.data == true) {
-            return containerizeChildOrShrink(widget._payButton);
+            return containerizeChildOrShrink(child: widget._payButton);
           } else {
-            return containerizeChildOrShrink(widget.childOnError);
+            return containerizeChildOrShrink(
+                child: widget.childOnError, isError: true);
           }
         }
 
-        return containerizeChildOrShrink(widget.loadingIndicator);
+        return containerizeChildOrShrink(
+            child: widget.loadingIndicator, isError: true);
       },
     );
   }

@@ -26,12 +26,12 @@ enum ApplePayButtonStyle {
   automatic,
 }
 
-extension _ApplePayButtonTypeAsset on ApplePayButtonType {
+extension ApplePayButtonTypeAsset on ApplePayButtonType {
   double get minimumAssetWidth => this == ApplePayButtonType.plain ? 100 : 140;
 }
 
 class RawApplePayButton extends StatelessWidget {
-  static const double _minimumButtonHeight = 30;
+  static const double minimumButtonHeight = 30;
 
   final BoxConstraints constraints;
   final VoidCallback? onPressed;
@@ -45,7 +45,7 @@ class RawApplePayButton extends StatelessWidget {
     this.type = ApplePayButtonType.plain,
   })  : constraints = BoxConstraints.tightFor(
           width: type.minimumAssetWidth,
-          height: _minimumButtonHeight,
+          height: minimumButtonHeight,
         ),
         super(key: key) {
     assert(constraints.debugAssertIsValid());
@@ -55,11 +55,11 @@ class RawApplePayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: constraints,
-      child: _platform,
+      child: _platformButton,
     );
   }
 
-  Widget get _platform {
+  Widget get _platformButton {
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
         return _UiKitApplePayButton(

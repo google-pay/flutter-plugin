@@ -37,7 +37,7 @@ extension _GooglePayButtonStyleAsset on GooglePayButtonStyle {
 }
 
 class RawGooglePayButton extends StatelessWidget {
-  static const double _height = 43;
+  static const double defaultAssetHeight = 43;
   static const double _minHorizontalPadding = 30;
 
   final VoidCallback? onPressed;
@@ -91,7 +91,7 @@ class RawGooglePayButton extends StatelessWidget {
             ])
           : null,
       width: type.assetWidth + (2 * _minHorizontalPadding),
-      height: _height,
+      height: defaultAssetHeight,
       child: rawButton,
     );
   }

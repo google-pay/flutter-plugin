@@ -81,44 +81,38 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            child: GooglePayButton(
-              paymentConfigurationAsset: 'default_payment_profile.json',
-              paymentItems: [
-                PaymentItem(
-                  label: 'Total',
-                  amount: '99.99',
-                  status: PaymentItemStatus.final_price,
-                )
-              ],
-              style: GooglePayButtonStyle.black,
-              type: GooglePayButtonType.pay,
-              margin: EdgeInsets.only(top: 15.0),
-              onPaymentResult: onGooglePayResult,
-              loadingIndicator: Center(
-                child: CircularProgressIndicator(),
-              ),
+          GooglePayButton(
+            paymentConfigurationAsset: 'default_payment_profile.json',
+            paymentItems: [
+              PaymentItem(
+                label: 'Total',
+                amount: '99.99',
+                status: PaymentItemStatus.final_price,
+              )
+            ],
+            style: GooglePayButtonStyle.black,
+            type: GooglePayButtonType.pay,
+            margin: EdgeInsets.only(top: 15.0),
+            onPaymentResult: onGooglePayResult,
+            loadingIndicator: Center(
+              child: CircularProgressIndicator(),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            child: ApplePayButton(
-              paymentConfigurationAsset: 'default_payment_profile_ios.json',
-              paymentItems: [
-                PaymentItem(
-                  label: 'Total',
-                  amount: '99.99',
-                  status: PaymentItemStatus.final_price,
-                )
-              ],
-              style: ApplePayButtonStyle.black,
-              type: ApplePayButtonType.buy,
-              margin: EdgeInsets.only(top: 15.0),
-              onPaymentResult: onApplePayResult,
-              loadingIndicator: Center(
-                child: CircularProgressIndicator(),
-              ),
+          ApplePayButton(
+            paymentConfigurationAsset: 'default_payment_profile_ios.json',
+            paymentItems: [
+              PaymentItem(
+                label: 'Total',
+                amount: '99.99',
+                status: PaymentItemStatus.final_price,
+              )
+            ],
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
+            margin: EdgeInsets.only(top: 15.0),
+            onPaymentResult: onApplePayResult,
+            loadingIndicator: Center(
+              child: CircularProgressIndicator(),
             ),
           ),
           const SizedBox(height: 15)
