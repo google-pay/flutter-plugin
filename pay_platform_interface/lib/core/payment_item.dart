@@ -18,7 +18,7 @@ extension on PaymentItemType {
 }
 
 class PaymentItem {
-  PaymentItem(
+  const PaymentItem(
       {this.label,
       required this.amount,
       this.type = PaymentItemType.total,

@@ -5,6 +5,14 @@ void main() {
   runApp(PayMaterialApp());
 }
 
+const _paymentItems = [
+  PaymentItem(
+    label: 'Total',
+    amount: '99.99',
+    status: PaymentItemStatus.final_price,
+  )
+];
+
 class PayMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -83,13 +91,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
           ),
           GooglePayButton(
             paymentConfigurationAsset: 'default_payment_profile.json',
-            paymentItems: [
-              PaymentItem(
-                label: 'Total',
-                amount: '99.99',
-                status: PaymentItemStatus.final_price,
-              )
-            ],
+            paymentItems: _paymentItems,
             style: GooglePayButtonStyle.black,
             type: GooglePayButtonType.pay,
             margin: EdgeInsets.only(top: 15.0),
@@ -100,13 +102,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
           ),
           ApplePayButton(
             paymentConfigurationAsset: 'default_payment_profile_ios.json',
-            paymentItems: [
-              PaymentItem(
-                label: 'Total',
-                amount: '99.99',
-                status: PaymentItemStatus.final_price,
-              )
-            ],
+            paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
             margin: EdgeInsets.only(top: 15.0),
