@@ -1,21 +1,9 @@
 enum Provider { apple_pay, google_pay }
 
-extension Providers on Provider {
-  static Provider? fromString(String providerString) => {
-        'apple_pay': Provider.apple_pay,
-        'google_pay': Provider.google_pay,
-      }[providerString];
-
-  static bool isValidProvider(String providerString) =>
-      Providers.fromString(providerString) != null;
-
-  String? toSimpleString() => {
-        Provider.apple_pay: 'apple_pay',
-        Provider.google_pay: 'google_pay',
-      }[this];
-}
-
 class PaymentConfiguration {
+  final Provider provider;
+  final Map<String, dynamic> parameters;
+
   PaymentConfiguration.fromMap(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
@@ -24,14 +12,6 @@ class PaymentConfiguration {
         parameters = _populateConfiguration(
             Providers.fromString(configuration['provider'])!,
             configuration['data']);
-
-  final Provider provider;
-  final Map<String, dynamic> parameters;
-
-  Map<String, dynamic> toMap() => {
-        'provider': provider,
-        'data': parameters,
-      };
 
   static Map<String, dynamic> _populateConfiguration(
       Provider provider, Map<String, dynamic> parameters) {
@@ -51,4 +31,24 @@ class PaymentConfiguration {
         return updatedPaymentConfiguration;
     }
   }
+
+  Map<String, dynamic> toMap() => {
+        'provider': provider,
+        'data': parameters,
+      };
+}
+
+extension Providers on Provider {
+  static Provider? fromString(String providerString) => {
+        'apple_pay': Provider.apple_pay,
+        'google_pay': Provider.google_pay,
+      }[providerString];
+
+  static bool isValidProvider(String providerString) =>
+      Providers.fromString(providerString) != null;
+
+  String? toSimpleString() => {
+        Provider.apple_pay: 'apple_pay',
+        Provider.google_pay: 'google_pay',
+      }[this];
 }

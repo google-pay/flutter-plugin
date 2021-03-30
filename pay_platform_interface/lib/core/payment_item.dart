@@ -18,16 +18,16 @@ extension on PaymentItemType {
 }
 
 class PaymentItem {
-  const PaymentItem(
-      {this.label,
-      required this.amount,
-      this.type = PaymentItemType.total,
-      this.status = PaymentItemStatus.unknown});
-
   final String? label;
   final String amount;
   final PaymentItemType type;
   final PaymentItemStatus status;
+
+  const PaymentItem(
+      {required this.amount,
+      this.label,
+      this.type = PaymentItemType.total,
+      this.status = PaymentItemStatus.unknown});
 
   Map<String, dynamic> toMap() => {
         'label': label,
