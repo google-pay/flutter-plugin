@@ -8,18 +8,18 @@ const supportedProviders = {
 class Pay {
   final PayPlatform _payPlatform;
   Future? _initializationFuture;
-  late final PaymentConfiguration _paymentConfiguration;
+  late final PaymentConfiguration _configuration;
 
   Pay._(Map<String, dynamic> paymentConfiguration)
       : _payPlatform = PayMethodChannel() {
-    _paymentConfiguration = PaymentConfiguration.fromMap(paymentConfiguration);
+    _configuration = PaymentConfiguration.fromMap(paymentConfiguration);
   }
 
   Pay.fromJson(String paymentConfigurationString)
       : this._(jsonDecode(paymentConfigurationString));
 
   Pay.fromAsset(String paymentConfigurationAsset,
-      {Future<Map<String, dynamic>> profileLoader(String value) =
+      {Future<Map<String, dynamic>> Function(String value) profileLoader =
           _defaultProfileLoader})
       : _payPlatform = PayMethodChannel(),
         _initializationFuture = profileLoader(paymentConfigurationAsset) {
@@ -32,13 +32,12 @@ class Pay {
           'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
 
   Future _loadPaymentConfiguration() async {
-    _paymentConfiguration =
-        PaymentConfiguration.fromMap(await _initializationFuture);
+    _configuration = PaymentConfiguration.fromMap(await _initializationFuture);
   }
 
   Future<Map<String, dynamic>> get paymentData async {
     await _initializationFuture;
-    return _paymentConfiguration.configurationData;
+    return _configuration.parameters;
   }
 
   Future<String> get environment async => (await paymentData)['environment'];
@@ -48,7 +47,7 @@ class Pay {
     await _initializationFuture;
 
     if (supportedProviders[defaultTargetPlatform]!
-        .contains(_paymentConfiguration.provider.toSimpleString())) {
+        .contains(_configuration.provider.toSimpleString())) {
       return _payPlatform.userCanPay(await paymentData);
     }
 

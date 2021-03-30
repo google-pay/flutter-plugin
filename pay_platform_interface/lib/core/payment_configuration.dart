@@ -21,32 +21,32 @@ class PaymentConfiguration {
         assert(configuration.containsKey('data')),
         assert(Providers.isValidProvider(configuration['provider'])),
         provider = Providers.fromString(configuration['provider'])!,
-        configurationData = _populateConfigurationData(
+        parameters = _populateConfiguration(
             Providers.fromString(configuration['provider'])!,
             configuration['data']);
 
   final Provider provider;
-  final Map<String, dynamic> configurationData;
+  final Map<String, dynamic> parameters;
 
   Map<String, dynamic> toMap() => {
         'provider': provider,
-        'data': configurationData,
+        'data': parameters,
       };
 
-  static Map<String, dynamic> _populateConfigurationData(
-      Provider provider, Map<String, dynamic> configurationData) {
+  static Map<String, dynamic> _populateConfiguration(
+      Provider provider, Map<String, dynamic> parameters) {
     switch (provider) {
       case Provider.apple_pay:
-        return configurationData;
+        return parameters;
 
       case Provider.google_pay:
         final updatedMerchantInfo = {
-          ...configurationData['merchantInfo'] ?? {},
+          ...parameters['merchantInfo'] ?? {},
           'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
         };
 
         final updatedPaymentConfiguration = Map<String, dynamic>.unmodifiable(
-            {...configurationData, 'merchantInfo': updatedMerchantInfo});
+            {...parameters, 'merchantInfo': updatedMerchantInfo});
 
         return updatedPaymentConfiguration;
     }

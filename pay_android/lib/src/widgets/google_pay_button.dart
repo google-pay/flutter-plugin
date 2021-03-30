@@ -64,7 +64,7 @@ class RawGooglePayButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
         side: style == GooglePayButtonStyle.flat
-            ? BorderSide(
+            ? const BorderSide(
                 color: Color(0xFFDEDEDE),
                 width: 2,
               )
@@ -86,7 +86,7 @@ class RawGooglePayButton extends StatelessWidget {
                 color: Colors.black.withOpacity(0.3),
                 spreadRadius: 0,
                 blurRadius: 2,
-                offset: Offset(0, 1),
+                offset: const Offset(0, 1),
               )
             ])
           : null,

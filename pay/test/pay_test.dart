@@ -27,26 +27,26 @@ void main() {
   setUp(() async {});
 
   test('Load payment configuration from a string', () async {
-    Pay client = Pay.fromJson(_paymentConfigurationString);
+    final client = Pay.fromJson(_paymentConfigurationString);
     expect(await client.environment, 'TEST');
   });
 
   test('Load Google Pay configuration for the test environment', () async {
-    Pay client = Pay.fromAsset('google_pay_test_payment_profile.json',
+    final client = Pay.fromAsset('google_pay_test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'TEST');
   });
 
   test('Load Google Pay configuration for the producton environment', () async {
-    Pay client = Pay.fromAsset('google_pay_prod_payment_profile.json',
+    final client = Pay.fromAsset('google_pay_prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'PRODUCTION');
   });
 
   test('Check that software info is included in Google Pay requests', () async {
-    Pay client = Pay.fromAsset('google_pay_default_payment_profile.json',
+    final client = Pay.fromAsset('google_pay_default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     var paymentData = await client.paymentData;

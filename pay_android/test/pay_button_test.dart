@@ -34,7 +34,7 @@ void main() {
         ),
       );
 
-      final Size buttonSize = tester.getSize(find.byType(RawMaterialButton));
+      final buttonSize = tester.getSize(find.byType(RawMaterialButton));
       expect(
         buttonSize.height,
         _defaultButtonHeight,

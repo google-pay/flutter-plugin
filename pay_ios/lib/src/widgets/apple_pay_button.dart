@@ -95,7 +95,7 @@ class _UiKitApplePayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return UiKitView(
       viewType: _buttonId,
-      creationParamsCodec: StandardMessageCodec(),
+      creationParamsCodec: const StandardMessageCodec(),
       creationParams: {'style': style.enumString, 'type': type.enumString},
       onPlatformViewCreated: (viewId) {
         _methodChannel = MethodChannel('$_buttonId/$viewId');

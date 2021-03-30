@@ -7,14 +7,14 @@ abstract class PayButton extends StatefulWidget {
   final double height;
   final EdgeInsets margin;
 
-  final onPaymentResult;
-  final onError;
+  final Function(Map<String, dynamic> result) onPaymentResult;
+  final Function(Object? error)? onError;
   final Widget? childOnError;
   final Widget? loadingIndicator;
 
   PayButton(
     Key? key,
-    paymentConfigurationAsset,
+    String paymentConfigurationAsset,
     this.onPaymentResult,
     this.width,
     this.height,
@@ -26,7 +26,9 @@ abstract class PayButton extends StatefulWidget {
     _payClient = Pay.fromAsset(paymentConfigurationAsset);
   }
 
-  _defaultOnPressed(onPressed, paymentItems) => () async {
+  VoidCallback _defaultOnPressed(
+          VoidCallback? onPressed, List<PaymentItem> paymentItems) =>
+      () async {
         onPressed?.call();
         onPaymentResult(
           await _payClient.showPaymentSelector(paymentItems: paymentItems),
@@ -50,12 +52,12 @@ class _PayButtonState extends State<PayButton> {
     if (child != null) {
       return Container(
         margin: widget.margin,
-        child: child,
         width: !isError ? widget.width : null,
         height: !isError ? widget.height : null,
+        child: child,
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -67,15 +69,16 @@ class _PayButtonState extends State<PayButton> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget._isPlatformSupported)
+    if (!widget._isPlatformSupported) {
       return containerizeChildOrShrink(isError: true);
+    }
 
     return FutureBuilder<bool>(
       future: _userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            widget.onError(snapshot.error);
+            widget.onError!(snapshot.error);
           }
 
           if (snapshot.data == true) {

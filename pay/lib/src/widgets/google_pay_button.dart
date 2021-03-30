@@ -5,18 +5,18 @@ class GooglePayButton extends PayButton {
 
   GooglePayButton({
     Key? key,
-    required paymentConfigurationAsset,
-    required onPaymentResult,
-    required paymentItems,
-    style,
-    type,
+    required String paymentConfigurationAsset,
+    required void Function(Map<String, dynamic> result) onPaymentResult,
+    required List<PaymentItem> paymentItems,
+    GooglePayButtonStyle style = GooglePayButtonStyle.black,
+    GooglePayButtonType type = GooglePayButtonType.pay,
     double? width,
-    height = RawGooglePayButton.defaultAssetHeight,
-    margin = EdgeInsets.zero,
-    onPressed,
-    onError,
-    childOnError,
-    loadingIndicator,
+    double height = RawGooglePayButton.defaultAssetHeight,
+    EdgeInsets margin = EdgeInsets.zero,
+    VoidCallback? onPressed,
+    void Function(Object? error)? onError,
+    Widget? childOnError,
+    Widget? loadingIndicator,
   }) : super(
           key,
           paymentConfigurationAsset,
@@ -29,11 +29,14 @@ class GooglePayButton extends PayButton {
           loadingIndicator,
         ) {
     _googlePayButton = RawGooglePayButton(
-        type: type,
         style: style,
+        type: type,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 
+  @override
   List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.android];
+
+  @override
   Widget get _payButton => _googlePayButton;
 }

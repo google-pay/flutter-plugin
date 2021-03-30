@@ -5,18 +5,18 @@ class ApplePayButton extends PayButton {
 
   ApplePayButton({
     Key? key,
-    required paymentConfigurationAsset,
-    required onPaymentResult,
-    required paymentItems,
-    style,
-    type,
+    required String paymentConfigurationAsset,
+    required void Function(Map<String, dynamic> result) onPaymentResult,
+    required List<PaymentItem> paymentItems,
+    ApplePayButtonStyle style = ApplePayButtonStyle.black,
+    ApplePayButtonType type = ApplePayButtonType.plain,
     double? width,
-    height = RawApplePayButton.minimumButtonHeight,
-    margin = EdgeInsets.zero,
-    onPressed,
-    onError,
-    childOnError,
-    loadingIndicator,
+    double height = RawApplePayButton.minimumButtonHeight,
+    EdgeInsets margin = EdgeInsets.zero,
+    VoidCallback? onPressed,
+    void Function(Object? error)? onError,
+    Widget? childOnError,
+    Widget? loadingIndicator,
   }) : super(
           key,
           paymentConfigurationAsset,
@@ -29,11 +29,14 @@ class ApplePayButton extends PayButton {
           loadingIndicator,
         ) {
     _applePayButton = RawApplePayButton(
-        type: type,
         style: style,
+        type: type,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 
+  @override
   List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.iOS];
+
+  @override
   Widget get _payButton => _applePayButton;
 }
