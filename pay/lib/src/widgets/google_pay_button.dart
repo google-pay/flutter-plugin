@@ -35,8 +35,8 @@ class GooglePayButton extends PayButton {
   }
 
   @override
-  List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.android];
+  final List<TargetPlatform> _supportedPlatforms = [TargetPlatform.android];
 
   @override
-  Widget get _payButton => _googlePayButton;
+  late final Widget _payButton = _googlePayButton;
 }

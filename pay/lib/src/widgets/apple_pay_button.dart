@@ -35,8 +35,8 @@ class ApplePayButton extends PayButton {
   }
 
   @override
-  List<TargetPlatform> get _supportedPlatforms => [TargetPlatform.iOS];
+  final List<TargetPlatform> _supportedPlatforms = [TargetPlatform.iOS];
 
   @override
-  Widget get _payButton => _applePayButton;
+  late final Widget _payButton = _applePayButton;
 }
