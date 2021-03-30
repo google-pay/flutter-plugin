@@ -16,12 +16,13 @@ class PayMethodChannel extends PayPlatform {
 
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
-          Map<String, dynamic> paymentProfile,
-          List<PaymentItem> paymentItems) async =>
-      jsonDecode(
-        await _channel.invokeMethod('showPaymentSelector', {
-          'payment_profile': jsonEncode(paymentProfile),
-          'payment_items': paymentItems.map((item) => item.toMap()).toList(),
-        }),
-      );
+      Map<String, dynamic> paymentProfile,
+      List<PaymentItem> paymentItems) async {
+    final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
+      'payment_profile': jsonEncode(paymentProfile),
+      'payment_items': paymentItems.map((item) => item.toMap()).toList(),
+    });
+
+    return jsonDecode(paymentResult);
+  }
 }
