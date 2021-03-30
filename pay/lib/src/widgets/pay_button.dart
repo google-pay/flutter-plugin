@@ -7,8 +7,8 @@ abstract class PayButton extends StatefulWidget {
   final double height;
   final EdgeInsets margin;
 
-  final Function(Map<String, dynamic> result) onPaymentResult;
-  final Function(Object? error)? onError;
+  final void Function(Map<String, dynamic> result) onPaymentResult;
+  final void Function(Object? error)? onError;
   final Widget? childOnError;
   final Widget? loadingIndicator;
 
@@ -27,13 +27,18 @@ abstract class PayButton extends StatefulWidget {
   }
 
   VoidCallback _defaultOnPressed(
-          VoidCallback? onPressed, List<PaymentItem> paymentItems) =>
-      () async {
-        onPressed?.call();
-        onPaymentResult(
-          await _payClient.showPaymentSelector(paymentItems: paymentItems),
-        );
-      };
+      VoidCallback? onPressed, List<PaymentItem> paymentItems) {
+    return () async {
+      onPressed?.call();
+      try {
+        final result =
+            await _payClient.showPaymentSelector(paymentItems: paymentItems);
+        onPaymentResult(result);
+      } catch (error) {
+        onError?.call(error);
+      }
+    };
+  }
 
   List<TargetPlatform> get _supportedPlatforms;
   Widget get _payButton;
@@ -78,7 +83,7 @@ class _PayButtonState extends State<PayButton> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            widget.onError!(snapshot.error);
+            widget.onError?.call(snapshot.error);
           }
 
           if (snapshot.data == true) {
