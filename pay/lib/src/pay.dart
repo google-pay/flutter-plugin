@@ -18,10 +18,11 @@ class Pay {
   Pay.fromJson(String paymentConfigurationString)
       : this._(jsonDecode(paymentConfigurationString));
 
-  Pay.fromAsset(String paymentConfigurationAsset,
-      {Future<Map<String, dynamic>> Function(String value) profileLoader =
-          _defaultProfileLoader})
-      : _payPlatform = PayMethodChannel(),
+  Pay.fromAsset(
+    String paymentConfigurationAsset, {
+    Future<Map<String, dynamic>> Function(String value) profileLoader =
+        _defaultProfileLoader,
+  })  : _payPlatform = PayMethodChannel(),
         _initializationFuture = profileLoader(paymentConfigurationAsset) {
     _loadPaymentConfiguration();
   }
