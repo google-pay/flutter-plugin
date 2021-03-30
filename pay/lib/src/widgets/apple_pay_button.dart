@@ -10,14 +10,16 @@ class ApplePayButton extends PayButton {
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
     ApplePayButtonType type = ApplePayButtonType.plain,
-    double? width,
+    double width = RawApplePayButton.minimumButonWidth,
     double height = RawApplePayButton.minimumButtonHeight,
     EdgeInsets margin = EdgeInsets.zero,
     VoidCallback? onPressed,
     void Function(Object? error)? onError,
     Widget? childOnError,
     Widget? loadingIndicator,
-  }) : super(
+  })  : assert(width >= RawApplePayButton.minimumButonWidth),
+        assert(height >= RawApplePayButton.minimumButtonHeight),
+        super(
           key,
           paymentConfigurationAsset,
           onPaymentResult,

@@ -4,7 +4,9 @@ enum GooglePayButtonType { pay, checkout, donate }
 enum GooglePayButtonStyle { black, white, flat }
 
 class RawGooglePayButton extends StatelessWidget {
-  static const double defaultAssetHeight = 43;
+  static const double minimumButtonWidth =
+      _GooglePayButtonTypeAsset.defaultAssetWidth;
+  static const double defaultButtonHeight = 43;
   static const double _minHorizontalPadding = 30;
 
   final VoidCallback? onPressed;
@@ -58,41 +60,41 @@ class RawGooglePayButton extends StatelessWidget {
             ])
           : null,
       width: type.assetWidth + (2 * _minHorizontalPadding),
-      height: defaultAssetHeight,
+      height: defaultButtonHeight,
       child: rawButton,
     );
   }
 }
 
 extension _GooglePayButtonTypeAsset on GooglePayButtonType {
-  static const _defaultAsset = 'gpay_logo';
-  static const _defaultAssetWidth = 54.0;
+  static const defaultAsset = 'gpay_logo';
+  static const defaultAssetWidth = 54.0;
 
   String get asset =>
       {
         GooglePayButtonType.pay: 'buy_with_gpay',
-        GooglePayButtonType.checkout: _defaultAsset,
+        GooglePayButtonType.checkout: defaultAsset,
         GooglePayButtonType.donate: 'donate_with_gpay',
       }[this] ??
-      _defaultAsset;
+      defaultAsset;
 
   double get assetWidth =>
       {
         GooglePayButtonType.pay: 135.0,
-        GooglePayButtonType.checkout: _defaultAssetWidth,
+        GooglePayButtonType.checkout: defaultAssetWidth,
         GooglePayButtonType.donate: 167.0,
       }[this] ??
-      _defaultAssetWidth;
+      defaultAssetWidth;
 }
 
 extension _GooglePayButtonStyleAsset on GooglePayButtonStyle {
-  static const _defaultAssetSuffix = '_dark';
+  static const defaultAssetSuffix = '_dark';
 
   String get assetSuffix =>
       {
-        GooglePayButtonStyle.black: _defaultAssetSuffix,
+        GooglePayButtonStyle.black: defaultAssetSuffix,
         GooglePayButtonStyle.white: '_clear',
         GooglePayButtonStyle.flat: '_clear',
       }[this] ??
-      _defaultAssetSuffix;
+      defaultAssetSuffix;
 }

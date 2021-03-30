@@ -3,7 +3,7 @@ part of '../../pay.dart';
 abstract class PayButton extends StatefulWidget {
   late final Pay _payClient;
 
-  final double? width;
+  final double width;
   final double height;
   final EdgeInsets margin;
 

@@ -31,6 +31,7 @@ extension ApplePayButtonTypeAsset on ApplePayButtonType {
 }
 
 class RawApplePayButton extends StatelessWidget {
+  static const double minimumButonWidth = 100;
   static const double minimumButtonHeight = 30;
 
   final BoxConstraints constraints;
