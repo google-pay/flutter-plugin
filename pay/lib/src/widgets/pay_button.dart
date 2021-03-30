@@ -66,10 +66,19 @@ class _PayButtonState extends State<PayButton> {
     }
   }
 
+  Future<bool> _userCanPay() async {
+    try {
+      return await widget._payClient.userCanPay();
+    } catch (error) {
+      widget.onError?.call(error);
+      rethrow;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _userCanPayFuture = widget._payClient.userCanPay();
+    _userCanPayFuture = _userCanPay();
   }
 
   @override
@@ -82,10 +91,6 @@ class _PayButtonState extends State<PayButton> {
       future: _userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            widget.onError?.call(snapshot.error);
-          }
-
           if (snapshot.data == true) {
             return containerizeChildOrShrink(child: widget._payButton);
           } else {
