@@ -1,25 +1,25 @@
-enum Provider { apple_pay, google_pay }
+enum PayProvider { apple_pay, google_pay }
 
 class PaymentConfiguration {
-  final Provider provider;
+  final PayProvider provider;
   final Map<String, dynamic> parameters;
 
   PaymentConfiguration.fromMap(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
-        assert(Providers.isValidProvider(configuration['provider'])),
-        provider = Providers.fromString(configuration['provider'])!,
+        assert(PayProviders.isValidProvider(configuration['provider'])),
+        provider = PayProviders.fromString(configuration['provider'])!,
         parameters = _populateConfiguration(
-            Providers.fromString(configuration['provider'])!,
+            PayProviders.fromString(configuration['provider'])!,
             configuration['data']);
 
   static Map<String, dynamic> _populateConfiguration(
-      Provider provider, Map<String, dynamic> parameters) {
+      PayProvider provider, Map<String, dynamic> parameters) {
     switch (provider) {
-      case Provider.apple_pay:
+      case PayProvider.apple_pay:
         return parameters;
 
-      case Provider.google_pay:
+      case PayProvider.google_pay:
         final updatedMerchantInfo = {
           ...parameters['merchantInfo'] ?? {},
           'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
@@ -38,17 +38,17 @@ class PaymentConfiguration {
       };
 }
 
-extension Providers on Provider {
-  static Provider? fromString(String providerString) => {
-        'apple_pay': Provider.apple_pay,
-        'google_pay': Provider.google_pay,
+extension PayProviders on PayProvider {
+  static PayProvider? fromString(String providerString) => {
+        'apple_pay': PayProvider.apple_pay,
+        'google_pay': PayProvider.google_pay,
       }[providerString];
 
   static bool isValidProvider(String providerString) =>
-      Providers.fromString(providerString) != null;
+      fromString(providerString) != null;
 
   String? toSimpleString() => {
-        Provider.apple_pay: 'apple_pay',
-        Provider.google_pay: 'google_pay',
+        PayProvider.apple_pay: 'apple_pay',
+        PayProvider.google_pay: 'google_pay',
       }[this];
 }
