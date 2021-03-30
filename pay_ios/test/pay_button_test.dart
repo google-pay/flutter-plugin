@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_ios/pay_ios.dart';
 
-const _minimumButtonHeight = 30;
-
 void main() {
   setUp(() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -42,7 +40,7 @@ void main() {
       final buttonSize = tester.getSize(find.byType(UiKitView));
       expect(
         buttonSize.height,
-        _minimumButtonHeight,
+        RawApplePayButton.minimumButtonHeight,
       );
       debugDefaultTargetPlatformOverride = null;
     });

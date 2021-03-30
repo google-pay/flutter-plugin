@@ -51,7 +51,7 @@ abstract class PayButton extends StatefulWidget {
 }
 
 class _PayButtonState extends State<PayButton> {
-  late final Future<bool> _userCanPayFuture;
+  late final Future<bool> userCanPayFuture;
 
   Widget containerizeChildOrShrink({Widget? child, bool isError = false}) {
     if (child != null) {
@@ -66,7 +66,7 @@ class _PayButtonState extends State<PayButton> {
     }
   }
 
-  Future<bool> _userCanPay() async {
+  Future<bool> userCanPay() async {
     try {
       return await widget._payClient.userCanPay();
     } catch (error) {
@@ -78,7 +78,7 @@ class _PayButtonState extends State<PayButton> {
   @override
   void initState() {
     super.initState();
-    _userCanPayFuture = _userCanPay();
+    userCanPayFuture = userCanPay();
   }
 
   @override
@@ -88,7 +88,7 @@ class _PayButtonState extends State<PayButton> {
     }
 
     return FutureBuilder<bool>(
-      future: _userCanPayFuture,
+      future: userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {

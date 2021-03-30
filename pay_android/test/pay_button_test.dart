@@ -3,8 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_android/pay_android.dart';
 
-const _defaultButtonHeight = 43;
-
 void main() {
   setUp(() async {});
 
@@ -37,7 +35,7 @@ void main() {
       final buttonSize = tester.getSize(find.byType(RawMaterialButton));
       expect(
         buttonSize.height,
-        _defaultButtonHeight,
+        RawGooglePayButton.defaultButtonHeight,
       );
     });
   });

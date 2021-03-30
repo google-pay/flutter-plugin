@@ -78,8 +78,8 @@ class RawApplePayButton extends StatelessWidget {
 }
 
 class _UiKitApplePayButton extends StatelessWidget {
-  static const _buttonId = 'plugins.flutter.io/pay/apple_pay_button';
-  late final MethodChannel? _methodChannel;
+  static const buttonId = 'plugins.flutter.io/pay/apple_pay_button';
+  late final MethodChannel? methodChannel;
 
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
@@ -95,12 +95,12 @@ class _UiKitApplePayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UiKitView(
-      viewType: _buttonId,
+      viewType: buttonId,
       creationParamsCodec: const StandardMessageCodec(),
       creationParams: {'style': style.enumString, 'type': type.enumString},
       onPlatformViewCreated: (viewId) {
-        _methodChannel = MethodChannel('$_buttonId/$viewId');
-        _methodChannel?.setMethodCallHandler((call) async {
+        methodChannel = MethodChannel('$buttonId/$viewId');
+        methodChannel?.setMethodCallHandler((call) async {
           if (call.method == 'onPressed') onPressed?.call();
           return;
         });
