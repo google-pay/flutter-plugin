@@ -8,15 +8,15 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late final PayMethodChannel _mobilePlatform;
-  const MethodChannel channel = MethodChannel('plugins.flutter.io/pay_channel');
+  const channel = MethodChannel('plugins.flutter.io/pay_channel');
 
   setUpAll(() async {
     _mobilePlatform = PayMethodChannel();
   });
 
   group('Verify channel I/O for', () {
-    final List<MethodCall> log = <MethodCall>[];
-    const Map<String, dynamic> testResponses = <String, dynamic>{
+    final log = <MethodCall>[];
+    const testResponses = <String, dynamic>{
       'userCanPay': true,
       'showPaymentSelector': '{}',
     };
@@ -24,7 +24,7 @@ void main() {
     setUp(() {
       channel.setMockMethodCallHandler((MethodCall methodCall) async {
         log.add(methodCall);
-        final dynamic response = testResponses[methodCall.method];
+        final response = testResponses[methodCall.method];
         if (response is Exception) {
           return Future<dynamic>.error(response);
         }
@@ -41,13 +41,13 @@ void main() {
     });
 
     test('showPaymentSelector', () async {
-      await _mobilePlatform.showPaymentSelector({}, '0');
+      await _mobilePlatform.showPaymentSelector({}, []);
       expect(
         log,
         <Matcher>[
           isMethodCall('showPaymentSelector', arguments: <String, dynamic>{
             'payment_profile': '{}',
-            'price': '0',
+            'payment_items': [],
           })
         ],
       );

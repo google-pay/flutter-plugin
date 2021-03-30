@@ -1,14 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_ios/pay_ios.dart';
 
-const _defaultButtonHeight = 43;
+const _minimumButtonHeight = 30;
 
 void main() {
-  setUp(() async {});
+  setUp(() async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+  });
 
   group('Button style:', () {
-    testWidgets('defaults to type black and long', (WidgetTester tester) async {
+    testWidgets('defaults to type plan and black', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: RawApplePayButton(onPressed: () => null),
@@ -16,13 +19,16 @@ void main() {
 
       expect(
           find.byWidgetPredicate((widget) =>
-              widget is RawMaterialButton && widget.fillColor == Colors.black),
+              widget is UiKitView &&
+              widget.creationParams['style'] == 'black' &&
+              widget.creationParams['type'] == 'plain'),
           findsOneWidget);
 
-      expect(find.byType(RawMaterialButton), findsOneWidget);
+      expect(find.byType(UiKitView), findsOneWidget);
+      debugDefaultTargetPlatformOverride = null;
     });
 
-    testWidgets('height defaults to 43 as specified in the brand guidelines',
+    testWidgets('height defaults to 30 as specified in the brand guidelines',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         Directionality(
@@ -33,11 +39,12 @@ void main() {
         ),
       );
 
-      final Size buttonSize = tester.getSize(find.byType(RawMaterialButton));
+      final buttonSize = tester.getSize(find.byType(UiKitView));
       expect(
         buttonSize.height,
-        _defaultButtonHeight,
+        _minimumButtonHeight,
       );
+      debugDefaultTargetPlatformOverride = null;
     });
   });
 }
