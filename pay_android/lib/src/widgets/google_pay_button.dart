@@ -6,8 +6,7 @@ enum GooglePayButtonStyle { black, white, flat }
 class RawGooglePayButton extends StatelessWidget {
   static const double minimumButtonWidth =
       _GooglePayButtonTypeAsset.defaultAssetWidth;
-  static const double defaultButtonHeight = 43;
-  static const double _minHorizontalPadding = 30;
+  static const double defaultButtonHeight = 36;
 
   final VoidCallback? onPressed;
   final GooglePayButtonStyle style;
@@ -25,6 +24,7 @@ class RawGooglePayButton extends StatelessWidget {
     final Widget rawButton = RawMaterialButton(
       fillColor:
           style == GooglePayButtonStyle.black ? Colors.black : Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       elevation: 0,
       focusElevation: 0,
       hoverElevation: 0,
@@ -43,8 +43,7 @@ class RawGooglePayButton extends StatelessWidget {
         'assets/${type.asset}${style.assetSuffix}.svg',
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
-        width: type.assetWidth,
-        height: 22,
+        height: 17,
       ),
     );
 
@@ -59,7 +58,6 @@ class RawGooglePayButton extends StatelessWidget {
               )
             ])
           : null,
-      width: type.assetWidth + (2 * _minHorizontalPadding),
       height: defaultButtonHeight,
       child: rawButton,
     );
@@ -77,24 +75,16 @@ extension _GooglePayButtonTypeAsset on GooglePayButtonType {
         GooglePayButtonType.donate: 'donate_with_gpay',
       }[this] ??
       defaultAsset;
-
-  double get assetWidth =>
-      {
-        GooglePayButtonType.pay: 135.0,
-        GooglePayButtonType.checkout: defaultAssetWidth,
-        GooglePayButtonType.donate: 167.0,
-      }[this] ??
-      defaultAssetWidth;
 }
 
 extension _GooglePayButtonStyleAsset on GooglePayButtonStyle {
-  static const defaultAssetSuffix = '_dark';
+  static const defaultAssetSuffix = 'dark';
 
   String get assetSuffix =>
       {
         GooglePayButtonStyle.black: defaultAssetSuffix,
-        GooglePayButtonStyle.white: '_clear',
-        GooglePayButtonStyle.flat: '_clear',
+        GooglePayButtonStyle.white: 'clear',
+        GooglePayButtonStyle.flat: 'clear',
       }[this] ??
       defaultAssetSuffix;
 }
