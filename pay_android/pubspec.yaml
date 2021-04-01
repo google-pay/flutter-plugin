@@ -17,9 +17,13 @@ flutter:
 
   assets:
     - assets/
+    - assets/en/
+    - assets/es/
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   #pay_platform_interface: ^1.0.0
   pay_platform_interface:

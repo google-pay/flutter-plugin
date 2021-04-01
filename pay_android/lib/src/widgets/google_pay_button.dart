@@ -8,6 +8,9 @@ class RawGooglePayButton extends StatelessWidget {
       _GooglePayButtonTypeAsset.defaultAssetWidth;
   static const double defaultButtonHeight = 36;
 
+  static const _defaultLocale = 'en';
+  static const _supportedLocales = [_defaultLocale, 'es'];
+
   final VoidCallback? onPressed;
   final GooglePayButtonStyle style;
   final GooglePayButtonType type;
@@ -18,6 +21,14 @@ class RawGooglePayButton extends StatelessWidget {
     this.style = GooglePayButtonStyle.black,
     this.type = GooglePayButtonType.pay,
   }) : super(key: key);
+
+  String _assetPath(context) {
+    final langCode = Localizations.maybeLocaleOf(context)?.languageCode;
+    final supportedLangCode =
+        _supportedLocales.contains(langCode) ? langCode : _defaultLocale;
+
+    return 'assets/$supportedLangCode/${type.asset}_${style.assetSuffix}.svg';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +51,7 @@ class RawGooglePayButton extends StatelessWidget {
             : BorderSide.none,
       ),
       child: SvgPicture.asset(
-        'assets/${type.asset}${style.assetSuffix}.svg',
+        _assetPath(context),
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
         height: 17,
