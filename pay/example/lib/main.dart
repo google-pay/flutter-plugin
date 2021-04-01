@@ -47,16 +47,16 @@ class _PaySampleAppState extends State<PaySampleApp> {
       ),
       backgroundColor: Colors.white,
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           Container(
             margin: const EdgeInsets.symmetric(vertical: 20),
-            child: Image(
+            child: const Image(
               image: AssetImage('assets/images/ts_10_11019a.jpg'),
               height: 350,
             ),
           ),
-          Text(
+          const Text(
             'Amanda\'s Polo Shirt',
             style: TextStyle(
               fontSize: 20,
@@ -65,7 +65,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
+          const Text(
             '\$50.20',
             style: TextStyle(
               color: Color(0xff777777),
@@ -73,7 +73,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 15),
-          Text(
+          const Text(
             'Description',
             style: TextStyle(
               fontSize: 15,
@@ -82,7 +82,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
+          const Text(
             'A versatile full-zip that you can wear all day long and even...',
             style: TextStyle(
               color: Color(0xff777777),
@@ -94,9 +94,9 @@ class _PaySampleAppState extends State<PaySampleApp> {
             paymentItems: _paymentItems,
             style: GooglePayButtonStyle.black,
             type: GooglePayButtonType.pay,
-            margin: EdgeInsets.only(top: 15.0),
+            margin: const EdgeInsets.only(top: 15.0),
             onPaymentResult: onGooglePayResult,
-            loadingIndicator: Center(
+            loadingIndicator: const Center(
               child: CircularProgressIndicator(),
             ),
           ),
@@ -105,9 +105,9 @@ class _PaySampleAppState extends State<PaySampleApp> {
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
-            margin: EdgeInsets.only(top: 15.0),
+            margin: const EdgeInsets.only(top: 15.0),
             onPaymentResult: onApplePayResult,
-            loadingIndicator: Center(
+            loadingIndicator: const Center(
               child: CircularProgressIndicator(),
             ),
           ),
