@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
+import 'package:stripe/stripe.dart'
+    hide ApplePayButton, ApplePayButtonStyle, ApplePayButtonType;
 
 void main() {
   runApp(PayMaterialApp());
@@ -16,9 +18,14 @@ const _paymentItems = [
 class PayMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pay for Flutter Demo',
-      home: PaySampleApp(),
+    return StripeProvider(
+      publishableKey: 'pk_test_oDBTDWWrb1kezz6lwq9zmeoW00XmZlpvM6',
+      merchantIdentifier: 'Hello',
+      appInfo: AppInfo(),
+      child: MaterialApp(
+        title: 'Pay for Flutter Demo',
+        home: PaySampleApp(),
+      ),
     );
   }
 }
@@ -33,6 +40,7 @@ class PaySampleApp extends StatefulWidget {
 class _PaySampleAppState extends State<PaySampleApp> {
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
+    Stripe.instance.createPaymentMethodFromGooglePay(paymentResult);
   }
 
   void onApplePayResult(paymentResult) {
