@@ -21,7 +21,6 @@ class PayMaterialApp extends StatelessWidget {
     return StripeProvider(
       publishableKey: 'pk_test_oDBTDWWrb1kezz6lwq9zmeoW00XmZlpvM6',
       merchantIdentifier: 'Hello',
-      appInfo: AppInfo(),
       child: MaterialApp(
         title: 'Pay for Flutter Demo',
         home: PaySampleApp(),
@@ -40,11 +39,26 @@ class PaySampleApp extends StatefulWidget {
 class _PaySampleAppState extends State<PaySampleApp> {
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
-    Stripe.instance.createPaymentMethodFromGooglePay(paymentResult);
+    Stripe.instance.confirmPaymentMethod(
+      'paymentIntentClientSecret',
+      PaymentMethodParams.cardFromToken(
+        cardDetails: CardTokenDetails(
+            token: paymentResult.toString() // TODO extract the actual token
+            ),
+      ),
+    );
   }
 
   void onApplePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
+    Stripe.instance.confirmPaymentMethod(
+      'paymentIntentClientSecret',
+      PaymentMethodParams.cardFromToken(
+        cardDetails: CardTokenDetails(
+            token: paymentResult.toString() // TODO extract the actual token
+            ),
+      ),
+    );
   }
 
   @override
