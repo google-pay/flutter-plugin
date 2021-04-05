@@ -40,7 +40,7 @@ class RawGooglePayButton extends StatelessWidget {
             : BorderSide.none,
       ),
       child: SvgPicture.asset(
-        'assets/${type.asset}${style.assetSuffix}.svg',
+        'assets/${type.asset}_${style.assetSuffix}.svg',
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
         height: 17,
