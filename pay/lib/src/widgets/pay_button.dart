@@ -86,14 +86,14 @@ class _PayButtonState extends State<PayButton> {
               child: widget._payButton,
             );
           } else {
-            return ButtonPlaceholderContainer(
+            return ButtonPlaceholder(
               margin: widget.margin,
               child: widget.childOnError,
             );
           }
         }
 
-        return ButtonPlaceholderContainer(
+        return ButtonPlaceholder(
           margin: widget.margin,
           child: widget.loadingIndicator,
         );
@@ -106,7 +106,7 @@ class ButtonPlaceholder extends StatelessWidget {
   final Widget? child;
   final EdgeInsets margin;
 
-  ButtonPlaceholderContainer({
+  ButtonPlaceholder({
     Key? key,
     this.child,
     required this.margin,
