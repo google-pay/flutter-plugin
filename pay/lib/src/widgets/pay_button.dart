@@ -102,7 +102,7 @@ class _PayButtonState extends State<PayButton> {
   }
 }
 
-class ButtonPlaceholderContainer extends StatelessWidget {
+class ButtonPlaceholder extends StatelessWidget {
   final Widget? child;
   final EdgeInsets margin;
 
