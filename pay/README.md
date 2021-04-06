@@ -26,21 +26,44 @@ Create a payment profile with the desired configuration for your payment, either
 ```dart
 import 'package:pay/pay.dart';
 
-// Add the button to your UI
-GooglePayButton(
-  paymentConfigurationAsset: 'default_payment_profile.json',
-  color: GooglePayButtonColor.flat,
-  type: GooglePayButtonType.pay,
-  onPressed: googlePayButtonPressed,
-  childOnError: Text('Google Pay is not available.'),
+const _paymentItems = [
+  PaymentItem(
+    label: 'Total',
+    amount: '99.99',
+    status: PaymentItemStatus.final_price,
+  )
+];
+
+ApplePayButton(
+  paymentConfigurationAsset: 'default_payment_profile_ios.json',
+  paymentItems: _paymentItems,
+  style: ApplePayButtonStyle.black,
+  type: ApplePayButtonType.buy,
+  margin: EdgeInsets.only(top: 15.0),
+  onPaymentResult: onApplePayResult,
   loadingIndicator: Center(
     child: CircularProgressIndicator(),
   ),
-)
+),
 
-// Respond to button taps and load payment info
-void googlePayButtonPressed(paymentClient) async {
-  var result = await paymentClient.showPaymentSelector(price: /* item price */);
+GooglePayButton(
+  paymentConfigurationAsset: 'default_payment_profile.json',
+  paymentItems: _paymentItems,
+  style: GooglePayButtonStyle.black,
+  type: GooglePayButtonType.pay,
+  margin: EdgeInsets.only(top: 15.0),
+  onPaymentResult: onGooglePayResult,
+  loadingIndicator: Center(
+    child: CircularProgressIndicator(),
+  ),
+),
+
+void onApplePayResult(paymentResult) {
+  // Send the resulting Apple Pay token to your server / PSP
+}
+
+void onGooglePayResult(paymentResult) {
+  // Send the resulting Google Pay token to your server / PSP
 }
 ```
 

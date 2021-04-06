@@ -16,45 +16,45 @@ String _fixtureAsset(String name) {
 }
 
 Future<Map<String, dynamic>> _testProfileLoader(
-        String paymentProfileAsset) async =>
-    jsonDecode(_fixtureAsset(paymentProfileAsset));
+        String paymentConfigurationAsset) async =>
+    jsonDecode(_fixtureAsset(paymentConfigurationAsset));
 
-const String _paymentProfileString =
-    '{"environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}';
+const String _paymentConfigurationString = '{"provider": "google_pay",'
+    '"data": { "environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}}';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {});
 
-  test('Load a payment profile from a string', () async {
-    Pay client = Pay.fromJson(_paymentProfileString);
+  test('Load payment configuration from a string', () async {
+    final client = Pay.fromJson(_paymentConfigurationString);
     expect(await client.environment, 'TEST');
   });
 
-  test('Load a payment profile for the test environment', () async {
-    Pay client = Pay.fromAsset('test_payment_profile.json',
+  test('Load Google Pay configuration for the test environment', () async {
+    final client = Pay.fromAsset('google_pay_test_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'TEST');
   });
 
-  test('Load a payment profile for the producton environment', () async {
-    Pay client = Pay.fromAsset('prod_payment_profile.json',
+  test('Load Google Pay configuration for the producton environment', () async {
+    final client = Pay.fromAsset('google_pay_prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
     expect(await client.environment, 'PRODUCTION');
   });
 
-  test('Verify that software info is included in the requests', () async {
-    Pay client = Pay.fromAsset('default_payment_profile.json',
+  test('Check that software info is included in Google Pay requests', () async {
+    final client = Pay.fromAsset('google_pay_default_payment_profile.json',
         profileLoader: _testProfileLoader);
 
-    var paymentProfile = await client.paymentProfile;
-    expect(paymentProfile.containsKey('merchantInfo'), isTrue);
-    expect(paymentProfile['merchantInfo'].containsKey('softwareInfo'), isTrue);
+    var paymentData = await client.paymentData;
+    expect(paymentData.containsKey('merchantInfo'), isTrue);
+    expect(paymentData['merchantInfo'].containsKey('softwareInfo'), isTrue);
 
     Map<String, String> softwareInfo =
-        paymentProfile['merchantInfo']['softwareInfo'];
+        paymentData['merchantInfo']['softwareInfo'];
     expect(softwareInfo.containsKey('id'), isTrue);
     expect(softwareInfo.containsKey('version'), isTrue);
   });

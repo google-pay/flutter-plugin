@@ -1,62 +1,64 @@
 part of '../pay.dart';
 
+const supportedProviders = {
+  TargetPlatform.android: ['google_pay'],
+  TargetPlatform.iOS: ['apple_pay'],
+};
+
 class Pay {
   final PayPlatform _payPlatform;
   Future? _initializationFuture;
-  late final Map<String, dynamic> _paymentProfile;
+  late final PaymentConfiguration _configuration;
 
-  Pay._(Map<String, dynamic> paymentProfile)
-      : _payPlatform = PayMobileChannel() {
-    _paymentProfile = _populateProfile(paymentProfile);
+  Pay._(Map<String, dynamic> paymentConfiguration)
+      : _payPlatform = PayMethodChannel() {
+    _configuration = PaymentConfiguration.fromMap(paymentConfiguration);
   }
 
-  Pay.fromJson(String paymentProfileString)
-      : this._(jsonDecode(paymentProfileString));
+  Pay.fromJson(String paymentConfigurationString)
+      : this._(jsonDecode(paymentConfigurationString));
 
-  Pay.fromAsset(String paymentProfileAsset,
-      {Future<Map<String, dynamic>> profileLoader(String value) =
-          _defaultProfileLoader})
-      : _payPlatform = PayMobileChannel(),
-        _initializationFuture = profileLoader(paymentProfileAsset) {
-    _loadPaymentProfile();
+  Pay.fromAsset(
+    String paymentConfigurationAsset, {
+    Future<Map<String, dynamic>> Function(String value) profileLoader =
+        _defaultProfileLoader,
+  })  : _payPlatform = PayMethodChannel(),
+        _initializationFuture = profileLoader(paymentConfigurationAsset) {
+    _loadPaymentConfiguration();
   }
 
   static Future<Map<String, dynamic>> _defaultProfileLoader(
-          String paymentProfileAsset) async =>
+          String paymentConfigurationAsset) async =>
       await rootBundle.loadStructuredData(
-          'assets/$paymentProfileAsset', (s) async => jsonDecode(s));
+          'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
 
-  Future _loadPaymentProfile() async {
-    _paymentProfile = _populateProfile(await _initializationFuture);
+  Future _loadPaymentConfiguration() async {
+    _configuration = PaymentConfiguration.fromMap(await _initializationFuture);
   }
 
-  Map<String, dynamic> _populateProfile(Map<String, dynamic> paymentProfile) {
-    final updatedMerchantInfo = {
-      ...paymentProfile['merchantInfo'] ?? {},
-      'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
-    };
-
-    return Map.unmodifiable(
-        {...paymentProfile, 'merchantInfo': updatedMerchantInfo});
-  }
-
-  Future<Map> get paymentProfile async {
+  Future<Map<String, dynamic>> get paymentData async {
     await _initializationFuture;
-    return _paymentProfile;
+    return _configuration.parameters;
   }
 
-  Future<String> get environment async => (await paymentProfile)['environment'];
+  Future<String> get environment async => (await paymentData)['environment'];
 
   Future<bool> userCanPay() async {
     // Wait for the client to finish instantiation before issuing calls
     await _initializationFuture;
-    return _payPlatform.userCanPay(_paymentProfile);
+
+    if (supportedProviders[defaultTargetPlatform]!
+        .contains(_configuration.provider.toSimpleString())) {
+      return _payPlatform.userCanPay(await paymentData);
+    }
+
+    return Future.value(false);
   }
 
   Future<Map<String, dynamic>> showPaymentSelector({
-    required String price,
+    required List<PaymentItem> paymentItems,
   }) async {
     await _initializationFuture;
-    return _payPlatform.showPaymentSelector(_paymentProfile, price);
+    return _payPlatform.showPaymentSelector(await paymentData, paymentItems);
   }
 }

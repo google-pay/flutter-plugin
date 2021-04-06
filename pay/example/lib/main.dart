@@ -5,6 +5,14 @@ void main() {
   runApp(PayMaterialApp());
 }
 
+const _paymentItems = [
+  PaymentItem(
+    label: 'Total',
+    amount: '99.99',
+    status: PaymentItemStatus.final_price,
+  )
+];
+
 class PayMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,9 +31,12 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
-  void googlePayButtonPressed(paymentClient) async {
-    var result = await paymentClient.showPaymentSelector(price: '99.99');
-    debugPrint(result.toString());
+  void onGooglePayResult(paymentResult) {
+    debugPrint(paymentResult.toString());
+  }
+
+  void onApplePayResult(paymentResult) {
+    debugPrint(paymentResult.toString());
   }
 
   @override
@@ -36,16 +47,16 @@ class _PaySampleAppState extends State<PaySampleApp> {
       ),
       backgroundColor: Colors.white,
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           Container(
             margin: const EdgeInsets.symmetric(vertical: 20),
-            child: Image(
+            child: const Image(
               image: AssetImage('assets/images/ts_10_11019a.jpg'),
               height: 350,
             ),
           ),
-          Text(
+          const Text(
             'Amanda\'s Polo Shirt',
             style: TextStyle(
               fontSize: 20,
@@ -54,7 +65,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
+          const Text(
             '\$50.20',
             style: TextStyle(
               color: Color(0xff777777),
@@ -62,7 +73,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 15),
-          Text(
+          const Text(
             'Description',
             style: TextStyle(
               fontSize: 15,
@@ -71,30 +82,36 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
+          const Text(
             'A versatile full-zip that you can wear all day long and even...',
             style: TextStyle(
               color: Color(0xff777777),
               fontSize: 15,
             ),
           ),
-          const SizedBox(height: 15),
-          Center(
-            child: SizedBox(
-              width: double.infinity,
-              child: GooglePayButton(
-                paymentConfigurationAsset: 'default_payment_profile.json',
-                color: GooglePayButtonColor.flat,
-                type: GooglePayButtonType.pay,
-                onPressed: googlePayButtonPressed,
-                childOnError: Text('Google Pay is not available.'),
-                loadingIndicator: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+          GooglePayButton(
+            paymentConfigurationAsset: 'default_payment_profile.json',
+            paymentItems: _paymentItems,
+            style: GooglePayButtonStyle.black,
+            type: GooglePayButtonType.pay,
+            margin: const EdgeInsets.only(top: 15.0),
+            onPaymentResult: onGooglePayResult,
+            loadingIndicator: const Center(
+              child: CircularProgressIndicator(),
             ),
           ),
-          const SizedBox(height: 15),
+          ApplePayButton(
+            paymentConfigurationAsset: 'default_payment_profile_ios.json',
+            paymentItems: _paymentItems,
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
+            margin: const EdgeInsets.only(top: 15.0),
+            onPaymentResult: onApplePayResult,
+            loadingIndicator: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          const SizedBox(height: 15)
         ],
       ),
     );
