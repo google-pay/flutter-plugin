@@ -53,19 +53,6 @@ abstract class PayButton extends StatefulWidget {
 class _PayButtonState extends State<PayButton> {
   late final Future<bool> userCanPayFuture;
 
-  Widget containerizeChildOrShrink({Widget? child, bool isError = false}) {
-    if (child != null) {
-      return Container(
-        margin: widget.margin,
-        width: !isError ? widget.width : null,
-        height: !isError ? widget.height : null,
-        child: child,
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
-  }
-
   Future<bool> userCanPay() async {
     try {
       return await widget._payClient.userCanPay();
@@ -84,7 +71,7 @@ class _PayButtonState extends State<PayButton> {
   @override
   Widget build(BuildContext context) {
     if (!widget._isPlatformSupported) {
-      return containerizeChildOrShrink(isError: true);
+      return const SizedBox.shrink();
     }
 
     return FutureBuilder<bool>(
@@ -92,16 +79,43 @@ class _PayButtonState extends State<PayButton> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
-            return containerizeChildOrShrink(child: widget._payButton);
+            return Container(
+              margin: widget.margin,
+              width: widget.width,
+              height: widget.height,
+              child: widget._payButton,
+            );
           } else {
-            return containerizeChildOrShrink(
-                child: widget.childOnError, isError: true);
+            return ButtonPlaceholder(
+              margin: widget.margin,
+              child: widget.childOnError,
+            );
           }
         }
 
-        return containerizeChildOrShrink(
-            child: widget.loadingIndicator, isError: true);
+        return ButtonPlaceholder(
+          margin: widget.margin,
+          child: widget.loadingIndicator,
+        );
       },
     );
+  }
+}
+
+class ButtonPlaceholder extends StatelessWidget {
+  final Widget? child;
+  final EdgeInsets margin;
+
+  ButtonPlaceholder({
+    Key? key,
+    this.child,
+    required this.margin,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return child == null
+        ? const SizedBox.shrink()
+        : Container(margin: margin, child: child);
   }
 }
