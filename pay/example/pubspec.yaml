@@ -22,13 +22,11 @@ dependencies:
   stripe_platform_interface:
     git:
       url: git@github.com:flutter-stripe/flutter_stripe.git
-      ref: pay_plugin
       path: stripe_platform_interface
 
   stripe:
     git:
       url: git@github.com:flutter-stripe/flutter_stripe.git
-      ref: pay_plugin
       path: stripe
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,7 +37,6 @@ dependency_overrides:
   stripe_platform_interface:
     git:
       url: git@github.com:flutter-stripe/flutter_stripe.git
-      ref: pay_plugin
       path: stripe_platform_interface
 
 dev_dependencies:

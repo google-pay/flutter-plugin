@@ -4,6 +4,10 @@ import 'package:stripe/stripe.dart'
     hide ApplePayButton, ApplePayButtonStyle, ApplePayButtonType;
 
 void main() {
+  
+  Stripe.publishableKey = 'pk_test_oDBTDWWrb1kezz6lwq9zmeoW00XmZlpvM6';
+  Stripe.merchantIdentifier = 'Hello';
+  
   runApp(PayMaterialApp());
 }
 
@@ -18,13 +22,9 @@ const _paymentItems = [
 class PayMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StripeProvider(
-      publishableKey: 'pk_test_oDBTDWWrb1kezz6lwq9zmeoW00XmZlpvM6',
-      merchantIdentifier: 'Hello',
-      child: MaterialApp(
-        title: 'Pay for Flutter Demo',
-        home: PaySampleApp(),
-      ),
+    return MaterialApp(
+      title: 'Pay for Flutter Demo',
+      home: PaySampleApp(),
     );
   }
 }
