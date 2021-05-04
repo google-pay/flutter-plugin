@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart'
+    hide ApplePayButton, ApplePayButtonType, ApplePayButtonStyle;
 import 'package:pay/pay.dart';
-import 'package:stripe/stripe.dart'
-    hide ApplePayButton, ApplePayButtonStyle, ApplePayButtonType;
 
 void main() {
-  
   Stripe.publishableKey = 'pk_test_oDBTDWWrb1kezz6lwq9zmeoW00XmZlpvM6';
   Stripe.merchantIdentifier = 'Hello';
-  
+
   runApp(PayMaterialApp());
 }
 
