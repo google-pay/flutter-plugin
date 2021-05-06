@@ -11,21 +11,20 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
+private const val METHOD_CHANNEL_NAME = "plugins.flutter.io/pay_channel"
+
+private const val METHOD_USER_CAN_PAY = "userCanPay"
+private const val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
+
 class PayMethodCallHandler private constructor(
         messenger: BinaryMessenger,
         activity: Activity,
 ) : MethodCallHandler {
 
-    private val METHOD_CHANNEL_NAME = "plugins.flutter.io/pay_channel"
-
-    private val METHOD_USER_CAN_PAY = "userCanPay"
-    private val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
-
-    private val channel: MethodChannel
+    private val channel: MethodChannel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
     private val googlePayHandler: GooglePayHandler = GooglePayHandler(activity)
 
     init {
-        channel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
         channel.setMethodCallHandler(this)
     }
 
