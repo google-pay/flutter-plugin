@@ -66,7 +66,7 @@ class RawGooglePayButton extends StatelessWidget {
 
   String _assetPath(context) {
     final assetName = '${type.asset}_${style.assetSuffix}.svg';
-    if (type == GooglePayButtonType.plain) {
+    if ([GooglePayButtonType.plain, GooglePayButtonType.buy].contains(type)) {
       return 'assets/$assetName';
     }
 
@@ -101,7 +101,7 @@ class RawGooglePayButton extends StatelessWidget {
         _assetPath(context),
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
-        height: 17,
+        height: 19,
       ),
     );
 
