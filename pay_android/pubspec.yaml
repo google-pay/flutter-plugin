@@ -13,14 +13,13 @@
 # limitations under the License.
 
 name: pay_android
-description: A plug-in to add support for payment wallets on the Android side of Flutter applications.
+description: A plug-in to add support for payments on the Android side of Flutter applications.
 version: 1.0.0-beta.1
-author: Flutter Team <flutter-dev@googlegroups.com>
-homepage: TBA
+homepage: https://github.com/google_pay/flutter_plugin
 
 environment:
-  sdk: ^2.12.0
-  flutter: ^2.0.0
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: '>=2.0.0'
 
 flutter:
   plugin:
@@ -68,7 +67,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  #pay_platform_interface: ^1.0.0
+  #pay_platform_interface: ^1.0.0-beta.1
   pay_platform_interface:
     path: ../pay_platform_interface
   flutter_svg: 0.21.0-nullsafety.0

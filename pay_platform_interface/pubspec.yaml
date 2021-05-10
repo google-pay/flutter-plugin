@@ -14,13 +14,12 @@
 
 name: pay_platform_interface
 description: A common platform interface for payment plugins for Flutter.
-version: 1.0.0
-author: Flutter Team <flutter-dev@googlegroups.com>
-homepage: TBA
+version: 1.0.0-beta.1
+homepage: https://github.com/google_pay/flutter_plugin
 
 environment:
-  sdk: ^2.12.0
-  flutter: ^2.0.0
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: '>=2.0.0'
 
 dependencies:
   flutter:

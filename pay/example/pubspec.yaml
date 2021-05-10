@@ -13,13 +13,12 @@
 # limitations under the License.
 
 name: pay_example
-description: Demonstrates how to use the pay plugin.
-author: Flutter Team <flutter-dev@googlegroups.com>
+description: Shows how to use the pay plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ^2.12.0
-  flutter: ^2.0.0
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: '>=2.0.0'
 
 flutter:
   uses-material-design: true
