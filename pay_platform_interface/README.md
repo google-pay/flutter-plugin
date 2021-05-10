@@ -15,3 +15,5 @@ To implement a new platform-specific implementation of `pay`, extend [`PayPlatfo
 Strongly prefer non-breaking changes (such as adding a method to the interface) over breaking changes for this package.
 
 Take a look at [this discussion](https://flutter.dev/go/platform-interface-breaking-changes) on why a less-clean interface is preferable to a breaking change.
+
+**Note:** This is not an officially supported Google product.
