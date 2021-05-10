@@ -60,7 +60,7 @@ class Pay {
     required List<PaymentItem> paymentItems,
   }) async {
     await _initializationFuture;
-    return _payPlatform.showPaymentSelector(
-        await _getPaymentData(), paymentItems);
+    final paymentData = await _getPaymentData();
+    return _payPlatform.showPaymentSelector(paymentData, paymentItems);
   }
 }
