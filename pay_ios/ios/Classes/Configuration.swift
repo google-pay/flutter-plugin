@@ -1,27 +1,22 @@
-/*
- See LICENSE folder for this sample’s licensing information.
- 
- Abstract:
- Handles configuration logic for the Apple Pay merchant identifier
+/**
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import Foundation
 
 public class Configuration {
-  /*
-   The value of the `OFFERING_APPLE_PAY_BUNDLE_PREFIX` user-defined build
-   setting is written to the Info.plist file of every target in Swift
-   version of the sample project. Specifically, the value of
-   `OFFERING_APPLE_PAY_BUNDLE_PREFIX` is used as the string value for a
-   key of `AAPLOfferingApplePayBundlePrefix`. This value is loaded from the
-   target's bundle by the lazily evaluated static variable "prefix" from
-   the nested "Bundle" struct below the first time that "Bundle.prefix"
-   is accessed. This avoids the need for developers to edit both
-   `OFFERING_APPLE_PAY_BUNDLE_PREFIX` and the code below. The value of
-   `Bundle.prefix` is then used as part of an interpolated string to insert
-   the user-defined value of `OFFERING_APPLE_PAY_BUNDLE_PREFIX` into several
-   static string constants below.
-   */
   
   private struct MainBundle {
     static var prefix: String = {

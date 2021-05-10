@@ -1,3 +1,6 @@
+/// Copyright 2021 Google LLC
+/// SPDX-License-Identifier: Apache-2.0
+
 import 'package:pay_platform_interface/core/payment_item.dart';
 
 abstract class PayPlatform {
