@@ -1,8 +1,8 @@
 @TestOn('vm')
-
-import 'package:pay_platform_interface/pay_channel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:pay_platform_interface/pay_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ void main() {
 
   group('Verify channel I/O for', () {
     final log = <MethodCall>[];
-    const testResponses = <String, dynamic>{
+    const testResponses = <String, Object>{
       'userCanPay': true,
       'showPaymentSelector': '{}',
     };
@@ -26,9 +26,9 @@ void main() {
         log.add(methodCall);
         final response = testResponses[methodCall.method];
         if (response is Exception) {
-          return Future<dynamic>.error(response);
+          return Future<Object>.error(response);
         }
-        return Future<dynamic>.value(response);
+        return Future<Object>.value(response);
       });
     });
 
@@ -45,7 +45,7 @@ void main() {
       expect(
         log,
         <Matcher>[
-          isMethodCall('showPaymentSelector', arguments: <String, dynamic>{
+          isMethodCall('showPaymentSelector', arguments: <String, Object>{
             'payment_profile': '{}',
             'payment_items': [],
           })

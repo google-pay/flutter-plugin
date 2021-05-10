@@ -10,10 +10,12 @@ class PayMethodChannel extends PayPlatform {
   final MethodChannel _channel =
       const MethodChannel('plugins.flutter.io/pay_channel');
 
+  /// Completes with a [PlatformException] if the platform code fails.
   @override
   Future<bool> userCanPay(Map<String, dynamic> paymentProfile) async =>
       await _channel.invokeMethod('userCanPay', jsonEncode(paymentProfile));
 
+  /// Completes with a [PlatformException] if the platform code fails.
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
     Map<String, dynamic> paymentProfile,

@@ -30,7 +30,7 @@ class PaymentItem {
     this.status = PaymentItemStatus.unknown,
   });
 
-  Map<String, dynamic> toMap() => {
+  Map<String, Object?> toMap() => {
         'label': label,
         'amount': amount,
         'type': type.toSimpleString(),
