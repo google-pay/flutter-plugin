@@ -41,7 +41,8 @@ class PaymentConfiguration {
   }
 
   static Future<Map> _getPackageConfiguration() async {
-    final configurationFile = await rootBundle.loadString('../../pubspec.yaml');
+    final configurationFile = await rootBundle
+        .loadString('packages/pay_platform_interface/pubspec.yaml');
     return Future.value(loadYaml(configurationFile));
   }
 }
