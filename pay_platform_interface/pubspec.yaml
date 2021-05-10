@@ -8,9 +8,14 @@ environment:
   sdk: ^2.12.0
   flutter: ^2.0.0
 
+flutter:
+  assets:
+    - pubspec.yaml
+
 dependencies:
   flutter:
     sdk: flutter
+  yaml: ^3.1.0
 
 dev_dependencies:
   flutter_test:
