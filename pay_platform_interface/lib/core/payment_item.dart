@@ -1,20 +1,20 @@
 enum PaymentItemStatus { unknown, pending, final_price }
 
 extension on PaymentItemStatus {
-  String? toSimpleString() => {
+  String toSimpleString() => {
         PaymentItemStatus.unknown: 'unknown',
         PaymentItemStatus.pending: 'pending',
         PaymentItemStatus.final_price: 'final_price',
-      }[this];
+      }[this]!;
 }
 
 enum PaymentItemType { item, total }
 
 extension on PaymentItemType {
-  String? toSimpleString() => {
+  String toSimpleString() => {
         PaymentItemType.item: 'item',
         PaymentItemType.total: 'total',
-      }[this];
+      }[this]!;
 }
 
 class PaymentItem {
