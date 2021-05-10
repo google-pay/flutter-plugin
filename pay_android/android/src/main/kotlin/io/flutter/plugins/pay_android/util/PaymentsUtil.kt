@@ -23,7 +23,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 
-val CENTS = BigDecimal(100)
+private val CENTS = BigDecimal(100)
 
 /**
  * Contains helper static methods for dealing with the Payments API.
@@ -57,9 +57,7 @@ object PaymentsUtil {
 }
 
 /**
- * Converts cents to a string format accepted by [PaymentsUtil.getPaymentDataRequest].
- *
- * @param cents value of the price.
+ * Extension to convert cents to a string format.
  */
 fun Long.centsToString() = BigDecimal(this)
         .divide(CENTS)

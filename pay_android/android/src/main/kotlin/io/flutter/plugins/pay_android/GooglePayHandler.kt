@@ -1,7 +1,6 @@
 package io.flutter.plugins.pay_android
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
@@ -11,12 +10,11 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.pay_android.util.PaymentsUtil
 import org.json.JSONObject
 
+private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
 
-class GooglePayHandler(val activity: Activity) :
+class GooglePayHandler(private val activity: Activity) :
         PluginRegistry.ActivityResultListener {
 
-    // Arbitrary constant to track a request in the activity result
-    private val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
     private var loadPaymentDataResult: Result? = null
 
     companion object {
@@ -36,7 +34,7 @@ class GooglePayHandler(val activity: Activity) :
                 }
 
                 paymentProfile.optJSONObject("transactionInfo").apply {
-                    put("totalPrice", it?.get("amount"))
+                    putOpt("totalPrice", it?.get("amount"))
                     put("totalPriceStatus", priceStatus)
                 }
             }
@@ -96,8 +94,7 @@ class GooglePayHandler(val activity: Activity) :
             requestCode: Int,
             resultCode: Int,
             data: Intent?,
-    ): Boolean {
-        when (requestCode) {
+    ): Boolean = when (requestCode) {
             LOAD_PAYMENT_DATA_REQUEST_CODE -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
@@ -105,13 +102,13 @@ class GooglePayHandler(val activity: Activity) :
                             PaymentData.getFromIntent(intent).let(::handlePaymentSuccess)
                         }
                         loadPaymentDataResult = null
-                        return true
+                        true
                     }
 
                     Activity.RESULT_CANCELED -> {
                         // The user cancelled the payment attempt
                         loadPaymentDataResult = null
-                        return true
+                        true
                     }
 
                     AutoResolveHelper.RESULT_ERROR -> {
@@ -119,19 +116,16 @@ class GooglePayHandler(val activity: Activity) :
                             handleError(status.statusCode)
                         }
                         loadPaymentDataResult = null
-                        return true
+                        true
                     }
 
                     else -> {
                         loadPaymentDataResult = null
-                        return false
+                        false
                     }
                 }
             }
-            else -> false
-        }
-
-        return false
+        else -> false
     }
 
     /**

@@ -1,12 +1,57 @@
 part of '../../pay_android.dart';
 
-enum GooglePayButtonType { pay, checkout, donate }
+enum GooglePayButtonType {
+  book,
+  buy,
+  checkout,
+  donate,
+  order,
+  pay,
+  plain,
+  subscribe,
+  view
+}
 enum GooglePayButtonStyle { black, white, flat }
 
 class RawGooglePayButton extends StatelessWidget {
   static const double minimumButtonWidth =
       _GooglePayButtonTypeAsset.defaultAssetWidth;
   static const double defaultButtonHeight = 36;
+
+  static const _defaultLocale = 'en';
+  static const _supportedLocales = [
+    _defaultLocale,
+    'ar',
+    'bg',
+    'ca',
+    'cs',
+    'da',
+    'de',
+    'el',
+    'es',
+    'et',
+    'fi',
+    'fr',
+    'hr',
+    'id',
+    'it',
+    'ja',
+    'ko',
+    'ms',
+    'nl',
+    'no',
+    'pl',
+    'pt',
+    'ru',
+    'sk',
+    'sl',
+    'sr',
+    'sv',
+    'th',
+    'tr',
+    'uk',
+    'zh'
+  ];
 
   final VoidCallback? onPressed;
   final GooglePayButtonStyle style;
@@ -18,6 +63,19 @@ class RawGooglePayButton extends StatelessWidget {
     this.style = GooglePayButtonStyle.black,
     this.type = GooglePayButtonType.pay,
   }) : super(key: key);
+
+  String _assetPath(context) {
+    final assetName = '${type.asset}_${style.assetSuffix}.svg';
+    if ([GooglePayButtonType.plain, GooglePayButtonType.buy].contains(type)) {
+      return 'assets/$assetName';
+    }
+
+    final langCode = Localizations.maybeLocaleOf(context)?.languageCode;
+    final supportedLangCode =
+        _supportedLocales.contains(langCode) ? langCode : _defaultLocale;
+
+    return 'assets/$supportedLangCode/$assetName';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +98,10 @@ class RawGooglePayButton extends StatelessWidget {
             : BorderSide.none,
       ),
       child: SvgPicture.asset(
-        'assets/${type.asset}_${style.assetSuffix}.svg',
+        _assetPath(context),
         package: 'pay_android',
         semanticsLabel: 'Buy with Google Pay text',
-        height: 17,
+        height: 19,
       ),
     );
 
@@ -70,9 +128,15 @@ extension _GooglePayButtonTypeAsset on GooglePayButtonType {
 
   String get asset =>
       {
-        GooglePayButtonType.pay: 'buy_with_gpay',
-        GooglePayButtonType.checkout: defaultAsset,
-        GooglePayButtonType.donate: 'donate_with_gpay',
+        GooglePayButtonType.book: 'book_with',
+        GooglePayButtonType.buy: 'buy_with',
+        GooglePayButtonType.checkout: 'checkout_with',
+        GooglePayButtonType.donate: 'donate_with',
+        GooglePayButtonType.order: 'order_with',
+        GooglePayButtonType.pay: 'pay_with',
+        GooglePayButtonType.plain: defaultAsset,
+        GooglePayButtonType.subscribe: 'subscribe_with',
+        GooglePayButtonType.view: 'view_in'
       }[this] ??
       defaultAsset;
 }
@@ -83,8 +147,8 @@ extension _GooglePayButtonStyleAsset on GooglePayButtonStyle {
   String get assetSuffix =>
       {
         GooglePayButtonStyle.black: defaultAssetSuffix,
-        GooglePayButtonStyle.white: 'clear',
-        GooglePayButtonStyle.flat: 'clear',
+        GooglePayButtonStyle.white: 'light',
+        GooglePayButtonStyle.flat: 'light',
       }[this] ??
       defaultAssetSuffix;
 }
