@@ -12,16 +12,19 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
-import 'package:yaml/yaml.dart';
 
 enum PayProvider { apple_pay, google_pay }
 
-class PaymentConfiguration {
-  final PayProvider provider;
-  final Future<Map<String, dynamic>> parameters;
+typedef ConfigLoader = Future<Map<String, dynamic>> Function(String value);
 
-  PaymentConfiguration.fromMap(Map<String, dynamic> configuration)
+class PaymentConfiguration {
+  late final PayProvider provider;
+  late final Future<Map<String, dynamic>> _parameters;
+
+  PaymentConfiguration._(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
         assert(PayProviders.isValidProvider(configuration['provider'])),
@@ -42,6 +45,9 @@ class PaymentConfiguration {
           String paymentConfigurationAsset) async =>
       await rootBundle.loadStructuredData(
           'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
+
+  Future<Map<String, dynamic>> toMap() async {
+    return _parameters;
   }
 }
 

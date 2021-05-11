@@ -16,6 +16,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pay_platform_interface/core/payment_configuration.dart';
 
 import 'package:pay_platform_interface/pay_channel.dart';
 
@@ -24,6 +25,11 @@ void main() {
 
   late final PayMethodChannel _mobilePlatform;
   const channel = MethodChannel('plugins.flutter.io/pay_channel');
+
+  const _providerApplePay = PayProvider.apple_pay;
+  final _payConfigString =
+      '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}';
+  final _dummyConfig = PaymentConfiguration.fromJsonString(_payConfigString);
 
   setUpAll(() async {
     _mobilePlatform = PayMethodChannel();
@@ -48,7 +54,7 @@ void main() {
     });
 
     test('userCanPay', () async {
-      await _mobilePlatform.userCanPay({});
+      await _mobilePlatform.userCanPay(_dummyConfig);
       expect(
         log,
         <Matcher>[isMethodCall('userCanPay', arguments: '{}')],
@@ -56,7 +62,7 @@ void main() {
     });
 
     test('showPaymentSelector', () async {
-      await _mobilePlatform.showPaymentSelector({}, []);
+      await _mobilePlatform.showPaymentSelector(_dummyConfig, []);
       expect(
         log,
         <Matcher>[
