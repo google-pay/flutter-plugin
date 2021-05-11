@@ -123,10 +123,16 @@ class RawGooglePayButton extends StatelessWidget {
       decoration: style == GooglePayButtonStyle.white
           ? BoxDecoration(boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 0,
-                blurRadius: 2,
+                color: Colors.black.withOpacity(0.15),
                 offset: const Offset(0, 1),
+                blurRadius: 3,
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                offset: const Offset(0, 1),
+                blurRadius: 1,
+                spreadRadius: 0,
               )
             ])
           : null,

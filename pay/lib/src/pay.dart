@@ -39,12 +39,10 @@ class Pay {
     _configuration = PaymentConfiguration.fromMap(await _initializationFuture);
   }
 
-  Future<Map<String, dynamic>> get paymentData async {
+  Future<Map<String, dynamic>> _getPaymentData() async {
     await _initializationFuture;
-    return _configuration.parameters;
+    return await _configuration.parameters;
   }
-
-  Future<String> get environment async => (await paymentData)['environment'];
 
   Future<bool> userCanPay() async {
     // Wait for the client to finish instantiation before issuing calls
@@ -52,7 +50,7 @@ class Pay {
 
     if (supportedProviders[defaultTargetPlatform]!
         .contains(_configuration.provider.toSimpleString())) {
-      return _payPlatform.userCanPay(await paymentData);
+      return _payPlatform.userCanPay(await _getPaymentData());
     }
 
     return Future.value(false);
@@ -62,6 +60,7 @@ class Pay {
     required List<PaymentItem> paymentItems,
   }) async {
     await _initializationFuture;
-    return _payPlatform.showPaymentSelector(await paymentData, paymentItems);
+    final paymentData = await _getPaymentData();
+    return _payPlatform.showPaymentSelector(paymentData, paymentItems);
   }
 }

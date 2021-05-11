@@ -19,7 +19,7 @@ enum PayProvider { apple_pay, google_pay }
 
 class PaymentConfiguration {
   final PayProvider provider;
-  final Map<String, dynamic> parameters;
+  final Future<Map<String, dynamic>> parameters;
 
   PaymentConfiguration.fromMap(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
@@ -30,29 +30,33 @@ class PaymentConfiguration {
             PayProviders.fromString(configuration['provider'])!,
             configuration['data']);
 
-  static Map<String, dynamic> _populateConfiguration(
-      PayProvider provider, Map<String, dynamic> parameters) {
+  static Future<Map<String, dynamic>> _populateConfiguration(
+      PayProvider provider, Map<String, dynamic> parameters) async {
     switch (provider) {
       case PayProvider.apple_pay:
-        return parameters;
+        return Future.value(parameters);
 
       case PayProvider.google_pay:
         final updatedMerchantInfo = {
-          ...parameters['merchantInfo'] ?? {},
-          'softwareInfo': {'id': 'pay-flutter-plug-in', 'version': '0.9.9'}
+          ...(parameters['merchantInfo'] ?? {}) as Map,
+          'softwareInfo': {
+            'id': 'flutter/pay-plugin',
+            'version': (await _getPackageConfiguration())['version']
+          }
         };
 
-        final updatedPaymentConfiguration = Map<String, dynamic>.unmodifiable(
+        final updatedPaymentConfiguration = Map<String, Object>.unmodifiable(
             {...parameters, 'merchantInfo': updatedMerchantInfo});
 
         return updatedPaymentConfiguration;
     }
   }
 
-  Map<String, dynamic> toMap() => {
-        'provider': provider,
-        'data': parameters,
-      };
+  static Future<Map> _getPackageConfiguration() async {
+    final configurationFile = await rootBundle
+        .loadString('packages/pay_platform_interface/pubspec.yaml');
+    return Future.value(loadYaml(configurationFile));
+  }
 }
 
 extension PayProviders on PayProvider {

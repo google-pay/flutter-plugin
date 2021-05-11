@@ -73,3 +73,5 @@ void onGooglePayResult(paymentResult) {
 | Console | [Google Pay Business Console](https://pay.google.com/business/console/) |  (coming soon)  |
 | Reference | [API reference](https://developers.google.com/pay/api/android/reference/client)
 | Style guidelines | [Brand guidelines](https://developers.google.com/pay/api/android/guides/brand-guidelines)
+
+**Note:** This is not an officially supported Google product.

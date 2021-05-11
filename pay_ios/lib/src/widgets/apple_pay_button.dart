@@ -124,10 +124,8 @@ class _UiKitApplePayButton extends StatelessWidget {
 }
 
 extension on ApplePayButtonType {
-  static const _defaultType = 'plain';
-  String get enumString =>
-      {
-        ApplePayButtonType.plain: _defaultType,
+  String get enumString => {
+        ApplePayButtonType.plain: 'plain',
         ApplePayButtonType.buy: 'buy',
         ApplePayButtonType.setUp: 'setUp',
         ApplePayButtonType.inStore: 'inStore',
@@ -143,18 +141,14 @@ extension on ApplePayButtonType {
         ApplePayButtonType.support: 'support',
         ApplePayButtonType.contribute: 'contribute',
         ApplePayButtonType.tip: 'tip',
-      }[this] ??
-      _defaultType;
+      }[this]!;
 }
 
 extension on ApplePayButtonStyle {
-  static const _defaultStyle = 'black';
-  String get enumString =>
-      {
+  String get enumString => {
         ApplePayButtonStyle.white: 'white',
         ApplePayButtonStyle.whiteOutline: 'whiteOutline',
-        ApplePayButtonStyle.black: _defaultStyle,
+        ApplePayButtonStyle.black: 'black',
         ApplePayButtonStyle.automatic: 'automatic',
-      }[this] ??
-      _defaultStyle;
+      }[this]!;
 }

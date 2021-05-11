@@ -12,3 +12,5 @@ This package is the endorsed implementation of `pay` for mobile platforms, so it
 dependencies:
   pay: ^1.0.0
 ```
+
+**Note:** This is not an officially supported Google product.
