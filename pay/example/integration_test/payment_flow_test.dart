@@ -20,7 +20,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets("correctly creates an instance of the client", (_) async {
-    Pay client = Pay.fromAsset('default_payment_profile.json');
+    Pay client = Pay([]);
     await expectLater(client, isNotNull);
   });
 }

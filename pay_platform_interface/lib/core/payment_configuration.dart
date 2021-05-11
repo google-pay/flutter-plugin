@@ -44,18 +44,29 @@ class PaymentConfiguration {
             'version': (await _getPackageConfiguration())['version']
           }
         };
+  PaymentConfiguration.fromJsonString(String paymentConfigurationString)
+      : this._(jsonDecode(paymentConfigurationString));
 
         final updatedPaymentConfiguration = Map<String, Object>.unmodifiable(
             {...parameters, 'merchantInfo': updatedMerchantInfo});
 
         return updatedPaymentConfiguration;
     }
+  static Future<PaymentConfiguration> fromAsset(
+      String paymentConfigurationAsset,
+      {ConfigLoader profileLoader = _defaultProfileLoader}) async {
+    final configuration = await profileLoader(paymentConfigurationAsset);
+    return PaymentConfiguration._(configuration);
   }
 
   static Future<Map> _getPackageConfiguration() async {
     final configurationFile = await rootBundle
         .loadString('packages/pay_platform_interface/pubspec.yaml');
     return Future.value(loadYaml(configurationFile));
+  static Future<Map<String, dynamic>> _defaultProfileLoader(
+          String paymentConfigurationAsset) async =>
+      await rootBundle.loadStructuredData(
+          'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
   }
 }
 

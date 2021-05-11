@@ -42,4 +42,9 @@ class PayMethodChannel extends PayPlatform {
 
     return jsonDecode(paymentResult);
   }
+  static Future<Map> _getPackageConfiguration() async {
+    final configurationFile = await rootBundle
+        .loadString('packages/pay_platform_interface/pubspec.yaml');
+    return loadYaml(configurationFile);
+  }
 }

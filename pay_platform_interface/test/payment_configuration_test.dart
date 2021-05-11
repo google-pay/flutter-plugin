@@ -33,7 +33,9 @@ Future<Map<String, dynamic>> _testProfileLoader(
         String paymentConfigurationAsset) async =>
     jsonDecode(_fixtureAsset(paymentConfigurationAsset));
 
-const String _paymentConfigurationString = '{"provider": "google_pay",'
+const PayProvider _providerGooglePay = PayProvider.google_pay;
+final String _payConfigString =
+    '{"provider": "${_providerGooglePay.toSimpleString()}",'
     '"data": { "environment": "TEST", "apiVersion": 2, "apiVersionMinor": 0}}';
 
 void main() {
@@ -41,10 +43,18 @@ void main() {
   setUp(() async {});
 
   test('Load payment configuration from a string', () async {
-    final configurationMap = jsonDecode(_paymentConfigurationString);
-    final configuration = PaymentConfiguration.fromMap(configurationMap);
-    expect(configuration.provider, isNotNull);
-    expect(await configuration.parameters, isNotEmpty);
+    final configuration = PaymentConfiguration.fromJsonString(_payConfigString);
+    expect(configuration.provider, _providerGooglePay);
+    expect(await configuration.toMap(), isNotEmpty);
+  });
+
+  test('Load payment configuration from an asset', () async {
+    final configuration = await PaymentConfiguration.fromAsset(
+        'google_pay_prod_payment_profile.json',
+        profileLoader: _testProfileLoader);
+
+    expect(configuration.provider, _providerGooglePay);
+    expect(await configuration.toMap(), isNotEmpty);
   });
 
   tearDown(() async {});
