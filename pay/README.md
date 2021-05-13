@@ -127,8 +127,8 @@ Finally, handle the `onPressed` event and trigger the payment selector as follow
 ```dart
 void onGooglePayPressed() async {
   final result = await _payClient.showPaymentSelector(
-    PayProvider.google_pay,
-    paymentItems: paymentItems,
+    provider: PayProvider.google_pay,
+    paymentItems: _paymentItems,
   );
   // Send the resulting Google Pay token to your server / PSP
 }
