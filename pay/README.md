@@ -46,7 +46,7 @@ const _paymentItems = [
 ];
 
 ApplePayButton(
-  paymentConfigurationAsset: 'default_payment_profile_ios.json',
+  paymentConfigurationAsset: 'default_payment_profile_apple_pay.json',
   paymentItems: _paymentItems,
   style: ApplePayButtonStyle.black,
   type: ApplePayButtonType.buy,
@@ -58,7 +58,7 @@ ApplePayButton(
 ),
 
 GooglePayButton(
-  paymentConfigurationAsset: 'default_payment_profile.json',
+  paymentConfigurationAsset: 'default_payment_profile_google_pay.json',
   paymentItems: _paymentItems,
   style: GooglePayButtonStyle.black,
   type: GooglePayButtonType.pay,
@@ -77,8 +77,65 @@ void onGooglePayResult(paymentResult) {
   // Send the resulting Google Pay token to your server / PSP
 }
 ```
+## Advanced usage
+If you prefer to have more control over each individual request and the button separately, you can instantiate a payment client and add the buttons to your layout independently:
 
-## Resources
+```dart
+import 'package:pay/pay.dart';
+
+const _paymentItems = [
+  PaymentItem(
+    label: 'Total',
+    amount: '99.99',
+    status: PaymentItemStatus.final_price,
+  )
+];
+
+Pay _payClient = Pay.withAssets([
+  'default_payment_profile_apple_pay.json',
+  'default_payment_profile_google_pay.json'
+]);
+```
+
+As you can see, you can add multiple configurations to your payment client, one for each payment providers supported.
+
+Now, you can use the `userCanPay` method to determine whether the user in question can start a payment process with a given provider. This call returns a `Future<bool>` type that you can use to decide what to do next. For example, you can feed the `Future` to a `FutureBuilder` that shows a different UI based on the result of the call:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return FutureBuilder<bool>(
+    future: _payClient.userCanPay(PayProvider.google_pay),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.data == true) {
+          return RawGooglePayButton(
+            style: GooglePayButtonStyle.black,
+            type: GooglePayButtonType.pay,
+            onPressed: onGooglePayPressed);
+        } else {
+          // userCanPay returned false
+          // Consider showing an alternative payment method
+        }
+      }
+    },
+  );
+}
+```
+Finally, handle the `onPressed` event and trigger the payment selector as follows:
+
+```dart
+void onGooglePayPressed() async {
+  final result = await _payClient.showPaymentSelector(
+    PayProvider.google_pay,
+    paymentItems: paymentItems,
+  );
+  // Send the resulting Google Pay token to your server / PSP
+}
+```
+
+## Additional resources
+Take a look at the following resources to manage your payment accounts and learn more about the APIs for the supported providers:
 || Google Pay | Apple Pay |
 |:---|:---|:---|
 | Platforms | Android | iOS |
