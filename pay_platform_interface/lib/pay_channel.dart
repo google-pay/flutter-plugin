@@ -16,8 +16,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:pay_platform_interface/core/payment_item.dart';
 
+import 'core/payment_configuration.dart';
+import 'core/payment_item.dart';
+import 'util/configurations.dart';
 import 'pay_platform_interface.dart';
 
 class PayMethodChannel extends PayPlatform {
@@ -26,17 +28,21 @@ class PayMethodChannel extends PayPlatform {
 
   /// Completes with a [PlatformException] if the platform code fails.
   @override
-  Future<bool> userCanPay(Map<String, dynamic> paymentProfile) async =>
-      await _channel.invokeMethod('userCanPay', jsonEncode(paymentProfile));
+  Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
+    final configurationMap = await Configurations.build(paymentConfiguration);
+    return await _channel.invokeMethod(
+        'userCanPay', jsonEncode(configurationMap));
+  }
 
   /// Completes with a [PlatformException] if the platform code fails.
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
-    Map<String, dynamic> paymentProfile,
+    PaymentConfiguration paymentConfiguration,
     List<PaymentItem> paymentItems,
   ) async {
+    final configurationMap = await Configurations.build(paymentConfiguration);
     final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
-      'payment_profile': jsonEncode(paymentProfile),
+      'payment_profile': jsonEncode(configurationMap),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
     });
 

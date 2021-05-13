@@ -12,15 +12,14 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:pay/pay.dart';
+import 'payment_configuration.dart';
 
-void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+class GooglePayConfiguration implements PaymentConfiguration {
+  @override
+  PayProvider provider = PayProvider.google_pay;
 
-  testWidgets("correctly creates an instance of the client", (_) async {
-    Pay client = Pay([]);
-    await expectLater(client, isNotNull);
-  });
+  @override
+  Future<Map<String, dynamic>> toMap() {
+    throw UnimplementedError();
+  }
 }

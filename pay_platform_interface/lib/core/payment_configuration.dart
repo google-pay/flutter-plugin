@@ -12,50 +12,42 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
-import 'package:yaml/yaml.dart';
 
 enum PayProvider { apple_pay, google_pay }
 
-class PaymentConfiguration {
-  final PayProvider provider;
-  final Future<Map<String, dynamic>> parameters;
+typedef ConfigLoader = Future<Map<String, dynamic>> Function(String value);
 
-  PaymentConfiguration.fromMap(Map<String, dynamic> configuration)
+class PaymentConfiguration {
+  late final PayProvider provider;
+  late final Future<Map<String, dynamic>> _parameters;
+
+  PaymentConfiguration._(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
         assert(PayProviders.isValidProvider(configuration['provider'])),
         provider = PayProviders.fromString(configuration['provider'])!,
-        parameters = _populateConfiguration(
-            PayProviders.fromString(configuration['provider'])!,
-            configuration['data']);
+        _parameters = Future.value(configuration['data']);
 
-  static Future<Map<String, dynamic>> _populateConfiguration(
-      PayProvider provider, Map<String, dynamic> parameters) async {
-    switch (provider) {
-      case PayProvider.apple_pay:
-        return Future.value(parameters);
+  PaymentConfiguration.fromJsonString(String paymentConfigurationString)
+      : this._(jsonDecode(paymentConfigurationString));
 
-      case PayProvider.google_pay:
-        final updatedMerchantInfo = {
-          ...(parameters['merchantInfo'] ?? {}) as Map,
-          'softwareInfo': {
-            'id': 'flutter/pay-plugin',
-            'version': (await _getPackageConfiguration())['version']
-          }
-        };
-
-        final updatedPaymentConfiguration = Map<String, Object>.unmodifiable(
-            {...parameters, 'merchantInfo': updatedMerchantInfo});
-
-        return updatedPaymentConfiguration;
-    }
+  static Future<PaymentConfiguration> fromAsset(
+      String paymentConfigurationAsset,
+      {ConfigLoader profileLoader = _defaultProfileLoader}) async {
+    final configuration = await profileLoader(paymentConfigurationAsset);
+    return PaymentConfiguration._(configuration);
   }
 
-  static Future<Map> _getPackageConfiguration() async {
-    final configurationFile = await rootBundle
-        .loadString('packages/pay_platform_interface/pubspec.yaml');
-    return Future.value(loadYaml(configurationFile));
+  static Future<Map<String, dynamic>> _defaultProfileLoader(
+          String paymentConfigurationAsset) async =>
+      await rootBundle.loadStructuredData(
+          'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
+
+  Future<Map<String, dynamic>> toMap() async {
+    return _parameters;
   }
 }
 
