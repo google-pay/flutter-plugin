@@ -36,7 +36,7 @@ abstract class PayButton extends StatefulWidget {
     this.onError,
     this.childOnError,
     this.loadingIndicator,
-  )   : _payClient = Pay.fromAssets([paymentConfigurationAsset]),
+  )   : _payClient = Pay.withAssets([paymentConfigurationAsset]),
         super(key: key);
 
   VoidCallback _defaultOnPressed(
