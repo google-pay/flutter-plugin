@@ -1,26 +1,37 @@
 # pay – Facilitate payments on Flutter
 [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay)
 
-A Flutter plugin to add payment wallets to your application.
+A plugin to add payments to your Flutter application.
 
 ## Platform Support
-| Android (Google Pay) | iOS (Apple Pay) |
+| Android | iOS |
 |:---:|:---:|
-|    ✔️    |  (coming soon)  |
+| Google Pay | Apple Pay |
 
 ## Getting started
-Before you start, create an account on the payment services you are planning to support:
+Before you start, create an account with the payment providers you are planning to support and follow the setup instructions:
 
-### Android (Google Pay):
+#### Apple Pay:
+1. Take a look at the [integration requirements](https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay_requirements).
+2. Create a [merchant identifier](https://help.apple.com/developer-account/#/devb2e62b839?sub=dev103e030bb) for your business.
+3. Create a [payment processing certificate](https://help.apple.com/developer-account/#/devb2e62b839?sub=devf31990e3f) to encrypt payment information.
+
+#### Google Pay:
 1. Take a look at the [integration requirements](https://developers.google.com/pay/api/android/overview).
 2. Sign up to the [business console](https://pay.google.com/business/console) and create an account.
 
 ## Usage
-To use this plugin, add `pay` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/):
+
+```yaml
+dependencies:
+  pay: ^1.0.0
+```
 
 ### Payment configuration
 Create a payment profile with the desired configuration for your payment, either using a local file or loading it from a remote server. Take a look at some examples under the [`example/assets/` folder](example/assets) and explore the documentation for a complete list of options available:
-* [Android (Google Pay)](https://developers.google.com/pay/api/android/reference/request-objects#PaymentDataRequest)
+* [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects#PaymentDataRequest)
+* [Apple Pay](https://developer.apple.com/documentation/businesschatapi/applepaypaymentrequest) ([sample request](https://developer.apple.com/documentation/businesschatapi/messages_sent/interactive_messages/apple_pay_in_business_chat/sending_an_apple_pay_payment_request))
 
 ### Example
 ```dart
@@ -39,9 +50,9 @@ ApplePayButton(
   paymentItems: _paymentItems,
   style: ApplePayButtonStyle.black,
   type: ApplePayButtonType.buy,
-  margin: EdgeInsets.only(top: 15.0),
+  margin: const EdgeInsets.only(top: 15.0),
   onPaymentResult: onApplePayResult,
-  loadingIndicator: Center(
+  loadingIndicator: const Center(
     child: CircularProgressIndicator(),
   ),
 ),
@@ -51,9 +62,9 @@ GooglePayButton(
   paymentItems: _paymentItems,
   style: GooglePayButtonStyle.black,
   type: GooglePayButtonType.pay,
-  margin: EdgeInsets.only(top: 15.0),
+  margin: const EdgeInsets.only(top: 15.0),
   onPaymentResult: onGooglePayResult,
-  loadingIndicator: Center(
+  loadingIndicator: const Center(
     child: CircularProgressIndicator(),
   ),
 ),
@@ -68,10 +79,13 @@ void onGooglePayResult(paymentResult) {
 ```
 
 ## Resources
-|| Android (Google Pay) | iOS (Apple Pay) |
-|:---:|:---:|:---:|
-| Console | [Google Pay Business Console](https://pay.google.com/business/console/) |  (coming soon)  |
-| Reference | [API reference](https://developers.google.com/pay/api/android/reference/client)
-| Style guidelines | [Brand guidelines](https://developers.google.com/pay/api/android/guides/brand-guidelines)
+|| Google Pay | Apple Pay |
+|:---|:---|:---|
+| Platforms | Android | iOS |
+| Documentation | [Overview](https://developers.google.com/pay/api/android/overview) | [Overview](https://developer.apple.com/apple-pay/implementation/)
+| Console | [Google Pay Business Console](https://pay.google.com/business/console/) |  [Developer portal](https://developer.apple.com/account/)  |
+| Reference | [API reference](https://developers.google.com/pay/api/android/reference/client) | [Apple Pay API](https://developer.apple.com/documentation/passkit/apple_pay/)
+| Style guidelines | [Brand guidelines](https://developers.google.com/pay/api/android/guides/brand-guidelines) | [Buttons and Marks](https://developer.apple.com/design/human-interface-guidelines/apple-pay/overview/buttons-and-marks/)
 
-**Note:** This is not an officially supported Google product.
+<br>
+<sup>Note: This is not an officially supported Google product.</sup>
