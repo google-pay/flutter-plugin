@@ -1,4 +1,3 @@
-# Platform interface for the `pay` plugin
 [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay_platform_interface)
 
 A common platform interface for the [`pay`](../pay) plugin.

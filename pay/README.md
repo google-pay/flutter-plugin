@@ -1,4 +1,3 @@
-# pay – Facilitate payments on Flutter
 [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay)
 
 A plugin to add payments to your Flutter application.
