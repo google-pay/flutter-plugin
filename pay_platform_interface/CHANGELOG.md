@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-beta.2 (2021-05-10)
+Configuration updates.
+
+### Fixes
+
+* Update versioning and package configuration.
+
 ## 1.0.0-beta.1 (2021-05-10)
 Initial release of the platform interface for this plugin.
 
