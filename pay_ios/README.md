@@ -1,4 +1,4 @@
-[![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay_ios)
+[![pub package](https://img.shields.io/pub/v/pay_ios.svg)](https://pub.dartlang.org/packages/pay_ios)
 
 This is an implementation of the [`pay_platform_interface`](../pay_platform_interface) package for iOS.
 
