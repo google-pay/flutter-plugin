@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-beta.3 (2021-05-17)
+Configuration updates.
+
+### Fixes
+
+* Fix homepage URL errors.
+
 ## 1.0.0-beta.2 (2021-05-10)
 Configuration updates.
 
