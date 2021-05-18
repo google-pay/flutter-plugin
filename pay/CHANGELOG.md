@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.0.0-beta.1 (2021-05-10)
+## 1.0.1 (2021-05-18)
+
+### Fixes
+
+* Updated the guide in the readme.
+
+## 1.0.0 (2021-05-10)
 Initial release of this plugin.
 
 ### Features

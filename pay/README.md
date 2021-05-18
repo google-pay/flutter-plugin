@@ -24,11 +24,11 @@ To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file
 
 ```yaml
 dependencies:
-  pay: ^1.0.0
+  pay: ^1.0.1
 ```
 
 ### Payment configuration
-Create a payment profile with the desired configuration for your payment, either using a local file or loading it from a remote server. Take a look at some examples under the [`example/assets/` folder](example/assets) and explore the documentation for a complete list of options available:
+Create a payment profile with the desired configuration for your payment, either using a local file or loading it from a remote server. Take a look at some examples under the [`example/assets/` folder](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/assets) and explore the documentation for a complete list of options available:
 * [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects#PaymentDataRequest)
 * [Apple Pay](https://developer.apple.com/documentation/businesschatapi/applepaypaymentrequest) ([sample request](https://developer.apple.com/documentation/businesschatapi/messages_sent/interactive_messages/apple_pay_in_business_chat/sending_an_apple_pay_payment_request))
 
@@ -96,9 +96,9 @@ Pay _payClient = Pay.withAssets([
 ]);
 ```
 
-As you can see, you can add multiple configurations to your payment client, one for each payment providers supported.
+As you can see, you can add multiple configurations to your payment client, one for each payment provider supported.
 
-Now, you can use the `userCanPay` method to determine whether the user in question can start a payment process with a given provider. This call returns a `Future<bool>` type that you can use to decide what to do next. For example, you can feed the `Future` to a `FutureBuilder` that shows a different UI based on the result of the call:
+Now, you can use the `userCanPay` method to determine whether the user can start a payment process with a given provider. This call returns a `Future<bool>` result that you can use to decide what to do next. For example, you can feed the `Future` to a `FutureBuilder` that shows a different UI based on the result of the call:
 
 ```dart
 @override
@@ -135,7 +135,8 @@ void onGooglePayPressed() async {
 
 ## Additional resources
 Take a look at the following resources to manage your payment accounts and learn more about the APIs for the supported providers:
-|| Google Pay | Apple Pay |
+
+|  | Google Pay | Apple Pay |
 |:---|:---|:---|
 | Platforms | Android | iOS |
 | Documentation | [Overview](https://developers.google.com/pay/api/android/overview) | [Overview](https://developer.apple.com/apple-pay/implementation/)

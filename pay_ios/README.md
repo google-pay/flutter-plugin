@@ -1,6 +1,6 @@
 [![pub package](https://img.shields.io/pub/v/pay_ios.svg)](https://pub.dartlang.org/packages/pay_ios)
 
-This is an implementation of the [`pay_platform_interface`](../pay_platform_interface) package for iOS.
+This is an implementation of the [`pay_platform_interface`](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) package for iOS.
 
 ## Usage
 
@@ -10,7 +10,7 @@ This package is the endorsed implementation of the [`pay` plugin](https://pub.de
 
 ```yaml
 dependencies:
-  pay: ^1.0.0
+  pay: ^1.0.1
 ```
 ### Using this package directly
 
@@ -18,15 +18,15 @@ If you prefer to integrate or extend this package separately, add it as a depend
 
 ```yaml
 dependencies:
-  pay_ios: ^1.0.0
+  pay_ios: ^1.0.1
 ```
 
-Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](../pay_platform_interface) to communicate with the native end.
+Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) to communicate with the native end.
 
 ```dart
 RawApplePayButton(
   style: ApplePayButtonStyle.black,
-  type: ApplePayButtonType.play);
+  type: ApplePayButtonType.pay);
 ```
 
 <br>
