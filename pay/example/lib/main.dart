@@ -114,7 +114,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           GooglePayButton(
-            paymentConfigurationAsset: 'default_payment_profile.json',
+            paymentConfigurationAsset:
+                'default_payment_profile_google_pay.json',
             paymentItems: _paymentItems,
             style: GooglePayButtonStyle.black,
             type: GooglePayButtonType.pay,
@@ -125,7 +126,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           ApplePayButton(
-            paymentConfigurationAsset: 'default_payment_profile_ios.json',
+            paymentConfigurationAsset: 'default_payment_profile_apple_pay.json',
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,

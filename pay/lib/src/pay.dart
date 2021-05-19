@@ -15,7 +15,7 @@ class Pay {
 
   Pay(this._configurations) : _payPlatform = PayMethodChannel();
 
-  Pay.fromAssets(List<String> configAssets)
+  Pay.withAssets(List<String> configAssets)
       : _payPlatform = PayMethodChannel() {
     _assetInitializationFuture = _loadConfigAssets(configAssets);
   }
