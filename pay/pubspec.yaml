@@ -21,6 +21,14 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
   flutter: '>=2.0.0'
 
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: pay_android
+      ios:
+        default_package: pay_ios
+
 dependencies:
   flutter:
     sdk: flutter
