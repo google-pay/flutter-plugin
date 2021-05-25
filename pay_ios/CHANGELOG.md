@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2 (2021-05-25)
+
+* Update dependencies.
+
 ## 1.0.1 (2021-05-18)
 
 ### Fixes
