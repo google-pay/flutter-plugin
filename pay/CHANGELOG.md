@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.2 (2021-05-25)
+
+* Update dependencies.
+
+### Fixes
+
+* Correctly flag the package as a plugin.
+
 ## 1.0.1 (2021-05-18)
 
 ### Fixes
