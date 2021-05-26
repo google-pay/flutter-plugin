@@ -12,18 +12,18 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
-/// The types of payment statuses supported.
+/// The payment price statuses supported in the payment selector.
 ///
 /// * [final_price] determines that the price has been calculated and
 /// won't change.
 /// * [pending] expects changes to the final price in response to user selection
-/// or other circumstances that are not known when requesting the payment.
-/// * [unknown] for any other scenario other than the above.
+/// or other circumstances that are not known when first requesting the payment.
+/// * [unknown] for any other scenario.
 enum PaymentItemStatus { unknown, pending, final_price }
 
 /// A set of utility methods associated to the [PaymentItemStatus] enumeration.
 extension on PaymentItemStatus {
-  /// Creates a string representation from the [PaymentItemStatus] enumeration.
+  /// Creates a string representation of [PaymentItemStatus] enumeration.
   String toSimpleString() => {
         PaymentItemStatus.unknown: 'unknown',
         PaymentItemStatus.pending: 'pending',
@@ -31,15 +31,15 @@ extension on PaymentItemStatus {
       }[this]!;
 }
 
-/// The types of payment types supported.
+/// The payment types supported when showing the payment selector.
 ///
 /// * [item] defines an element as a regular entry in the payment summary.
-/// * [total] describes the item as the total amount to be paid.
+/// * [total] describes the summary item with the total amount to be paid.
 enum PaymentItemType { item, total }
 
 /// A set of utility methods associated to the [PaymentItemType] enumeration.
 extension on PaymentItemType {
-  /// Creates a string representation from the [PaymentItemType] enumeration.
+  /// Creates a string representation of the [PaymentItemType] enumeration.
   String toSimpleString() => {
         PaymentItemType.item: 'item',
         PaymentItemType.total: 'total',

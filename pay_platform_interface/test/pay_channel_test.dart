@@ -31,9 +31,6 @@ void main() {
       '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}';
   final _dummyConfig = PaymentConfiguration.fromJsonString(_payConfigString);
 
-  PaymentConfiguration.fromJsonString(
-      '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}');
-
   setUpAll(() async {
     _mobilePlatform = PayMethodChannel();
   });

@@ -24,9 +24,9 @@ class Configurations {
   /// package.
   ///
   /// Takes the configuration included in [config] and returns and updated
-  /// version of the object wrapped in a [Future] with the additional metadata.
+  /// version of the object wrapped in a [Future] with additional metadata.
   static Future<Map<String, dynamic>> build(PaymentConfiguration config) async {
-    // A Map with the raw parameters in the configuration.
+    // A map with the raw parameters in the configuration.
     final _parameters = await config.toMap();
 
     switch (config.provider) {
@@ -35,7 +35,7 @@ class Configurations {
 
       case PayProvider.google_pay:
 
-        // Add information about the package
+        // Add information about the package.
         final updatedMerchantInfo = {
           ...(_parameters['merchantInfo'] ?? {}) as Map,
           'softwareInfo': {
@@ -51,9 +51,7 @@ class Configurations {
     }
   }
 
-  /// Retrieves package information from the specification in the pubspec.yaml.
-  ///
-  /// Returns a [Map] with the fields gathered from the pubspec.yaml file.
+  /// Retrieves package information from the `pubspec.yaml` file as a [Map].
   static Future<Map> _getPackageConfiguration() async {
     final configurationFile = await rootBundle
         .loadString('packages/pay_platform_interface/pubspec.yaml');

@@ -11,7 +11,7 @@ abstract class PayPlatform {
   /// configuration.
   ///
   /// Returns a [Future] that resolves to a boolean value with the result based
-  /// on the [paymentConfiguration] passed.
+  /// on a given [paymentConfiguration].
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration);
 
   /// Triggers the action to show the payment selector to complete a payment
@@ -19,7 +19,7 @@ abstract class PayPlatform {
   /// the price elements to show in the payment selector.
   ///
   /// Returns a [Future] with the result of the selection for the
-  /// [paymentConfiguration] and [paymentItems] included.
+  /// [paymentConfiguration] and [paymentItems] specified.
   Future<Map<String, dynamic>> showPaymentSelector(
       PaymentConfiguration paymentConfiguration,
       List<PaymentItem> paymentItems);
