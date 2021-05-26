@@ -10,7 +10,7 @@ This package is the endorsed implementation of the [`pay` plugin](https://pub.de
 
 ```yaml
 dependencies:
-  pay: ^1.0.2
+  pay: ^1.0.3
 ```
 ### Using this package directly
 
