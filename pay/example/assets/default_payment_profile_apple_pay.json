@@ -7,8 +7,8 @@
     "supportedNetworks": ["amex", "visa", "discover", "masterCard"],
     "countryCode": "US",
     "currencyCode": "USD",
-    "requiredBillingContactFields": ["post"],
-    "requiredShippingContactFields": ["post", "phone", "email", "name"],
+    "requiredBillingContactFields": ["emailAddress", "name", "phoneNumber", "postalAddress"],
+    "requiredShippingContactFields": [],
     "shippingMethods": [
       {
         "amount": "0.00",
