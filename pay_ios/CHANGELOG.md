@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3 (2021-05-26)
+
+### Fixes
+
+* Fix incorrect handling of billing and shipping addresses.
+
 ## 1.0.2 (2021-05-25)
 
 * Update dependencies.
