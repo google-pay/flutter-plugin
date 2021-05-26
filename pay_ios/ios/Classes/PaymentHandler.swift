@@ -88,12 +88,26 @@ class PaymentHandler: NSObject {
     
     // Configure the payment
     paymentRequest.merchantIdentifier = paymentConfiguration["merchantIdentifier"] as! String
-    if let merchantCapabilities = paymentConfiguration["merchantCapabilities"] as? Array<String> {
-      paymentRequest.merchantCapabilities = PKMerchantCapability(merchantCapabilities.compactMap { capabilityString in PKMerchantCapability.fromString(capabilityString) })
-    }
     paymentRequest.countryCode = paymentConfiguration["countryCode"] as! String
     paymentRequest.currencyCode = paymentConfiguration["currencyCode"] as! String
-    paymentRequest.requiredShippingContactFields = [.postalAddress, .phoneNumber]
+    
+    if let merchantCapabilities = paymentConfiguration["merchantCapabilities"] as? Array<String> {
+      paymentRequest.merchantCapabilities = PKMerchantCapability(merchantCapabilities.compactMap { capabilityString in
+        PKMerchantCapability.fromString(capabilityString)
+      })
+    }
+    
+    if let requiredShippingFields = paymentConfiguration["requiredShippingContactFields"] as? Array<String> {
+      paymentRequest.requiredShippingContactFields = Set(requiredShippingFields.compactMap { shippingField in
+        PKContactField.fromString(shippingField)
+      })
+    }
+    
+    if let requiredBillingFields = paymentConfiguration["requiredBillingContactFields"] as? Array<String> {
+      paymentRequest.requiredBillingContactFields = Set(requiredBillingFields.compactMap { billingField in
+        PKContactField.fromString(billingField)
+      })
+    }
     
     if let supportedNetworks = supportedNetworks(from: paymentConfigurationString) {
       paymentRequest.supportedNetworks = supportedNetworks
@@ -246,6 +260,25 @@ extension PKMerchantCapability {
       return .capabilityCredit
     case "debit":
       return .capabilityDebit
+    default:
+      return nil
+    }
+  }
+}
+
+extension PKContactField {
+  public static func fromString(_ contactFieldItem: String) -> PKContactField? {
+    switch contactFieldItem {
+    case "emailAddress":
+      return .emailAddress
+    case "name":
+      return .name
+    case "phoneNumber":
+      return .phoneNumber
+    case "phoneticName":
+      return .phoneticName
+    case "postalAddress":
+      return .postalAddress
     default:
       return nil
     }
