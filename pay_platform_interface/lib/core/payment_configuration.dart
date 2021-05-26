@@ -16,14 +16,41 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
+/// The payment providers supported by this package.
 enum PayProvider { apple_pay, google_pay }
 
+/// A type used to define the signature of methods and objects used to load
+/// payment configuration from various sources.
 typedef ConfigLoader = Future<Map<String, dynamic>> Function(String value);
 
+/// An object that holds information about a payment transaction.
+///
+/// This object helps load and store configuration information needed to
+/// complete a payment transaction for a given provider. It offers multiple
+/// options to create an instance, based on the source of the configuration.
+///
+/// For example, if the payment configuration is available in string format, as
+/// a result of, for example, loading it from a remote server:
+///
+/// ```dart
+/// PaymentConfiguration.fromJsonString(
+///     '{"provider": "apple_pay", "data": {}}');
+/// ```
+///
+/// Or, if the configuration is loaded from the `assets` folder instead:
+///
+/// ```dart
+/// PaymentConfiguration.fromAsset('configuration_asset.json');
+/// ```
 class PaymentConfiguration {
+  /// The payment provider for this configuration.
   late final PayProvider provider;
+
+  /// The configuration parameters for a given payment provider.
   late final Future<Map<String, dynamic>> _parameters;
 
+  /// Creates a [PaymentConfiguration] object with the properties in the map.
+  /// and ensures the necessary fields are present and valid.
   PaymentConfiguration._(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
@@ -31,9 +58,26 @@ class PaymentConfiguration {
         provider = PayProviders.fromString(configuration['provider'])!,
         _parameters = Future.value(configuration['data']);
 
+  /// Creates a [PaymentConfiguration] object from the
+  /// [paymentConfigurationString] in JSON format.
   PaymentConfiguration.fromJsonString(String paymentConfigurationString)
       : this._(jsonDecode(paymentConfigurationString));
 
+  /// Creates a [PaymentConfiguration] object wrapped in a [Future], from a
+  /// configuration loaded from an external source.
+  ///
+  /// The configuration is referenced in the [paymentConfigurationAsset] and
+  /// retrieved with the [profileLoader] specifies. If empty, a default loader
+  /// is used to get the configuration from the `assets` folder in the package.
+  ///
+  /// Here's an example of a configuration loaded with a custom loader:
+  ///
+  /// ```dart
+  /// Future<Map<String, dynamic>> _fileSystemLoader(String filePath) async =>
+  ///     jsonDecode(File(filePath).readAsStringSync());
+  /// final config = await PaymentConfiguration.fromAsset('path-to-file.json',
+  ///     profileLoader: _fileSystemLoader);
+  /// ```
   static Future<PaymentConfiguration> fromAsset(
       String paymentConfigurationAsset,
       {ConfigLoader profileLoader = _defaultProfileLoader}) async {
@@ -41,11 +85,18 @@ class PaymentConfiguration {
     return PaymentConfiguration._(configuration);
   }
 
+  /// Configuration loader used as a default option in the [fromAsset] method.
+  ///
+  /// This loader retrieves the configuration with the
+  /// [paymentConfigurationAsset] key from the `assets` folder in the
+  /// package and decodes the JSON content before returning it back to the
+  /// constructor.
   static Future<Map<String, dynamic>> _defaultProfileLoader(
           String paymentConfigurationAsset) async =>
       await rootBundle.loadStructuredData(
           'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
 
+  /// Returns the core configuration map in this object.
   Future<Map<String, dynamic>> toMap() async {
     return _parameters;
   }

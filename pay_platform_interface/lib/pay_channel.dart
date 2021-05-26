@@ -22,11 +22,25 @@ import 'core/payment_item.dart';
 import 'util/configurations.dart';
 import 'pay_platform_interface.dart';
 
+/// An implementation of the contract in this plugin that uses a [MethodChannel]
+/// to communicate with the native end.
+///
+/// Example of a simple method channel to communicate with the native ends:
+///
+/// ```dart
+/// PayPlatform platform = PayMethodChannel();
+/// platform.userCanPay(configuration);
+/// platform.showPaymentSelector(configuration, paymentItems);
+/// ```
 class PayMethodChannel extends PayPlatform {
+  // The channel used to send messages down the native pipe.
   final MethodChannel _channel =
       const MethodChannel('plugins.flutter.io/pay_channel');
 
-  /// Completes with a [PlatformException] if the platform code fails.
+  /// Determines wehther a user can pay with the provider in the configuration.
+  ///
+  /// Completes with a [PlatformException] if the native call fails or returns
+  /// a boolean for the [paymentConfiguration] otherwise.
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
     final configurationMap = await Configurations.build(paymentConfiguration);
@@ -34,7 +48,12 @@ class PayMethodChannel extends PayPlatform {
         'userCanPay', jsonEncode(configurationMap));
   }
 
-  /// Completes with a [PlatformException] if the platform code fails.
+  /// Shows the payment selector to confirm the payment transaction.
+  ///
+  /// Shows the payment selector with the [paymentItems] specified and the
+  /// [paymentConfiguration] attached, returning the payment method selected as
+  /// a result if the operation completes successfully, or throws a
+  /// [PlatformException] if there's an error on the native end.
   @override
   Future<Map<String, dynamic>> showPaymentSelector(
     PaymentConfiguration paymentConfiguration,
