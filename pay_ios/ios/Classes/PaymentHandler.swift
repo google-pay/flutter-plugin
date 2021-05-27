@@ -35,7 +35,7 @@ class PaymentHandler: NSObject {
   func startPayment(result: @escaping FlutterResult, paymentConfiguration: String, paymentItems: [[String: Any?]]) {
     
     // Set active payment result
-    paymentResult = paymentResult ?? result
+    paymentResult = result
     
     // Deserialize payment configuration
     guard let paymentRequest = PaymentHandler.createPaymentRequest(from: paymentConfiguration, paymentItems: paymentItems) else {

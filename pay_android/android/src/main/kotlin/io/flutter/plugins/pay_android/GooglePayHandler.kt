@@ -91,8 +91,6 @@ class GooglePayHandler(private val activity: Activity) :
 
     fun loadPaymentData(result: Result, paymentProfileString: String, paymentItems: List<Map<String, Any?>>): Boolean {
 
-        // Only proceed if there is no other request is active
-        if (loadPaymentDataResult != null) return false
         loadPaymentDataResult = result
 
         val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
@@ -117,13 +115,11 @@ class GooglePayHandler(private val activity: Activity) :
                         data?.let { intent ->
                             PaymentData.getFromIntent(intent).let(::handlePaymentSuccess)
                         }
-                        loadPaymentDataResult = null
                         true
                     }
 
                     Activity.RESULT_CANCELED -> {
                         // The user cancelled the payment attempt
-                        loadPaymentDataResult = null
                         true
                     }
 
@@ -131,12 +127,10 @@ class GooglePayHandler(private val activity: Activity) :
                         AutoResolveHelper.getStatusFromIntent(data)?.let { status ->
                             handleError(status.statusCode)
                         }
-                        loadPaymentDataResult = null
                         true
                     }
 
                     else -> {
-                        loadPaymentDataResult = null
                         false
                     }
                 }
