@@ -23,7 +23,7 @@ enum PaymentItemStatus { unknown, pending, final_price }
 
 /// A set of utility methods associated to the [PaymentItemStatus] enumeration.
 extension on PaymentItemStatus {
-  /// Creates a string representation of [PaymentItemStatus] enumeration.
+  /// Creates a string representation of the [PaymentItemStatus] enumeration.
   String toSimpleString() => {
         PaymentItemStatus.unknown: 'unknown',
         PaymentItemStatus.pending: 'pending',

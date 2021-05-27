@@ -26,7 +26,7 @@ Now, you can use the buttons available for the supported payment providers and t
 ```dart
 RawApplePayButton(
   style: ApplePayButtonStyle.black,
-  type: ApplePayButtonType.pay);
+  type: ApplePayButtonType.buy);
 ```
 
 <br>
