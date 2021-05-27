@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4 (2021-05-27)
+
+### Fixes
+
+* Fix iOS not returning a result after consecutive payment attempts.
+
 ## 1.0.3 (2021-05-26)
 
 ### Fixes
