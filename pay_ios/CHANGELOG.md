@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.0.4 (2021-05-27)
+Enrich `dartdoc` comments to facilitate the adoption of the package.
 
 ### Fixes
 
