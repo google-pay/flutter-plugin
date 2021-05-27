@@ -30,7 +30,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  pay_platform_interface: ^1.0.1
+  pay_platform_interface: ^1.0.2
 
 dev_dependencies:
   flutter_test:
