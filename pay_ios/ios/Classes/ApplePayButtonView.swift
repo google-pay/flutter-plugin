@@ -114,7 +114,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     let buttonStyle = arguments["style"] as! String
     
     // Instantiate the channel to talk to the Flutter end.
-    channel = FlutterMethodChannel(name: "\(buttonMethodChannelName)/\(viewId)",
+    channel = FlutterMethodChannel(name: "\(ApplePayButtonView.buttonMethodChannelName)/\(viewId)",
                                    binaryMessenger: messenger)
     
     super.init()
