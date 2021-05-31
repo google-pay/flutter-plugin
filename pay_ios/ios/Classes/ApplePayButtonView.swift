@@ -82,7 +82,6 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   /// Holds the actual view with the contents to be send back to Flutter.
   private var _view: UIView
   
-  private var applePayButton: PKPaymentButton?
   /// The channel used to communicate with Flutter's end to exchange user interaction information.
   private let channel: FlutterMethodChannel
   
@@ -136,30 +135,23 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
   
   /// Creates the actual `PKPaymentButton` with the defined styles and constraints.
-  func createApplePayView(){
-    if let applePayButton = self.applePayButton {
-      applePayButton.removeFromSuperview()
-    }
   func createApplePayView(type buttonTypeString: String, style buttonStyleString: String){
     
     // Create the PK objects
-    self.applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
     let paymentButtonType = PKPaymentButtonType.fromString(buttonTypeString) ?? .plain
     let paymentButtonStyle = PKPaymentButtonStyle.fromString(buttonStyleString) ?? .black
+    let applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
     
-    if let applePayButton = self.applePayButton {
-      applePayButton.translatesAutoresizingMaskIntoConstraints = false
-      applePayButton.addTarget(self, action: #selector(handleApplePayButtonTapped), for: .touchUpInside)
-      _view.addSubview(applePayButton)
-      
-      applePayButton.topAnchor.constraint(equalTo: _view.topAnchor).isActive = true
-      applePayButton.bottomAnchor.constraint(equalTo: _view.bottomAnchor).isActive = true
-      applePayButton.leftAnchor.constraint(equalTo: _view.leftAnchor).isActive = true
-      applePayButton.rightAnchor.constraint(equalTo: _view.rightAnchor).isActive = true
-    }
     // Configure the button
+    applePayButton.translatesAutoresizingMaskIntoConstraints = false
+    applePayButton.addTarget(self, action: #selector(handleApplePayButtonTapped), for: .touchUpInside)
+    _view.addSubview(applePayButton)
     
     // Enable constraints
+    applePayButton.topAnchor.constraint(equalTo: _view.topAnchor).isActive = true
+    applePayButton.bottomAnchor.constraint(equalTo: _view.bottomAnchor).isActive = true
+    applePayButton.leftAnchor.constraint(equalTo: _view.leftAnchor).isActive = true
+    applePayButton.rightAnchor.constraint(equalTo: _view.rightAnchor).isActive = true
   }
 }
 
