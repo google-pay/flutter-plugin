@@ -83,12 +83,6 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   private var _view: UIView
   
   private var applePayButton: PKPaymentButton?
-  /// The type of the button as specified in the configuration.
-  let type: String
-  
-  /// The style of the button as specified in the configuration.
-  let style: String
-  
   /// The channel used to communicate with Flutter's end to exchange user interaction information.
   private let channel: FlutterMethodChannel
   
@@ -114,8 +108,8 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     _view = UIView()
     
     let arguments = args as! Dictionary<String, AnyObject>
-    type = arguments["type"] as! String
-    style = arguments["style"] as! String
+    let buttonType = arguments["type"] as! String
+    let buttonStyle = arguments["style"] as! String
     
     // Instantiate the channel to talk to the Flutter end.
     channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
@@ -123,7 +117,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     
     super.init()
     channel.setMethodCallHandler(handleFlutterCall)
-    createApplePayView()
+    createApplePayView(type: buttonType, style: buttonStyle)
   }
   
   /// No-op handler that resonds to calls received from Flutter.
@@ -146,11 +140,12 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     if let applePayButton = self.applePayButton {
       applePayButton.removeFromSuperview()
     }
+  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String){
     
     // Create the PK objects
-    let paymentButtonType = PKPaymentButtonType.fromString(type) ?? .plain
-    let paymentButtonStyle = PKPaymentButtonStyle.fromString(style) ?? .black
     self.applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
+    let paymentButtonType = PKPaymentButtonType.fromString(buttonTypeString) ?? .plain
+    let paymentButtonStyle = PKPaymentButtonStyle.fromString(buttonStyleString) ?? .black
     
     if let applePayButton = self.applePayButton {
       applePayButton.translatesAutoresizingMaskIntoConstraints = false
