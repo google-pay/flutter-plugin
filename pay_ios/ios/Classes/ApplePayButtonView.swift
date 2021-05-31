@@ -79,6 +79,9 @@ class ApplePayButtonViewFactory: NSObject, FlutterPlatformViewFactory {
 /// it needs to be drawn natively.
 class ApplePayButtonView: NSObject, FlutterPlatformView {
   
+  /// The name of the channel to use by the button to connect the native and Flutter ends
+  static let buttonMethodChannelName = "plugins.flutter.io/pay/apple_pay_button"
+  
   /// Holds the actual view with the contents to be send back to Flutter.
   private var _view: UIView
   
@@ -111,7 +114,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     let buttonStyle = arguments["style"] as! String
     
     // Instantiate the channel to talk to the Flutter end.
-    channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
+    channel = FlutterMethodChannel(name: "\(buttonMethodChannelName)/\(viewId)",
                                    binaryMessenger: messenger)
     
     super.init()
