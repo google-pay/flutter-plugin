@@ -18,14 +18,40 @@ import Flutter
 import UIKit
 import PassKit
 
+/// A factory class that creates the `FlutterPlatformView` that needs to render
+/// and displayed on the Flutter end.
+///
+/// The constructor takes a messenger to communicate both ends and respond to
+/// user interaction.
+/// Example usage:
+/// ```
+/// let messenger = registrar.messenger()
+/// let buttonFactory = ApplePayButtonViewFactory(messenger: messenger)
+/// ```
 class ApplePayButtonViewFactory: NSObject, FlutterPlatformViewFactory {
+  
+  /// Holds the object needed to connect both the Flutter and native ends.
   private var messenger: FlutterBinaryMessenger
   
+  /// Instantiates the class with the associated messenger.
+  ///
+  /// - parameter messenger: An object to help the Flutter and native ends communicate.
   init(messenger: FlutterBinaryMessenger) {
     self.messenger = messenger
     super.init()
   }
   
+  /// Create a `FlutterPlatformView`.
+  ///
+  /// Implemented by iOS code that expose a `UIView` for embedding in a Flutter app.
+  /// The implementation of this method should create a new `UIView` and return it.
+  ///
+  /// - parameter frame: The rectangle for the newly created `UIView` measured in points.
+  /// - parameter viewId: A unique identifier for this `UIView`.
+  /// - parameter args: Parameters for creating the `UIView` sent from the Dart side of the Flutter app.
+  /// If `createArgsCodec` is not implemented, or if no creation arguments were sent from the Dart
+  /// code, this will be null. Otherwise this will be the value sent from the Dart code as decoded by
+  /// `createArgsCodec`.
   func create(
     withFrame frame: CGRect,
     viewIdentifier viewId: Int64,
@@ -38,44 +64,73 @@ class ApplePayButtonViewFactory: NSObject, FlutterPlatformViewFactory {
       binaryMessenger: messenger)
   }
   
+  /// Returns the `FlutterMessageCodec` for decoding the args parameter of `createWithFrame`.
+  ///
+  /// Only needs to be implemented if `createWithFrame` needs an arguments parameter.
   func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
     return FlutterStandardMessageCodec.sharedInstance()
   }
 }
 
+/// A class to draw Apple Pay's `PKPaymentButton` natively.
+///
+/// This class constructs and draws a `PKPaymentButton` to send that back to the
+/// Flutter end. At the moment, the assets are not available to use by Flutter, and hence,
+/// it needs to be drawn natively.
 class ApplePayButtonView: NSObject, FlutterPlatformView {
+  
+  /// Holds the actual view with the contents to be send back to Flutter.
   private var _view: UIView
-  var type: String
-  var style: String
   
   private var applePayButton: PKPaymentButton?
+  /// The type of the button as specified in the configuration.
+  let type: String
   
+  /// The style of the button as specified in the configuration.
+  let style: String
+  
+  /// The channel used to communicate with Flutter's end to exchange user interaction information.
   private let channel: FlutterMethodChannel
   
+  /// Function to  inform the Flutter channel about the tap event
   @objc func handleApplePayButtonTapped() {
     channel.invokeMethod("onPressed", arguments: nil)
   }
   
+  /// Creates a `PKPaymentButton` based on the parameters received.
+  ///
+  /// This constructor also initializes the objects necessary to communicate to and from the Flutter end.
+  ///
+  /// - parameter frame: The bounds of the view.
+  /// - parameter viewIdentifier: The identifier for this view.
+  /// - parameter args: Additional arguments.
+  /// - parameter binaryMessenger: The messenger received from the platform view factory.
   init(
     frame: CGRect,
     viewIdentifier viewId: Int64,
     arguments args: Any?,
     binaryMessenger messenger: FlutterBinaryMessenger
   ) {
-    channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
-                                   binaryMessenger: messenger)
     _view = UIView()
-
+    
     let arguments = args as! Dictionary<String, AnyObject>
     type = arguments["type"] as! String
     style = arguments["style"] as! String
-
+    
+    // Instantiate the channel to talk to the Flutter end.
+    channel = FlutterMethodChannel(name: "plugins.flutter.io/pay/apple_pay_button/\(viewId)",
+                                   binaryMessenger: messenger)
+    
     super.init()
-    channel.setMethodCallHandler(handle)
+    channel.setMethodCallHandler(handleFlutterCall)
     createApplePayView()
   }
   
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+  /// No-op handler that resonds to calls received from Flutter.
+  ///
+  /// - parameter call: The call received from Flutter.
+  /// - parameter result: The callback to respond back.
+  public func handleFlutterCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     default:
       result(FlutterMethodNotImplemented)
@@ -86,11 +141,13 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     return _view
   }
   
+  /// Creates the actual `PKPaymentButton` with the defined styles and constraints.
   func createApplePayView(){
     if let applePayButton = self.applePayButton {
       applePayButton.removeFromSuperview()
     }
     
+    // Create the PK objects
     let paymentButtonType = PKPaymentButtonType.fromString(type) ?? .plain
     let paymentButtonStyle = PKPaymentButtonStyle.fromString(style) ?? .black
     self.applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
@@ -105,10 +162,16 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
       applePayButton.leftAnchor.constraint(equalTo: _view.leftAnchor).isActive = true
       applePayButton.rightAnchor.constraint(equalTo: _view.rightAnchor).isActive = true
     }
+    // Configure the button
+    
+    // Enable constraints
   }
 }
 
+/// A set of utility methods associated to `PKPaymentButtonType`.
 extension PKPaymentButtonType {
+  
+  /// Creates a `PKPaymentButtonType` object from a network in string format.
   public static func fromString(_ buttonType: String) -> PKPaymentButtonType? {
     switch buttonType {
     case "buy":
@@ -151,7 +214,10 @@ extension PKPaymentButtonType {
   }
 }
 
+/// A set of utility methods associated to `PKPaymentButtonStyle`.
 extension PKPaymentButtonStyle {
+  
+  /// Creates a `PKPaymentButtonStyle` object from a network in string format.
   public static func fromString(_ buttonStyle: String) -> PKPaymentButtonStyle? {
     switch buttonStyle {
     case "white":
