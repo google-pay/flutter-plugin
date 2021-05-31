@@ -64,7 +64,7 @@ extension on ApplePayButtonType {
 /// element tree in Flutter. The button features all the labels, and styles
 /// available, and can be used independently as a standalone component.
 ///
-/// To use this button, simply add it to your layout:
+/// To use this button independently, simply add it to your layout:
 /// ```dart
 /// RawApplePayButton(
 ///   style: ApplePayButtonStyle.black,
