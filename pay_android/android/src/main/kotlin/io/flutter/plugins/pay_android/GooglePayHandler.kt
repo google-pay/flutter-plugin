@@ -71,7 +71,7 @@ class GooglePayHandler(private val activity: Activity) :
                     else -> "NOT_CURRENTLY_KNOWN"
                 }
 
-                paymentProfile.optJSONObject("transactionInfo").apply {
+                paymentProfile.getJSONObject("transactionInfo").apply {
                     putOpt("totalPrice", it?.get("amount"))
                     put("totalPriceStatus", priceStatus)
                 }
