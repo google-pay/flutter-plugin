@@ -56,20 +56,4 @@ object PaymentsUtil {
                 else -> throw IllegalArgumentException(
                         "Environment must be one of TEST or PRODUCTION")
             }
-
-    fun createSoftwareInfo(context: Context): Map<String, String> {
-        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        return mapOf(
-                "id" to "pay-flutter-plug-in",
-                "version" to packageInfo.versionName
-        )
-    }
 }
-
-/**
- * Extension to convert cents to a string format.
- */
-fun Long.centsToString() = BigDecimal(this)
-        .divide(CENTS)
-        .setScale(2, RoundingMode.HALF_EVEN)
-        .toString()

@@ -164,8 +164,6 @@ class GooglePayHandler(private val activity: Activity) :
                 client.loadPaymentData(ldpRequest),
                 activity,
                 LOAD_PAYMENT_DATA_REQUEST_CODE)
-
-        return true
     }
 
     override fun onActivityResult(
