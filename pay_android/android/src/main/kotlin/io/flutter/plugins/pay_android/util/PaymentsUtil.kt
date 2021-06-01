@@ -16,29 +16,39 @@
 
 package io.flutter.plugins.pay_android.util
 
-import android.content.Context
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.WalletConstants
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.util.*
-
-private val CENTS = BigDecimal(100)
+import java.util.Locale
 
 /**
- * Contains helper static methods for dealing with the Payments API.
- *
- * Many of the parameters used in the code are optional and are set here merely to call out their
- * existence. Please consult the documentation to learn more and feel free to remove ones not
- * relevant to your implementation.
+ * A set of utilities with  static methods for dealing with the Payments API.
  */
 object PaymentsUtil {
 
+    /**
+     * Extracts the status code of the exception if included.
+     *
+     * An [ApiException] is returned by the Google Pay library when there is an error in the process
+     * of initiating a payment process. This type has a status code that concretely defines the issue.
+     * @param exception the exception to extract the status code from.
+     * @return the integer that specifies the concrete issue.
+     */
     fun statusCodeForException(exception: Exception): Int = when (exception) {
         is ApiException -> exception.statusCode
         else -> -1
     }
 
+    /**
+     * Creates an environment constant from a string that the Google Pay library understands.
+     *
+     * Google Pay can be used in `TEST` or `PRODUCTION` modes. In `TEST` mode, the payment result
+     * returns a dummy token to help validate the flow before going to production. When `PRODUCTION`
+     * is used, a real encrypted payload is offered instead.
+     *
+     * @param environmentString the environment in [String] format.
+     * @return a constant from [WalletConstants] with the environment.
+     * @throws IllegalArgumentException if the value provided is unrecognized.
+     */
     fun environmentForString(environmentString: String?): Int =
             when (environmentString?.toLowerCase(Locale.ROOT)) {
                 "test" -> WalletConstants.ENVIRONMENT_TEST

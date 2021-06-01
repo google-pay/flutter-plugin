@@ -60,7 +60,7 @@ class PaymentHandler: NSObject {
   /// - parameter paymentConfiguration: A JSON string with the configuration to execute
   ///   this payment.
   /// - parameter paymentItems: A list of payment elements that determine the total amount purchased.
-  /// - returns: The payment method inforation selected by the user.
+  /// - returns: The payment method information selected by the user.
   func startPayment(result: @escaping FlutterResult, paymentConfiguration: String, paymentItems: [[String: Any?]]) {
     
     // Set active payment result.

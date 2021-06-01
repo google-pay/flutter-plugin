@@ -32,6 +32,9 @@ private const val METHOD_CHANNEL_NAME = "plugins.flutter.io/pay_channel"
 private const val METHOD_USER_CAN_PAY = "userCanPay"
 private const val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
 
+/**
+ * A simple class that configures and register a method handler for the `pay` plugin.
+ */
 class PayMethodCallHandler private constructor(
         messenger: BinaryMessenger,
         activity: Activity,
@@ -55,6 +58,9 @@ class PayMethodCallHandler private constructor(
         activityBinding.addActivityResultListener(googlePayHandler)
     }
 
+    /**
+     * Clears the handler in the method channel when not needed anymore.
+     */
     fun stopListening() = channel.setMethodCallHandler(null)
 
     @Suppress("UNCHECKED_CAST")

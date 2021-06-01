@@ -22,6 +22,9 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
+/**
+ * Entry point handler for the plugin.
+ */
 class PayPlugin : FlutterPlugin, ActivityAware {
 
     private lateinit var flutterPluginBinding: FlutterPlugin.FlutterPluginBinding
