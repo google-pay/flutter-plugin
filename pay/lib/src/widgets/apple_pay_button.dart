@@ -3,6 +3,23 @@
 
 part of '../../pay.dart';
 
+/// A widget to show the Apple Pay button according to the rules and constraints
+/// specified in [PayButton].
+///
+/// Example usage:
+/// ```dart
+/// ApplePayButton(
+///   paymentConfigurationAsset: 'apple_pay_config.json',
+///   paymentItems: _paymentItems,
+///   style: ApplePayButtonStyle.black,
+///   type: ApplePayButtonType.buy,
+///   margin: const EdgeInsets.only(top: 15.0),
+///   onPaymentResult: onApplePayResult,
+///   loadingIndicator: const Center(
+///     child: CircularProgressIndicator(),
+///   ),
+/// )
+/// ```
 class ApplePayButton extends PayButton {
   late final Widget _applePayButton;
 

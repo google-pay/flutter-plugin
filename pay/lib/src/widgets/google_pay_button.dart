@@ -3,6 +3,23 @@
 
 part of '../../pay.dart';
 
+/// A widget to show the Google Pay button according to the rules and
+/// constraints specified in [PayButton].
+///
+/// Example usage:
+/// ```dart
+/// GooglePayButton(
+///   paymentConfigurationAsset: 'google_pay_config.json',
+///   paymentItems: _paymentItems,
+///   style: GooglePayButtonStyle.black,
+///   type: GooglePayButtonType.pay,
+///   margin: const EdgeInsets.only(top: 15.0),
+///   onPaymentResult: onGooglePayResult,
+///   loadingIndicator: const Center(
+///     child: CircularProgressIndicator(),
+///   ),
+/// )
+/// ```
 class GooglePayButton extends PayButton {
   late final Widget _googlePayButton;
 
