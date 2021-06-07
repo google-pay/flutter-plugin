@@ -14,18 +14,41 @@
 
 part of '../../pay.dart';
 
+/// A widget that handles the API logic to facilitate the integration.
+///
+/// This widget provides an alternative UI-based integration path that wraps
+/// the API calls of the payment libraries and includes them as part of the
+/// lifecycle of the widget. As a result of that:
+///
+/// 1. The widget only shows if the [Pay.userCanPay] method returns `true`, or
+/// displays the [childOnError] widget and calls the [onError] function
+/// otherwise.
+/// 2. Tapping the button automatically triggers the [Pay.showPaymentSelector]
+/// method which starts the payment process.
 abstract class PayButton extends StatefulWidget {
+  /// A resident client to issue requests against the APIs.
   late final Pay _payClient;
 
   final double width;
   final double height;
   final EdgeInsets margin;
 
+  /// A function called when the payment process yields a result.
   final void Function(Map<String, dynamic> result) onPaymentResult;
+
+  /// A function called when there's an error in the payment process.
   final void Function(Object? error)? onError;
+
+  /// A replacement widget shown instead of the button when the payment process
+  /// errors. This can be used to show a different checkout button or an error
+  /// message.
   final Widget? childOnError;
+
+  /// An optional widget to show while the payment provider checks whether
+  /// a user can pay with it and the button loads.
   final Widget? loadingIndicator;
 
+  /// Initializes the button and the payment client that handles the requests.
   PayButton(
     Key? key,
     String paymentConfigurationAsset,
@@ -39,6 +62,11 @@ abstract class PayButton extends StatefulWidget {
   )   : _payClient = Pay.withAssets([paymentConfigurationAsset]),
         super(key: key);
 
+  /// Callback function to respond to tap events.
+  ///
+  /// This is the default function for tap events. Calls the [onPressed]
+  /// function if set, and initiates the payment process with the [paymentItems]
+  /// specified.
   VoidCallback _defaultOnPressed(
       VoidCallback? onPressed, List<PaymentItem> paymentItems) {
     return () async {
@@ -53,9 +81,16 @@ abstract class PayButton extends StatefulWidget {
     };
   }
 
+  /// Determines the list of supported platforms for the button.
   List<TargetPlatform> get _supportedPlatforms;
+
+  /// Accessor for the widget to show as the payment button.
+  ///
+  /// This method returns a [Widget] that is conditionally shown based on the
+  /// result of the `isReadyToPay` request.
   Widget get _payButton;
 
+  /// Determines whether the current platform is supported by the button.
   bool get _isPlatformSupported =>
       _supportedPlatforms.contains(defaultTargetPlatform);
 
@@ -63,6 +98,13 @@ abstract class PayButton extends StatefulWidget {
   _PayButtonState createState() => _PayButtonState();
 }
 
+/// Button state that adds the widgets to the tree and holds the result of the
+/// `userCanPay` request.
+///
+/// This state executes the logic that shows the [loadingIndicator] while the
+/// button loads. If the payment provider is available for a given user, the
+/// [_payButton] is added to the tree. Otherwise, if set, the replacement widget
+/// in [childOnError] is shown.
 class _PayButtonState extends State<PayButton> {
   late final Future<bool> userCanPayFuture;
 
@@ -87,6 +129,8 @@ class _PayButtonState extends State<PayButton> {
       return const SizedBox.shrink();
     }
 
+    // Future builder running the `userCanPayFuture` and decides what to show
+    // based on the result.
     return FutureBuilder<bool>(
       future: userCanPayFuture,
       builder: (context, snapshot) {
@@ -115,6 +159,8 @@ class _PayButtonState extends State<PayButton> {
   }
 }
 
+/// Shows the appropriate widget based on the API requests above, respecting the
+/// [margin] if the [child] is set.
 class ButtonPlaceholder extends StatelessWidget {
   final Widget? child;
   final EdgeInsets margin;

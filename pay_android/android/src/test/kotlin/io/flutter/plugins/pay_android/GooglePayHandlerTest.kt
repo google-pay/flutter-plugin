@@ -44,16 +44,20 @@ class GooglePayHandlerTest {
     private val finalPaymentProfile =
             "{environment: 'TEST', transactionInfo: {totalPriceStatus: 'FINAL'}}"
 
-    private val itemPrice = "0"
     private val versionName = "0.0.0"
+    private val paymentItems = listOf(mapOf(
+            "type" to "total",
+            "status" to "final_price",
+            "amount" to "0"
+    ))
 
     private lateinit var googlePayHandler: GooglePayHandler
-    private lateinit var basicLoadPaymentDataCall: () -> Boolean
+    private lateinit var basicLoadPaymentDataCall: () -> Unit
 
     private lateinit var mockedActivity: Activity
     private lateinit var mockedPackageManager: PackageManager
     private lateinit var mockedPackageInfo: PackageInfo
-    private lateinit var mockedMethodChannel: MethodChannel.Result
+    private lateinit var mockedResult: MethodChannel.Result
     private lateinit var mockedResolveHelper: MockedStatic<AutoResolveHelper>
     private lateinit var mockedWallet: MockedStatic<Wallet>
 
@@ -63,7 +67,7 @@ class GooglePayHandlerTest {
 
         googlePayHandler = GooglePayHandler(mockedActivity)
         basicLoadPaymentDataCall = {
-            googlePayHandler.loadPaymentData(mockedMethodChannel, basicPaymentProfile, itemPrice)
+            googlePayHandler.loadPaymentData(mockedResult, basicPaymentProfile, paymentItems)
         }
     }
 
@@ -77,7 +81,7 @@ class GooglePayHandlerTest {
         `when`(mockedPackageManager.getPackageInfo(mockedActivity.packageName, 0))
                 .thenReturn(mockedPackageInfo)
 
-        mockedMethodChannel = mock(MethodChannel.Result::class.java)
+        mockedResult = mock(MethodChannel.Result::class.java)
 
         mockedResolveHelper = mockStatic(AutoResolveHelper::class.java)
         mockedResolveHelper.`when`<Any> {
@@ -95,38 +99,18 @@ class GooglePayHandlerTest {
     }
 
     @Test
-    fun addsSoftwareInfoToLoadPaymentData() {
-        val paymentProfile = GooglePayHandler
-                .buildPaymentProfile(mockedActivity, basicPaymentProfile)
-        assertThat(paymentProfile.has("merchantInfo")).isTrue()
-
-        val merchantInfo = paymentProfile.getJSONObject("merchantInfo")
-        assertThat(merchantInfo.has("softwareInfo")).isTrue()
-
-        val softwareInfo = merchantInfo.getJSONObject("softwareInfo")
-        assertThat(softwareInfo.optString("id")).isNotNull()
-        assertThat(softwareInfo.optString("version")).isEqualTo(versionName)
-    }
-
-    @Test
     fun loadPaymentDataRequestContainsTheRightPrice() {
-        val paymentProfile = GooglePayHandler
-                .buildPaymentProfile(mockedActivity, finalPaymentProfile, itemPrice)
+        val paymentProfile = GooglePayHandler.buildPaymentProfile(finalPaymentProfile, paymentItems)
 
         val transactionInfo = paymentProfile.getJSONObject("transactionInfo")
         assertThat(transactionInfo.optString("totalPriceStatus")).isEqualTo("FINAL")
-        assertThat(transactionInfo.optString("totalPrice")).isEqualTo(itemPrice)
+        assertThat(transactionInfo.optString("totalPrice"))
+                .isEqualTo(paymentItems.first()["amount"])
     }
 
     @Test
-    fun onlyOnePaymentAttemptAtATime() {
-        assertThat(basicLoadPaymentDataCall()).isTrue()
-    }
-
-    @Test
-    fun theSecondPaymentAttemptFails() {
-        assertThat(basicLoadPaymentDataCall()).isTrue()
-        assertThat(basicLoadPaymentDataCall()).isFalse()
+    fun showingThePaymentSelectorDoesNotReturnError() {
+        assertThat(basicLoadPaymentDataCall()).isEqualTo(Unit)
     }
 
     @After
