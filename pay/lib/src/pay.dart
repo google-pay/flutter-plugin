@@ -11,7 +11,7 @@ const supportedProviders = {
 class Pay {
   final PayPlatform _payPlatform;
   late final List<PaymentConfiguration> _configurations;
-  late final _assetInitializationFuture;
+  Future? _assetInitializationFuture;
 
   Pay(this._configurations) : _payPlatform = PayMethodChannel();
 
