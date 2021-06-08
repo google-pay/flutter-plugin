@@ -18,7 +18,7 @@ If you prefer to integrate or extend this package separately, add it as a depend
 
 ```yaml
 dependencies:
-  pay_ios: ^1.0.3
+  pay_ios: ^1.0.4
 ```
 
 Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) to communicate with the native end.
@@ -26,7 +26,7 @@ Now, you can use the buttons available for the supported payment providers and t
 ```dart
 RawApplePayButton(
   style: ApplePayButtonStyle.black,
-  type: ApplePayButtonType.pay);
+  type: ApplePayButtonType.buy);
 ```
 
 <br>

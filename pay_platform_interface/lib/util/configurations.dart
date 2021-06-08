@@ -17,17 +17,27 @@ import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
 
+/// A utility class to handle configuration objects and metadata associated
+/// with this plugin.
 class Configurations {
+  /// Complements the payment configuration object with metadata about the
+  /// package.
+  ///
+  /// Takes the configuration included in [config] and returns and updated
+  /// version of the object wrapped in a [Future] with additional metadata.
   static Future<Map<String, dynamic>> build(PaymentConfiguration config) async {
-    final parameters = await config.toMap();
+    // A map with the raw parameters in the configuration.
+    final _parameters = await config.toMap();
 
     switch (config.provider) {
       case PayProvider.apple_pay:
-        return parameters;
+        return _parameters;
 
       case PayProvider.google_pay:
+
+        // Add information about the package.
         final updatedMerchantInfo = {
-          ...(parameters['merchantInfo'] ?? {}) as Map,
+          ...(_parameters['merchantInfo'] ?? {}) as Map,
           'softwareInfo': {
             'id': 'flutter/pay-plugin',
             'version': (await _getPackageConfiguration())['version']
@@ -35,12 +45,13 @@ class Configurations {
         };
 
         final updatedPaymentConfiguration = Map<String, Object>.unmodifiable(
-            {...parameters, 'merchantInfo': updatedMerchantInfo});
+            {..._parameters, 'merchantInfo': updatedMerchantInfo});
 
         return updatedPaymentConfiguration;
     }
   }
 
+  /// Retrieves package information from the `pubspec.yaml` file as a [Map].
   static Future<Map> _getPackageConfiguration() async {
     final configurationFile = await rootBundle
         .loadString('packages/pay_platform_interface/pubspec.yaml');
