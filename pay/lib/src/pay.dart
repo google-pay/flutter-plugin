@@ -27,7 +27,7 @@ class Pay {
   late final List<PaymentConfiguration> _configurations;
 
   // Future to keep track of asynchronous initialization items.
-  late final _assetInitializationFuture;
+  Future? _assetInitializationFuture;
 
   /// Creates an instance of the class with a list of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.

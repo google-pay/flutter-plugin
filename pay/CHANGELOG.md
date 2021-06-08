@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5 (2021-06-08)
+
+### Fixes
+
+* Expose the `PaymentConfiguration` class through the `pay` package (#53).
+* Fix incorrect `late init` use at initialization time for the `Pay` class (#54).
+
 ## 1.0.4 (2021-06-01)
 Enrich `dartdoc` comments to facilitate the adoption of the package.
 
