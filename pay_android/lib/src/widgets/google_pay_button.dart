@@ -23,8 +23,7 @@ enum GooglePayButtonType {
   order,
   pay,
   plain,
-  subscribe,
-  view
+  subscribe
 }
 
 /// The button styles supported on Google Pay.
@@ -192,8 +191,7 @@ extension _GooglePayButtonTypeAsset on GooglePayButtonType {
         GooglePayButtonType.order: 'order_with',
         GooglePayButtonType.pay: 'pay_with',
         GooglePayButtonType.plain: defaultAsset,
-        GooglePayButtonType.subscribe: 'subscribe_with',
-        GooglePayButtonType.view: 'view_in'
+        GooglePayButtonType.subscribe: 'subscribe_with'
       }[this] ??
       defaultAsset;
 }
