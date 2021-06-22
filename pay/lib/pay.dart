@@ -15,7 +15,7 @@ import 'package:pay_platform_interface/pay_channel.dart';
 import 'package:pay_platform_interface/pay_platform_interface.dart';
 
 export 'package:pay_platform_interface/core/payment_configuration.dart'
-    show PayProvider;
+    show PayProvider, PaymentConfiguration;
 
 export 'package:pay_platform_interface/core/payment_item.dart'
     show PaymentItem, PaymentItemType, PaymentItemStatus;
