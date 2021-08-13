@@ -21,6 +21,11 @@ import UIKit
 /// An alias to determine the result types of a payment operation.
 typealias PaymentCompletionHandler = (Bool) -> Void
 
+/// Enum to track payment handler status and result
+enum PaymentHandlerStatus {
+  case started, presented, authorizationStarted, authorized
+}
+
 /// A simple helper to orchestrate fundamental calls to complete a payment operation.
 ///
 /// Use this class to manage payment sessions, with the ability to determine whether a user
@@ -33,7 +38,7 @@ typealias PaymentCompletionHandler = (Bool) -> Void
 class PaymentHandler: NSObject {
   
   /// Holds the current status of the payment process.
-  var paymentStatus = PKPaymentAuthorizationStatus.failure
+  var paymentStatus: PaymentHandlerStatus = .started
   
   /// Stores a reference to the Flutter result while the operation completes.
   var paymentResult: FlutterResult!
@@ -66,17 +71,22 @@ class PaymentHandler: NSObject {
     // Set active payment result.
     paymentResult = result
     
+    // Reset payment status
+    paymentStatus = .started
+    
     // Deserialize payment configuration.
     guard let paymentRequest = PaymentHandler.createPaymentRequest(from: paymentConfiguration, paymentItems: paymentItems) else {
       result(FlutterError(code: "invalidPaymentConfiguration", message: "It was not possible to create a payment request from the provided configuration. Review your payment configuration and run again", details: nil))
       return
     }
     
-    // Display the payment selector with the resquest created.
+    // Display the payment selector with the request created.
     let paymentController = PKPaymentAuthorizationController(paymentRequest: paymentRequest)
     paymentController.delegate = self
     paymentController.present(completion: { (presented: Bool) in
-      if !presented {
+      if presented {
+        self.paymentStatus = .presented
+      } else {
         result(FlutterError(code: "paymentError", message: "Failed to present payment controller", details: nil))
       }
     })
@@ -168,6 +178,11 @@ class PaymentHandler: NSObject {
 
 /// Extension that implements the completion methods in the delegate to respond to user selection.
 extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
+
+  func paymentAuthorizationControllerWillAuthorizePayment(_ controller: PKPaymentAuthorizationController) {
+      paymentStatus = .authorizationStarted
+  }
+    
   func paymentAuthorizationController(_: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
     
     // Collect payment result or error and return if no payment was selected
@@ -179,14 +194,20 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
     
-    paymentStatus = .success
-    completion(PKPaymentAuthorizationResult(status: paymentStatus, errors: nil))
+    paymentStatus = .authorized
+
+    completion(PKPaymentAuthorizationResult(status: PKPaymentAuthorizationStatus.success, errors: nil))
   }
   
   func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
     controller.dismiss {
       DispatchQueue.main.async {
-        if self.paymentStatus != .success {
+        // There was no attempt to authorize.
+        if self.paymentStatus == .presented {
+          self.paymentResult(FlutterError(code: "paymentCanceled", message: "User canceled payment authorization", details: nil))
+        }
+        // Authorization started, but it did not 
+        if self.paymentStatus == .authorizationStarted {
           self.paymentResult(FlutterError(code: "paymentFailed", message: "Failed to complete the payment", details: nil))
         }
       }
