@@ -158,6 +158,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
 }
 
+// github: vmatiukh - added new #available checker
 /// A set of utility methods associated to `PKPaymentButtonType`.
 extension PKPaymentButtonType {
   
@@ -181,8 +182,6 @@ extension PKPaymentButtonType {
     case "subscribe":
         guard #available(iOS 14.0, *) else { return .plain }
       return .subscribe
-    default:
-      guard #available(iOS 14.0, *) else { return .plain }
     default:
       guard #available(iOS 14.0, *) else { return .plain }
       switch buttonType {
