@@ -329,10 +329,10 @@ extension PKPaymentSummaryItemType {
   /// Creates a `PKPaymentSummaryItemType` object from an item type in string format.
   public static func fromString(_ summaryItemType: String) -> PKPaymentSummaryItemType {
     switch summaryItemType {
-    case "final_price":
-      return .final
-    default:
+    case "pending":
       return .pending
+    default:
+      return .final // final_price
     }
   }
 }
