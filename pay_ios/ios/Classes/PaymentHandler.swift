@@ -119,16 +119,11 @@ class PaymentHandler: NSObject {
     // Create payment request and include summary items
     let paymentRequest = PKPaymentRequest()
     paymentRequest.paymentSummaryItems = paymentItems.map { item in
-      if let statusString = item["status"] {
-        return PKPaymentSummaryItem(
-          label: item["label"] as! String ,
-          amount: NSDecimalNumber(string: (item["amount"] as! String)),
-          type: PKPaymentSummaryItemType.fromString(statusString as! String))
-      }
-      
       return PKPaymentSummaryItem(
         label: item["label"] as! String,
-        amount: NSDecimalNumber(string: (item["amount"] as! String)))
+        amount: NSDecimalNumber(value: Double(item["amount"] as! String)!),
+        type: (PKPaymentSummaryItemType.fromString(item["status"] as? String ?? "final_price"))
+      )
     }
     
     // Configure the payment.
