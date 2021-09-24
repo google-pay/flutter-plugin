@@ -256,14 +256,17 @@ extension PKPaymentNetwork {
     case "amex":
       return .amex
     case "cartesBancaires":
+      guard #available(iOS 12.0, *) else { return nil }
       return .cartesBancaires
     case "chinaUnionPay":
       return .chinaUnionPay
     case "discover":
       return .discover
     case "eftpos":
+      guard #available(iOS 12.0, *) else { return nil }
       return .eftpos
     case "electron":
+      guard #available(iOS 12.0, *) else { return nil }
       return .electron
     case "elo":
       guard #available(iOS 12.1.1, *) else { return nil }
@@ -278,6 +281,7 @@ extension PKPaymentNetwork {
       guard #available(iOS 12.1.1, *) else { return nil }
       return .mada
     case "maestro":
+      guard #available(iOS 12.0, *) else { return nil }
       return .maestro
     case "masterCard":
       return .masterCard
@@ -290,6 +294,7 @@ extension PKPaymentNetwork {
     case "visa":
       return .visa
     case "vPay":
+      guard #available(iOS 12.0, *) else { return nil }
       return .vPay
     case "barcode":
       guard #available(iOS 14.0, *) else { return nil }
