@@ -173,7 +173,7 @@ extension PKPaymentButtonType {
     case "donate":
       return .donate
     case "checkout":
-        guard #available(iOS 12.0, *) else { return nil }
+      guard #available(iOS 12.0, *) else { return nil }
       return .checkout
     case "book":
       guard #available(iOS 12.0, *) else { return nil }
