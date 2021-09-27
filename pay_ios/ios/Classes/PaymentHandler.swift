@@ -23,7 +23,7 @@ typealias PaymentCompletionHandler = (Bool) -> Void
 
 /// Enum to track payment handler status and result
 enum PaymentHandlerStatus {
-  case started, presented, authorizationStarted, authorized
+  case started, presented, authorizationStarted
 }
 
 /// A simple helper to orchestrate fundamental calls to complete a payment operation.
@@ -38,7 +38,7 @@ enum PaymentHandlerStatus {
 class PaymentHandler: NSObject {
   
   /// Holds the current status of the payment process.
-  var paymentHandlerStatus: PaymentHandlerStatus = .started
+  var paymentHandlerStatus: PaymentHandlerStatus!
   
   /// Stores a reference to the Flutter result while the operation completes.
   var paymentResult: FlutterResult!
@@ -67,10 +67,10 @@ class PaymentHandler: NSObject {
   /// - parameter paymentItems: A list of payment elements that determine the total amount purchased.
   /// - returns: The payment method information selected by the user.
   func startPayment(result: @escaping FlutterResult, paymentConfiguration: String, paymentItems: [[String: Any?]]) {
-    
+
     // Set active payment result.
     paymentResult = result
-    
+
     // Reset payment handler status
     paymentHandlerStatus = .started
     
@@ -194,8 +194,6 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
     
-    paymentHandlerStatus = .authorized
-
     completion(PKPaymentAuthorizationResult(status: PKPaymentAuthorizationStatus.success, errors: nil))
   }
   
