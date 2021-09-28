@@ -23,7 +23,7 @@ typealias PaymentCompletionHandler = (Bool) -> Void
 
 /// Enum to track payment handler status and result
 enum PaymentHandlerStatus {
-  case started, presented, authorizationStarted
+  case started, presented, authorizationStarted, authorized
 }
 
 /// A simple helper to orchestrate fundamental calls to complete a payment operation.
@@ -194,6 +194,7 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
     
+    paymentHandlerStatus = .authorized
     completion(PKPaymentAuthorizationResult(status: PKPaymentAuthorizationStatus.success, errors: nil))
   }
   
