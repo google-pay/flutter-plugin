@@ -24,7 +24,7 @@ To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file
 
 ```yaml
 dependencies:
-  pay: ^1.0.5
+  pay: ^1.0.6
 ```
 
 ### Payment configuration
