@@ -3,7 +3,7 @@
 ## 1.0.5 (2021-10-04)
 
 ### Features
-* [#90, #61] Capture the dismissal of the payment selector and expose it to the Flutter end through the `onError` callback.
+* Capture the dismissal of the payment selector and expose it to the Flutter end through the `onError` callback ([#90](https://github.com/google-pay/flutter-plugin/issues/90), [#61](https://github.com/google-pay/flutter-plugin/issues/61)).
 
 ## 1.0.4 (2021-05-31)
 Enrich `dartdoc` comments to facilitate the adoption of the package.

@@ -3,11 +3,11 @@
 ## 1.0.5 (2021-10-04)
 
 ### Features
-* [#36] Make the package available for iOS versions lower than 12.0.
-* [#90, #61] Capture the dismissal of the payment selector and expose it to the Flutter end through the `onError` callback.
+* Make the package available for iOS versions lower than 12.0 ([#36](https://github.com/google-pay/flutter-plugin/issues/36)).
+* Capture the dismissal of the payment selector and expose it to the Flutter end through the `onError` callback ([#90](https://github.com/google-pay/flutter-plugin/issues/90), [#61](https://github.com/google-pay/flutter-plugin/issues/61)).
 
 ### Fixes
-* [#80] Fix not being able to capture a payment result on the second and further payment attempts.
+* Fix not being able to capture a payment result on the second and further payment attempts ([#80](https://github.com/google-pay/flutter-plugin/issues/80)).
 
 ## 1.0.4 (2021-05-27)
 Enrich `dartdoc` comments to facilitate the adoption of the package.
