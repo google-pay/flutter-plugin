@@ -89,6 +89,7 @@ extension CNPostalAddress {
       "subAdministrativeArea": !subAdministrativeArea.isEmpty ? subAdministrativeArea : nil,
       "state": !state.isEmpty ? state : nil,
       "postalCode": !postalCode.isEmpty ? postalCode : nil,
+      "country": !country.isEmpty ? country : nil,
       "isoCountryCode": !isoCountryCode.isEmpty ? isoCountryCode : nil
     ].compactMapValues { $0 }
   }
