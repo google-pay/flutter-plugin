@@ -250,7 +250,26 @@ extension PKContact {
     return [
       "name": "\(name?.givenName ?? "") \(name?.familyName ?? "")",
       "emailAddress": emailAddress,
-      "phoneNumber": phoneNumber?.stringValue
+      "phoneNumber": phoneNumber?.stringValue,
+      "postalAddress": postalAddress?.toDictionary()
+    ]
+  }
+}
+
+/// A set of utility methods associated wo `CNPostalAddress`
+extension CNPostalAddress {
+
+  // Creates a `Dictionary` representation of the `CNPostalAddress` object
+  public func toDictionary() -> [String: Any?] {
+    return [
+      "street": street,
+      "city": city,
+      "state": state,
+      "postalCode": postalCode,
+      "country": country,
+      "isoCountryCode": isoCountryCode,
+      "subAdministrativeArea": subAdministrativeArea,
+      "subLocality": subLocality
     ]
   }
 }
