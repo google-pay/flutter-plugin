@@ -6,7 +6,7 @@ This is an implementation of the [`pay_platform_interface`](https://github.com/g
 
 ### With the `pay` plugin
 
-This package is the endorsed implementation of the [`pay` plugin](https://pub.dev/packages/pay), so it gets automatically added to your [dependencies](https://flutter.dev/platform-plugins/) by adding the `pay` package to your `pubspec.yaml`.
+This package is the endorsed implementation of the [`pay` plugin](https://pub.dev/packages/pay), so it gets automatically added to your [dependencies](https://flutter.dev/platform-plugins/) when you add the `pay` package to your `pubspec.yaml`.
 
 ### Using this package directly
 
