@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 (2022-01-04)
+
+* Update `pay_android` to `1.0.6`, which uses a stable version of `flutter_svg`.
+
 ## 1.0.6 (2021-10-04)
 
 ### Features
