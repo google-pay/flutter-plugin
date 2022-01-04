@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.6 (2022-01-04)
+
+* Update `flutter_svg` to `1.0.0`.
+* Use the latest `pay_platform_interface`.
+
 ## 1.0.5 (2021-10-04)
 
 ### Features
