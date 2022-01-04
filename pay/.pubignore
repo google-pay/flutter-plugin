@@ -1,0 +1,7 @@
+# Dirs created by pub and Android
+.dart_tool/
+build/
+
+# Test files
+test/
+integration_test/
