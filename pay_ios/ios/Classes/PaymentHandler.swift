@@ -131,7 +131,7 @@ class PaymentHandler: NSObject {
     paymentRequest.paymentSummaryItems = paymentItems.map { item in
       return PKPaymentSummaryItem(
         label: item["label"] as! String,
-        amount: NSDecimalNumber(value: Double(item["amount"] as! String)!),
+        amount: NSDecimalNumber(string: (item["amount"] as! String), locale:["NSLocaleDecimalSeparator": "."]),
         type: (PKPaymentSummaryItemType.fromString(item["status"] as? String ?? "final_price"))
       )
     }
