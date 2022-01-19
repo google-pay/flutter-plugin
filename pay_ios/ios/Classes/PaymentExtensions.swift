@@ -37,7 +37,7 @@ extension PKPaymentMethod {
   /// Creates a `Dictionary` representation of the `PKPaymentMethod` object.
   public func toDictionary() -> [String: Any] {
     return [
-      "displayName": displayName as Any?,
+      "displayName": displayName,
       "network": network?.rawValue,
       "type": type.rawValue
     ].compactMapValues { $0 }
@@ -64,12 +64,12 @@ extension PersonNameComponents {
   /// Creates a `Dictionary` representation of the `PersonNameComponents` object.
   public func toDictionary() -> [String: Any]? {
     let dict = [
-      "namePrefix": (namePrefix != nil && !namePrefix!.isEmpty) ? namePrefix : nil as Any?,
-      "givenName": (givenName != nil && !givenName!.isEmpty) ? givenName : nil,
-      "middleName": (middleName != nil && !middleName!.isEmpty) ? middleName : nil,
-      "familyName": (familyName != nil && !familyName!.isEmpty) ? familyName : nil,
-      "nameSuffix": (nameSuffix != nil && !nameSuffix!.isEmpty) ? nameSuffix : nil,
-      "nickname": (nickname != nil && !nickname!.isEmpty) ? nickname : nil,
+      "namePrefix": namePrefix,
+      "givenName": givenName,
+      "middleName": middleName,
+      "familyName": familyName,
+      "nameSuffix": nameSuffix,
+      "nickname": nickname,
       "phoneticRepresentation": phoneticRepresentation?.toDictionary(),
     ].compactMapValues { $0 }
 
@@ -83,14 +83,14 @@ extension CNPostalAddress {
   /// Creates a `Dictionary` representation of the `CNPostalAddress` object.
   public func toDictionary() -> [String: Any] {
     return [
-      "street": !street.isEmpty ? street : nil,
-      "subLocality": !subLocality.isEmpty ? subLocality : nil,
-      "city": !city.isEmpty ? city : nil,
-      "subAdministrativeArea": !subAdministrativeArea.isEmpty ? subAdministrativeArea : nil,
-      "state": !state.isEmpty ? state : nil,
-      "postalCode": !postalCode.isEmpty ? postalCode : nil,
-      "country": !country.isEmpty ? country : nil,
-      "isoCountryCode": !isoCountryCode.isEmpty ? isoCountryCode : nil
+      "street": street,
+      "subLocality": subLocality,
+      "city": city,
+      "subAdministrativeArea": subAdministrativeArea,
+      "state": state,
+      "postalCode": postalCode,
+      "country": country,
+      "isoCountryCode": isoCountryCode
     ].compactMapValues { $0 }
   }
 }
@@ -103,7 +103,7 @@ extension PKShippingMethod {
     return [
       "id": identifier,
       "details": detail
-    ]
+    ].compactMapValues { $0 }
   }
 }
 
