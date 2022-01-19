@@ -36,6 +36,14 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
 
+dependency_overrides:
+  pay_android:
+    path: ../../pay_android
+  pay_ios:
+    path: ../../pay_ios
+  pay_platform_interface:
+    path: ../../pay_platform_interface
+
 dev_dependencies:
   integration_test:
    sdk: flutter
