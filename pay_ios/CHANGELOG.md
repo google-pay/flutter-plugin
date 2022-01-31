@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.6 (2022-01-31)
+
+### ⚠ BREAKING CHANGES
+
+* The payment result object contains the following changes:
+  * Added a `postalAddress` property.
+  * Changed the resulting `name` in `PKContact` from `String` to `Dictionary`.
+  * Trimmed `null` properties before returning the JSON object.
+
+### Fixes
+* Univocally use the dot character (.) to separate the whole and the decimal part in a decimal number ([#84](https://github.com/google-pay/flutter-plugin/issues/84)).
+* Include billing and shipping addresses on the response ([#72](https://github.com/google-pay/flutter-plugin/issues/72)).
+
 ## 1.0.5 (2021-10-04)
 
 ### Features

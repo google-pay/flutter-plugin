@@ -1,0 +1,5 @@
+# Dirs created by pub
+.dart_tool/
+build/
+
+test/
