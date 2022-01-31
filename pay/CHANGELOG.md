@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.8 (2022-01-31)
+
+* Update `pay_ios` to `1.0.6`, which adds `postalAddress` to the payment result.
+
 ## 1.0.7 (2022-01-04)
 
 * Update `pay_android` to `1.0.6`, which uses a stable version of `flutter_svg`.
