@@ -47,7 +47,7 @@ class PayMethodCallHandler private constructor(
         channel.setMethodCallHandler(this)
     }
 
-    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()) {
+    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()!!) {
         registrar.addActivityResultListener(googlePayHandler)
     }
 
@@ -66,9 +66,9 @@ class PayMethodCallHandler private constructor(
     @Suppress("UNCHECKED_CAST")
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments())
+            METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments()!!)
             METHOD_SHOW_PAYMENT_SELECTOR -> {
-                val arguments = call.arguments<Map<String, Any>>()
+                val arguments = call.arguments<Map<String, Any>>()!!
                 googlePayHandler.loadPaymentData(result,
                         arguments.getValue("payment_profile") as String,
                         arguments.getValue("payment_items") as List<Map<String, Any?>>)
