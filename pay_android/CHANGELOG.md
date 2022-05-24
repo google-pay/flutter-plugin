@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 (2022-05-24)
+
+* Add support for Flutter 3.0
+
 ## 1.0.6 (2022-01-04)
 
 * Update `flutter_svg` to `1.0.0`.
