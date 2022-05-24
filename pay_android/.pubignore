@@ -2,4 +2,5 @@
 .dart_tool/
 build/
 
+libs/
 test/
