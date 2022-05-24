@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2022 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pay_platform_interface/core/payment_configuration.dart';
 import 'package:pay/pay.dart';
 
 String _fixtureAsset(String name) {
