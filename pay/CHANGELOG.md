@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.10 (2022-06-01)
+
+* Update `pay_ios` to `1.0.7`, which adds the `transactionIdentifier` property to the payment result.
+
 ## 1.0.9 (2022-05-24)
 
 * Add support for Flutter 3 in the sample application.
