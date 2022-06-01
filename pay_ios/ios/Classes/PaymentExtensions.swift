@@ -23,6 +23,7 @@ extension PKPayment {
   public func toDictionary() -> [String: Any] {
     return [
       "token": String(decoding: token.paymentData, as: UTF8.self) as Any?,
+      "transactionIdentifier": token.transactionIdentifier,
       "paymentMethod": token.paymentMethod.toDictionary(),
       "billingContact": billingContact?.toDictionary(),
       "shippingContact": shippingContact?.toDictionary(),
