@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 (2021-06-01)
+
+* Include the [`transactionIdentifier`](https://developer.apple.com/documentation/passkit/pkpaymenttoken/1617003-transactionidentifier) property in the Apple Pay result.
+
 ## 1.0.6 (2022-01-31)
 
 ### ⚠ BREAKING CHANGES
