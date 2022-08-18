@@ -51,7 +51,8 @@ abstract class PayButton extends StatefulWidget {
   /// Initializes the button and the payment client that handles the requests.
   PayButton(
     Key? key,
-    String paymentConfigurationAsset,
+    String? paymentConfigurationAsset,
+    String? paymentConfigurationString,
     this.onPaymentResult,
     this.width,
     this.height,
@@ -59,8 +60,16 @@ abstract class PayButton extends StatefulWidget {
     this.onError,
     this.childOnError,
     this.loadingIndicator,
-  )   : _payClient = Pay.withAssets([paymentConfigurationAsset]),
-        super(key: key);
+  ) : super(key: key) {
+    if (paymentConfigurationAsset != null) {
+      _payClient = Pay.withAssets([paymentConfigurationAsset]);
+    } else if (paymentConfigurationString != null) {
+      _payClient = Pay.withStrings([paymentConfigurationString]);
+    } else {
+      throw Exception(
+          "No configuration provided. Either a 'paymentConfigurationAsset' or a 'paymentConfigurationString' must be passed in as an argument.");
+    }
+  }
 
   /// Callback function to respond to tap events.
   ///

@@ -25,7 +25,8 @@ class ApplePayButton extends PayButton {
 
   ApplePayButton({
     Key? key,
-    required String paymentConfigurationAsset,
+    String? paymentConfigurationAsset,
+    String? paymentConfigurationString,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
@@ -42,6 +43,7 @@ class ApplePayButton extends PayButton {
         super(
           key,
           paymentConfigurationAsset,
+          paymentConfigurationString,
           onPaymentResult,
           width,
           height,

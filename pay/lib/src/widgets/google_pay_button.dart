@@ -25,7 +25,8 @@ class GooglePayButton extends PayButton {
 
   GooglePayButton({
     Key? key,
-    required String paymentConfigurationAsset,
+    String? paymentConfigurationAsset,
+    String? paymentConfigurationString,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     GooglePayButtonStyle style = GooglePayButtonStyle.black,
@@ -42,6 +43,7 @@ class GooglePayButton extends PayButton {
         super(
           key,
           paymentConfigurationAsset,
+          paymentConfigurationString,
           onPaymentResult,
           width,
           height,
