@@ -97,11 +97,17 @@ class RawGooglePayButton extends StatelessWidget {
   /// The tyoe of button depending on the activity initiated with the payment
   /// transaction.
   final GooglePayButtonType type;
+  final Color borderColor;
+  final double borderWidth;
+  final double radius;
 
   /// Creates a Google Pay button widget with the parameters specified.
   const RawGooglePayButton({
     Key? key,
     this.onPressed,
+    this.borderWidth = 2,
+    this.radius = 4,
+    this.borderColor = Colors.transparent,
     this.style = GooglePayButtonStyle.black,
     this.type = GooglePayButtonType.pay,
   }) : super(key: key);
@@ -135,11 +141,11 @@ class RawGooglePayButton extends StatelessWidget {
       highlightElevation: 0,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(radius),
         side: style == GooglePayButtonStyle.flat
-            ? const BorderSide(
-                color: Color(0xFFDEDEDE),
-                width: 2,
+            ? BorderSide(
+                color: borderColor,
+                width: borderWidth,
               )
             : BorderSide.none,
       ),
