@@ -44,4 +44,3 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.0.8
   flutter_lints: ^2.0.1
-  #pedantic: ^1.11.0
