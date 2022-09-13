@@ -117,8 +117,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             paymentConfigurationAsset:
                 'default_payment_profile_google_pay.json',
             paymentItems: _paymentItems,
-            style: GooglePayButtonStyle.black,
-            type: GooglePayButtonType.pay,
+            type: GooglePayButtonType.buy,
             margin: const EdgeInsets.only(top: 15.0),
             onPaymentResult: onGooglePayResult,
             loadingIndicator: const Center(
