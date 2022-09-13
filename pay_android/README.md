@@ -21,7 +21,6 @@ Now, you can use the buttons available for the supported payment providers and t
 
 ```dart
 RawGooglePayButton(
-  style: GooglePayButtonStyle.black,
   type: GooglePayButtonType.pay);
 ```
 

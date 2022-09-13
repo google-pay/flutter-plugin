@@ -59,7 +59,6 @@ ApplePayButton(
 GooglePayButton(
   paymentConfigurationAsset: 'default_payment_profile_google_pay.json',
   paymentItems: _paymentItems,
-  style: GooglePayButtonStyle.black,
   type: GooglePayButtonType.pay,
   margin: const EdgeInsets.only(top: 15.0),
   onPaymentResult: onGooglePayResult,
@@ -109,7 +108,6 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
           return RawGooglePayButton(
-            style: GooglePayButtonStyle.black,
             type: GooglePayButtonType.pay,
             onPressed: onGooglePayPressed);
         } else {

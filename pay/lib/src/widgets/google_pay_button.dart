@@ -11,7 +11,6 @@ part of '../../pay.dart';
 /// GooglePayButton(
 ///   paymentConfigurationAsset: 'google_pay_config.json',
 ///   paymentItems: _paymentItems,
-///   style: GooglePayButtonStyle.black,
 ///   type: GooglePayButtonType.pay,
 ///   margin: const EdgeInsets.only(top: 15.0),
 ///   onPaymentResult: onGooglePayResult,
@@ -28,7 +27,6 @@ class GooglePayButton extends PayButton {
     required String paymentConfigurationAsset,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
-    GooglePayButtonStyle style = GooglePayButtonStyle.black,
     GooglePayButtonType type = GooglePayButtonType.pay,
     double width = RawGooglePayButton.minimumButtonWidth,
     double height = RawGooglePayButton.defaultButtonHeight,
@@ -51,9 +49,7 @@ class GooglePayButton extends PayButton {
           loadingIndicator,
         ) {
     _googlePayButton = RawGooglePayButton(
-        style: style,
-        type: type,
-        onPressed: _defaultOnPressed(onPressed, paymentItems));
+        type: type, onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 
   @override
