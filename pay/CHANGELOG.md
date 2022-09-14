@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.11 (2022-09-14)
+
+* Update `pay_android` to `1.0.8`, which includes the new specification for the Google Pay button.
+
 ## 1.0.10 (2022-06-01)
 
 * Update `pay_ios` to `1.0.7`, which adds the `transactionIdentifier` property to the payment result.
