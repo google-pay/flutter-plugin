@@ -10,7 +10,7 @@ void main() {
   setUp(() async {});
 
   group('Button style:', () {
-    testWidgets('defaults to type black and long', (WidgetTester tester) async {
+    testWidgets('defaults to type dark', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: RawGooglePayButton(onPressed: () => null),
@@ -24,7 +24,7 @@ void main() {
       expect(find.byType(SvgPicture), findsOneWidget);
     });
 
-    testWidgets('height defaults to 43 as specified in the brand guidelines',
+    testWidgets('height defaults to 48 as specified in the brand guidelines',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         Directionality(
@@ -36,10 +36,7 @@ void main() {
       );
 
       final buttonSize = tester.getSize(find.byType(RawMaterialButton));
-      expect(
-        buttonSize.height,
-        RawGooglePayButton.defaultButtonHeight,
-      );
+      expect(buttonSize.height, 48);
     });
   });
 }

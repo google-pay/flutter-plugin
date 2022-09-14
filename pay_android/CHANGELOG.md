@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.8 (2022-09-14)
+
+* Update the Google Pay button to adhere to the new specification and [brand guidelines](https://developers.google.com/pay/api/android/guides/brand-guidelines).
+
 ## 1.0.7 (2022-05-24)
 
 * Add support for Flutter 3.0
