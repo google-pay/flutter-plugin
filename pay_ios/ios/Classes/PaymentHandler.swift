@@ -185,6 +185,11 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
       self.paymentResult(FlutterError(code: "paymentResultDeserializationFailed", message: nil, details: nil))
       return
     }
+
+    if payment.shippingContact?.postalAddress?.isoCountryCode != "PL" {
+      completion(PKPaymentAuthorizationResult(status: .failure, errors: [PKPaymentRequest.paymentShippingAddressUnserviceableError(withLocalizedDescription: "We don't delivery to your country")]))
+      return
+    }
     
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
