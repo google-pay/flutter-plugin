@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pay/pay.dart';
+
+import 'payment_configurations.dart' as payment_configurations;
 
 void main() {
   runApp(PayMaterialApp());
@@ -114,8 +116,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           GooglePayButton(
-            paymentConfigurationAsset:
-                'default_payment_profile_google_pay.json',
+            paymentConfiguration: PaymentConfiguration.fromJsonString(
+                payment_configurations.defaultGooglePay),
             paymentItems: _paymentItems,
             type: GooglePayButtonType.buy,
             margin: const EdgeInsets.only(top: 15.0),
@@ -125,7 +127,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           ApplePayButton(
-            paymentConfigurationAsset: 'default_payment_profile_apple_pay.json',
+            paymentConfiguration: PaymentConfiguration.fromJsonString(
+                payment_configurations.defaultApplePay),
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
