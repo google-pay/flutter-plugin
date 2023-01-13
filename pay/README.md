@@ -27,12 +27,10 @@ dependencies:
   pay: ^1.0.11
 ```
 
-### Payment configuration
-Create a payment profile with the desired configuration for your payment, either using a local file or loading it from a remote server. Take a look at some examples under the [`example/assets/` folder](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/assets) and explore the documentation for a complete list of options available:
-* [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects#PaymentDataRequest)
-* [Apple Pay](https://developer.apple.com/documentation/businesschatapi/applepaypaymentrequest) ([sample request](https://developer.apple.com/documentation/businesschatapi/messages_sent/interactive_messages/apple_pay_in_business_chat/sending_an_apple_pay_payment_request))
+Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).
 
 ### Example
+This snippet assumes the existence a payment configuration for Apple Pay ([`defaultApplePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)) and another one for Google Pay ([`defaultGooglePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L63)):
 ```dart
 import 'package:pay/pay.dart';
 
@@ -45,7 +43,8 @@ const _paymentItems = [
 ];
 
 ApplePayButton(
-  paymentConfigurationAsset: 'default_payment_profile_apple_pay.json',
+  paymentConfiguration: PaymentConfiguration.fromJsonString(
+      defaultApplePayConfigString),
   paymentItems: _paymentItems,
   style: ApplePayButtonStyle.black,
   type: ApplePayButtonType.buy,
@@ -57,7 +56,8 @@ ApplePayButton(
 ),
 
 GooglePayButton(
-  paymentConfigurationAsset: 'default_payment_profile_google_pay.json',
+  paymentConfiguration: PaymentConfiguration.fromJsonString(
+      defaultGooglePayConfigString),
   paymentItems: _paymentItems,
   type: GooglePayButtonType.pay,
   margin: const EdgeInsets.only(top: 15.0),
@@ -75,6 +75,50 @@ void onGooglePayResult(paymentResult) {
   // Send the resulting Google Pay token to your server / PSP
 }
 ```
+
+### Alternative methods to load your payment configurations
+#### JSON strings
+The example above uses the `PaymentConfiguration.fromJsonString` method to load your payment configuration from a string in JSON format ([example](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)). This configuration can be retrieved from a remote location at runtime ([recommended](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L18)) or provided at build time.
+
+#### Asset files
+You can also place payment configurations under your `assets` folder and load them at runtime. Suppose that you add a JSON file with the name `google_pay_config.json` to your `assets` folder to configure your Google Pay integration. You can load it in your app state and use it to create a `PaymentConfiguration` object for the button:
+
+```dart
+class _SampleAppState extends State<SampleApp> {
+  late final PaymentConfiguration _googlePayConfig;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadConfigurationAssets();
+  }
+
+  void _loadConfigurationAssets() async {
+    final googlePayConfig =
+        await PaymentConfiguration.fromAsset('google_pay_config.json');
+    setState(() {
+      _googlePayConfig = googlePayConfig;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ...
+    GooglePayButton(
+      paymentConfiguration: _googlePayConfig,
+      paymentItems: _paymentItems,
+      type: GooglePayButtonType.buy,
+      margin: const EdgeInsets.only(top: 15.0),
+      onPaymentResult: onGooglePayResult,
+      loadingIndicator: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    )
+    ...
+  }
+}
+```
+
 ## Advanced usage
 If you prefer to have more control over each individual request and the button separately, you can instantiate a payment client and add the buttons to your layout independently:
 
@@ -89,10 +133,15 @@ const _paymentItems = [
   )
 ];
 
-Pay _payClient = Pay.withAssets([
-  'default_payment_profile_apple_pay.json',
-  'default_payment_profile_google_pay.json'
-]);
+final applePayConfig = PaymentConfiguration.fromJsonString(
+    defaultApplePayConfigString)
+final googlePayConfig = PaymentConfiguration.fromJsonString(
+    defaultGooglePayConfigString)
+
+Pay _payClient = Pay({
+  PayProvider.apple_pay: applePayConfig,
+  PayProvider.google_pay: googlePayConfig
+});
 ```
 
 As you can see, you can add multiple configurations to your payment client, one for each payment provider supported.

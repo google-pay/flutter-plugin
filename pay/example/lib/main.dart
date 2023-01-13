@@ -57,6 +57,22 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
+  late final PaymentConfiguration _googlePayConfig;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadConfigurationAssets();
+  }
+
+  void _loadConfigurationAssets() async {
+    final googlePayConfig =
+        await PaymentConfiguration.fromAsset('default_google_pay_config.json');
+    setState(() {
+      _googlePayConfig = googlePayConfig;
+    });
+  }
+
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
   }
@@ -116,8 +132,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           GooglePayButton(
-            paymentConfiguration: PaymentConfiguration.fromJsonString(
-                payment_configurations.defaultGooglePay),
+            paymentConfiguration: _googlePayConfig,
             paymentItems: _paymentItems,
             type: GooglePayButtonType.buy,
             margin: const EdgeInsets.only(top: 15.0),
