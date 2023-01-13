@@ -57,22 +57,6 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
-  late final PaymentConfiguration _googlePayConfig;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadConfigurationAssets();
-  }
-
-  void _loadConfigurationAssets() async {
-    final googlePayConfig =
-        await PaymentConfiguration.fromAsset('default_google_pay_config.json');
-    setState(() {
-      _googlePayConfig = googlePayConfig;
-    });
-  }
-
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
   }
@@ -131,16 +115,21 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
-          GooglePayButton(
-            paymentConfiguration: _googlePayConfig,
-            paymentItems: _paymentItems,
-            type: GooglePayButtonType.buy,
-            margin: const EdgeInsets.only(top: 15.0),
-            onPaymentResult: onGooglePayResult,
-            loadingIndicator: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+          FutureBuilder<PaymentConfiguration>(
+              future: PaymentConfiguration.fromAsset(
+                  'default_google_pay_config.json'),
+              builder: (context, snapshot) => snapshot.hasData
+                  ? GooglePayButton(
+                      paymentConfiguration: snapshot.data!,
+                      paymentItems: _paymentItems,
+                      type: GooglePayButtonType.buy,
+                      margin: const EdgeInsets.only(top: 15.0),
+                      onPaymentResult: onGooglePayResult,
+                      loadingIndicator: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : const SizedBox.shrink()),
           ApplePayButton(
             paymentConfiguration: PaymentConfiguration.fromJsonString(
                 payment_configurations.defaultApplePay),
