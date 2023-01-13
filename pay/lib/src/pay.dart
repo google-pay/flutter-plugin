@@ -24,12 +24,12 @@ class Pay {
   final PayPlatform _payPlatform;
 
   /// List of configurations for the payment providers targeted.
-  late final List<PaymentConfiguration> _configurations;
+  late final Map<PayProvider, PaymentConfiguration> _configurations;
 
   // Future to keep track of asynchronous initialization items.
   Future? _assetInitializationFuture;
 
-  /// Creates an instance of the class with a list of [_configurations] and
+  /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
   Pay(this._configurations) : _payPlatform = PayMethodChannel();
 
@@ -45,23 +45,15 @@ class Pay {
       _configurations = await Future.wait(
           configurationAssets.map((ca) => PaymentConfiguration.fromAsset(ca)));
 
-  /// Helper method to load the payment configuration for a given [provider].
-  PaymentConfiguration _findConfig([PayProvider? provider]) => provider == null
-      ? _configurations.first
-      : _configurations.firstWhere((c) => c.provider == provider);
-
   /// Determines whether a user can pay with the selected [provider].
   ///
   /// This method wraps the [userCanPay] method in the platform interface. It
   /// makes sure that the [provider] exists and is available in the platform
   /// running the logic.
-  Future<bool> userCanPay([PayProvider? provider]) async {
-    await _assetInitializationFuture;
-    final configuration = _findConfig(provider);
-
-    if (supportedProviders[defaultTargetPlatform]!
-        .contains(configuration.provider.toSimpleString())) {
-      return _payPlatform.userCanPay(configuration);
+  Future<bool> userCanPay(PayProvider provider) async {
+    throwIfProviderIsNotDefined(provider);
+    if (supportedProviders[defaultTargetPlatform]!.contains(provider)) {
+      return _payPlatform.userCanPay(_configurations[provider]!);
     }
 
     return Future.value(false);
@@ -72,12 +64,21 @@ class Pay {
   /// This method wraps the [showPaymentSelector] method in the platform
   /// interface, and opens the payment selector for the [provider] of choice,
   /// with the [paymentItems] in the price summary.
-  Future<Map<String, dynamic>> showPaymentSelector({
-    PayProvider? provider,
-    required List<PaymentItem> paymentItems,
-  }) async {
-    await _assetInitializationFuture;
-    final configuration = _findConfig(provider);
-    return _payPlatform.showPaymentSelector(configuration, paymentItems);
+  Future<Map<String, dynamic>> showPaymentSelector(
+    PayProvider provider,
+    List<PaymentItem> paymentItems,
+  ) async {
+    throwIfProviderIsNotDefined(provider);
+    return _payPlatform.showPaymentSelector(
+        _configurations[provider]!, paymentItems);
+  }
+
+  /// Verifies that the selected provider has been previously configured or
+  /// throws otherwise.
+  void throwIfProviderIsNotDefined(PayProvider provider) {
+    if (!_configurations.containsKey(provider)) {
+      throw Exception(
+          'No configuration has been provided for the provider: $provider');
+    }
   }
 }
