@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+
+import '../util/configurations.dart';
 
 /// The payment providers supported by this package.
 enum PayProvider { apple_pay, google_pay }
@@ -44,7 +46,7 @@ typedef ConfigLoader = Future<Map<String, dynamic>> Function(String value);
 /// ```
 class PaymentConfiguration {
   /// The payment provider for this configuration.
-  late final PayProvider provider;
+  final PayProvider provider;
 
   /// The configuration parameters for a given payment provider.
   late final Future<Map<String, dynamic>> _parameters;
@@ -56,7 +58,9 @@ class PaymentConfiguration {
         assert(configuration.containsKey('data')),
         assert(PayProviders.isValidProvider(configuration['provider'])),
         provider = PayProviders.fromString(configuration['provider'])!,
-        _parameters = Future.value(configuration['data']);
+        _parameters = Configurations.buildParameters(
+            PayProviders.fromString(configuration['provider'])!,
+            configuration['data']);
 
   /// Creates a [PaymentConfiguration] object from the
   /// [paymentConfigurationString] in JSON format.
@@ -97,7 +101,7 @@ class PaymentConfiguration {
           'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
 
   /// Returns the core configuration map in this object.
-  Future<Map<String, dynamic>> toMap() async {
+  Future<Map<String, dynamic>> parameterMap() async {
     return _parameters;
   }
 }
