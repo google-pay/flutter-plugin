@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -29,12 +29,15 @@ abstract class PayButton extends StatefulWidget {
   /// A resident client to issue requests against the APIs.
   late final Pay _payClient;
 
-  final double width;
-  final double height;
-  final EdgeInsets margin;
+  /// Specifies the payment provider supported by the button
+  final PayProvider buttonProvider;
 
   /// A function called when the payment process yields a result.
   final void Function(Map<String, dynamic> result) onPaymentResult;
+
+  final double width;
+  final double height;
+  final EdgeInsets margin;
 
   /// A function called when there's an error in the payment process.
   final void Function(Object? error)? onError;
@@ -51,7 +54,8 @@ abstract class PayButton extends StatefulWidget {
   /// Initializes the button and the payment client that handles the requests.
   PayButton(
     Key? key,
-    String paymentConfigurationAsset,
+    this.buttonProvider,
+    final PaymentConfiguration paymentConfiguration,
     this.onPaymentResult,
     this.width,
     this.height,
@@ -59,7 +63,7 @@ abstract class PayButton extends StatefulWidget {
     this.onError,
     this.childOnError,
     this.loadingIndicator,
-  )   : _payClient = Pay.withAssets([paymentConfigurationAsset]),
+  )   : _payClient = Pay({buttonProvider: paymentConfiguration}),
         super(key: key);
 
   /// Callback function to respond to tap events.
@@ -73,7 +77,7 @@ abstract class PayButton extends StatefulWidget {
       onPressed?.call();
       try {
         final result =
-            await _payClient.showPaymentSelector(paymentItems: paymentItems);
+            await _payClient.showPaymentSelector(buttonProvider, paymentItems);
         onPaymentResult(result);
       } catch (error) {
         onError?.call(error);
@@ -110,7 +114,7 @@ class _PayButtonState extends State<PayButton> {
 
   Future<bool> userCanPay() async {
     try {
-      return await widget._payClient.userCanPay();
+      return await widget._payClient.userCanPay(widget.buttonProvider);
     } catch (error) {
       widget.onError?.call(error);
       rethrow;

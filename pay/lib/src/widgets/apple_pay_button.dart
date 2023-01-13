@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC.
+/// Copyright 2023 Google LLC.
 /// SPDX-License-Identifier: Apache-2.0
 
 part of '../../pay.dart';
@@ -9,7 +9,7 @@ part of '../../pay.dart';
 /// Example usage:
 /// ```dart
 /// ApplePayButton(
-///   paymentConfigurationAsset: 'apple_pay_config.json',
+///   paymentConfigurationAsset: _paymentConfiguration,
 ///   paymentItems: _paymentItems,
 ///   style: ApplePayButtonStyle.black,
 ///   type: ApplePayButtonType.buy,
@@ -25,7 +25,7 @@ class ApplePayButton extends PayButton {
 
   ApplePayButton({
     Key? key,
-    required String paymentConfigurationAsset,
+    required PaymentConfiguration paymentConfiguration,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
@@ -41,7 +41,8 @@ class ApplePayButton extends PayButton {
         assert(height >= RawApplePayButton.minimumButtonHeight),
         super(
           key,
-          paymentConfigurationAsset,
+          PayProvider.apple_pay,
+          paymentConfiguration,
           onPaymentResult,
           width,
           height,

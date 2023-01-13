@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC.
+/// Copyright 2023 Google LLC.
 /// SPDX-License-Identifier: Apache-2.0
 
 part of '../../pay.dart';
@@ -9,7 +9,7 @@ part of '../../pay.dart';
 /// Example usage:
 /// ```dart
 /// GooglePayButton(
-///   paymentConfigurationAsset: 'google_pay_config.json',
+///   paymentConfiguration: _paymentConfiguration,
 ///   paymentItems: _paymentItems,
 ///   type: GooglePayButtonType.pay,
 ///   margin: const EdgeInsets.only(top: 15.0),
@@ -24,7 +24,7 @@ class GooglePayButton extends PayButton {
 
   GooglePayButton({
     Key? key,
-    required String paymentConfigurationAsset,
+    required PaymentConfiguration paymentConfiguration,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     GooglePayButtonType type = GooglePayButtonType.pay,
@@ -39,7 +39,8 @@ class GooglePayButton extends PayButton {
         assert(height >= RawGooglePayButton.defaultButtonHeight),
         super(
           key,
-          paymentConfigurationAsset,
+          PayProvider.google_pay,
+          paymentConfiguration,
           onPaymentResult,
           width,
           height,
