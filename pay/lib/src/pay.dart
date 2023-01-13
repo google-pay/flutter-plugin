@@ -1,12 +1,12 @@
-/// Copyright 2021 Google LLC.
+/// Copyright 2023 Google LLC.
 /// SPDX-License-Identifier: Apache-2.0
 
 part of '../pay.dart';
 
 /// List of supported payment providers and platform pairs.
 const supportedProviders = {
-  TargetPlatform.android: ['google_pay'],
-  TargetPlatform.iOS: ['apple_pay'],
+  TargetPlatform.android: [PayProvider.google_pay],
+  TargetPlatform.iOS: [PayProvider.apple_pay],
 };
 
 /// High level layer to easily manage cross-platform integrations.
