@@ -115,15 +115,14 @@ const _paymentItems = [
   )
 ];
 
-final applePayConfig = PaymentConfiguration.fromJsonString(
-    defaultApplePayConfigString)
-final googlePayConfig = PaymentConfiguration.fromJsonString(
-    defaultGooglePayConfigString)
+final Map<PayProvider, PaymentConfiguration> providerConfig = {
+  PayProvider.apple_pay:
+      PaymentConfiguration.fromJsonString(defaultApplePayConfigString),
+  PayProvider.google_pay:
+      PaymentConfiguration.fromJsonString(defaultGooglePayConfigString)
+};
 
-Pay _payClient = Pay({
-  PayProvider.apple_pay: applePayConfig,
-  PayProvider.google_pay: googlePayConfig
-});
+Pay _payClient = Pay(providerConfig);
 ```
 
 As you can see, you can add multiple configurations to your payment client, one for each payment provider supported.
