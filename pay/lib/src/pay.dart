@@ -23,7 +23,7 @@ class Pay {
   /// The implementation of the platform interface to talk to the native ends.
   final PayPlatform _payPlatform;
 
-  /// List of configurations for the payment providers targeted.
+  /// Map of configurations for the payment providers targeted.
   late final Map<PayProvider, PaymentConfiguration> _configurations;
 
   /// Creates an instance with a dictionary of [_configurations] and
