@@ -19,7 +19,7 @@
 /// (as displayed in this example), we recommend you to keep this information in
 /// a remote location that can be accessed from your application (e.g.: a
 /// backend server). That way, you benefit from being able to use multiple
-/// payment configurations that can be updated without needing to update your
+/// payment configurations that can be modified without the need to update your
 /// application.
 
 /// Sample configuration for Apple Pay. Contains the same content as the file
