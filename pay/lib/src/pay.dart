@@ -26,24 +26,9 @@ class Pay {
   /// List of configurations for the payment providers targeted.
   late final Map<PayProvider, PaymentConfiguration> _configurations;
 
-  // Future to keep track of asynchronous initialization items.
-  Future? _assetInitializationFuture;
-
   /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
   Pay(this._configurations) : _payPlatform = PayMethodChannel();
-
-  /// Alternative constructor to create a [Pay] object with a list of
-  /// configurations in [String] format.
-  Pay.withAssets(List<String> configAssets)
-      : _payPlatform = PayMethodChannel() {
-    _assetInitializationFuture = _loadConfigAssets(configAssets);
-  }
-
-  /// Load the list of configurations from the assets.
-  Future _loadConfigAssets(List<String> configurationAssets) async =>
-      _configurations = await Future.wait(
-          configurationAssets.map((ca) => PaymentConfiguration.fromAsset(ca)));
 
   /// Determines whether a user can pay with the selected [provider].
   ///
