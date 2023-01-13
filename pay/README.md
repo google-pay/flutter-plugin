@@ -81,42 +81,24 @@ void onGooglePayResult(paymentResult) {
 The example above uses the `PaymentConfiguration.fromJsonString` method to load your payment configuration from a string in JSON format ([example](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)). This configuration can be retrieved from a remote location at runtime ([recommended](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L18)) or provided at build time.
 
 #### Asset files
-You can also place payment configurations under your `assets` folder and load them at runtime. Suppose that you add a JSON file with the name `google_pay_config.json` to your `assets` folder to configure your Google Pay integration. You can load it in your app state and use it to create a `PaymentConfiguration` object for the button:
+You can also place payment configurations under your `assets` folder and load them at runtime. Suppose that you add a JSON file with the name `google_pay_config.json` to your `assets` folder to configure your Google Pay integration. You can load it and use it to create a `PaymentConfiguration` object for the button (e.g.: using a `FutureBuilder`):
 
 ```dart
-class _SampleAppState extends State<SampleApp> {
-  late final PaymentConfiguration _googlePayConfig;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadConfigurationAssets();
-  }
-
-  void _loadConfigurationAssets() async {
-    final googlePayConfig =
-        await PaymentConfiguration.fromAsset('google_pay_config.json');
-    setState(() {
-      _googlePayConfig = googlePayConfig;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ...
-    GooglePayButton(
-      paymentConfiguration: _googlePayConfig,
-      paymentItems: _paymentItems,
-      type: GooglePayButtonType.buy,
-      margin: const EdgeInsets.only(top: 15.0),
-      onPaymentResult: onGooglePayResult,
-      loadingIndicator: const Center(
-        child: CircularProgressIndicator(),
-      ),
-    )
-    ...
-  }
-}
+FutureBuilder<PaymentConfiguration>(
+  future: PaymentConfiguration.fromAsset(
+      'google_pay_config.json'),
+  builder: (context, snapshot) => snapshot.hasData
+      ? GooglePayButton(
+          paymentConfiguration: snapshot.data!,
+          paymentItems: _paymentItems,
+          type: GooglePayButtonType.buy,
+          margin: const EdgeInsets.only(top: 15.0),
+          onPaymentResult: onGooglePayResult,
+          loadingIndicator: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        )
+      : const SizedBox.shrink()),
 ```
 
 ## Advanced usage
