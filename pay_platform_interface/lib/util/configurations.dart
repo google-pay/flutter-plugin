@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -25,19 +25,17 @@ class Configurations {
   ///
   /// Takes the configuration included in [config] and returns and updated
   /// version of the object wrapped in a [Future] with additional metadata.
-  static Future<Map<String, dynamic>> build(PaymentConfiguration config) async {
-    // A map with the raw parameters in the configuration.
-    final _parameters = await config.toMap();
-
-    switch (config.provider) {
+  static Future<Map<String, dynamic>> buildParameters(
+      PayProvider provider, Map<String, dynamic> configurationParams) async {
+    switch (provider) {
       case PayProvider.apple_pay:
-        return _parameters;
+        return configurationParams;
 
       case PayProvider.google_pay:
 
         // Add information about the package.
         final updatedMerchantInfo = {
-          ...(_parameters['merchantInfo'] ?? {}) as Map,
+          ...(configurationParams['merchantInfo'] ?? {}) as Map,
           'softwareInfo': {
             'id': 'flutter/pay-plugin',
             'version': (await _getPackageConfiguration())['version']
@@ -45,7 +43,7 @@ class Configurations {
         };
 
         final updatedPaymentConfiguration = Map<String, Object>.unmodifiable(
-            {..._parameters, 'merchantInfo': updatedMerchantInfo});
+            {...configurationParams, 'merchantInfo': updatedMerchantInfo});
 
         return updatedPaymentConfiguration;
     }

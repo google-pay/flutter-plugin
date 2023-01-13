@@ -19,7 +19,6 @@ import 'package:flutter/services.dart';
 
 import 'core/payment_configuration.dart';
 import 'core/payment_item.dart';
-import 'util/configurations.dart';
 import 'pay_platform_interface.dart';
 
 /// An implementation of the contract in this plugin that uses a [MethodChannel]
@@ -44,9 +43,8 @@ class PayMethodChannel extends PayPlatform {
   /// returns a boolean for the [paymentConfiguration] specified.
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
-    final configurationMap = await Configurations.build(paymentConfiguration);
     return await _channel.invokeMethod(
-        'userCanPay', jsonEncode(configurationMap));
+        'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()));
   }
 
   /// Shows the payment selector to complete the payment operation.
@@ -60,9 +58,8 @@ class PayMethodChannel extends PayPlatform {
     PaymentConfiguration paymentConfiguration,
     List<PaymentItem> paymentItems,
   ) async {
-    final configurationMap = await Configurations.build(paymentConfiguration);
     final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
-      'payment_profile': jsonEncode(configurationMap),
+      'payment_profile': jsonEncode(await paymentConfiguration.parameterMap()),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
     });
 

@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ void main() {
   test('Load payment configuration from a string', () async {
     final configuration = PaymentConfiguration.fromJsonString(_payConfigString);
     expect(configuration.provider, _providerGooglePay);
-    expect(await configuration.toMap(), isNotEmpty);
+    expect(await configuration.parameterMap(), isNotEmpty);
   });
 
   test('Load payment configuration from an asset', () async {
@@ -55,7 +55,7 @@ void main() {
         profileLoader: _testProfileLoader);
 
     expect(configuration.provider, _providerGooglePay);
-    expect(await configuration.toMap(), isNotEmpty);
+    expect(await configuration.parameterMap(), isNotEmpty);
   });
 
   test('Check that software info is included in Google Pay requests', () async {
@@ -63,12 +63,12 @@ void main() {
         'google_pay_prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
-    final builtConfig = await Configurations.build(config);
-    expect(builtConfig.containsKey('merchantInfo'), isTrue);
-    expect(builtConfig['merchantInfo'].containsKey('softwareInfo'), isTrue);
+    final configParams = await config.parameterMap();
+    expect(configParams.containsKey('merchantInfo'), isTrue);
+    expect(configParams['merchantInfo'].containsKey('softwareInfo'), isTrue);
 
     Map<String, dynamic> softwareInfo =
-        builtConfig['merchantInfo']['softwareInfo'];
+        configParams['merchantInfo']['softwareInfo'];
     expect(softwareInfo.containsKey('id'), isTrue);
     expect(softwareInfo.containsKey('version'), isTrue);
   });
