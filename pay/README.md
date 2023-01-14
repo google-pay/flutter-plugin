@@ -84,9 +84,11 @@ The example above uses the `PaymentConfiguration.fromJsonString` method to load 
 You can also place payment configurations under your `assets` folder and load them at runtime. Suppose that you add a JSON file with the name `google_pay_config.json` to your `assets` folder to configure your Google Pay integration. You can load it and use it to create a `PaymentConfiguration` object for the button (e.g.: using a `FutureBuilder`):
 
 ```dart
+final Future<PaymentConfiguration> _googlePayConfigFuture = 
+    PaymentConfiguration.fromAsset('google_pay_config.json');
+
 FutureBuilder<PaymentConfiguration>(
-  future: PaymentConfiguration.fromAsset(
-      'google_pay_config.json'),
+  future: _googlePayConfigFuture,
   builder: (context, snapshot) => snapshot.hasData
       ? GooglePayButton(
           paymentConfiguration: snapshot.data!,

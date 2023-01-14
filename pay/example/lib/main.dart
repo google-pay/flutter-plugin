@@ -57,6 +57,15 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
+  late final Future<PaymentConfiguration> _googlePayConfigFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _googlePayConfigFuture =
+        PaymentConfiguration.fromAsset('default_google_pay_config.json');
+  }
+
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
   }
@@ -116,8 +125,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             ),
           ),
           FutureBuilder<PaymentConfiguration>(
-              future: PaymentConfiguration.fromAsset(
-                  'default_google_pay_config.json'),
+              future: _googlePayConfigFuture,
               builder: (context, snapshot) => snapshot.hasData
                   ? GooglePayButton(
                       paymentConfiguration: snapshot.data!,
