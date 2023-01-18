@@ -60,5 +60,11 @@ void main() {
     expect(client, isNotNull);
   });
 
+  test('Throw exception when a missing configuration is used', () async {
+    final client = Pay({});
+    expect(client.userCanPay(PayProvider.google_pay),
+        throwsA(isA<ProviderNotConfiguredException>()));
+  });
+
   tearDown(() async {});
 }

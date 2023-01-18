@@ -81,8 +81,20 @@ class Pay {
   Future throwIfProviderIsNotDefined(PayProvider provider) async {
     await _assetInitializationFuture;
     if (!_configurations!.containsKey(provider)) {
-      throw Exception(
-          'No configuration has been provided for the provider: $provider');
+      throw ProviderNotConfiguredException(
+          'No configuration has been provided for the provider ($provider)');
     }
   }
+}
+
+/// Thrown to indicate that the configuration for a request provider has not
+/// been provided.
+class ProviderNotConfiguredException implements Exception {
+  ProviderNotConfiguredException(this.message);
+
+  /// A human-readable error message, possibly null.
+  final String? message;
+
+  @override
+  String toString() => 'ProviderNotConfiguredException: $message';
 }
