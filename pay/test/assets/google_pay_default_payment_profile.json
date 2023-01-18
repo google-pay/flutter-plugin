@@ -1,0 +1,8 @@
+{
+    "provider": "google_pay",
+    "data": {
+      "environment": "TEST",
+      "apiVersion": 2,
+      "apiVersionMinor": 0
+    }
+  }
