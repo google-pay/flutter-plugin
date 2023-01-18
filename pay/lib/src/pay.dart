@@ -24,11 +24,29 @@ class Pay {
   final PayPlatform _payPlatform;
 
   /// Map of configurations for the payment providers targeted.
-  late final Map<PayProvider, PaymentConfiguration> _configurations;
+  Map<PayProvider, PaymentConfiguration>? _configurations;
+
+  // Future to keep track of asynchronous initialization items.
+  Future? _assetInitializationFuture;
 
   /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
   Pay(this._configurations) : _payPlatform = PayMethodChannel();
+
+  /// Alternative constructor to create a [Pay] object with a list of
+  /// configurations in [String] format.
+  @Deprecated(
+      'Prefer to use [Pay({ [PayProvider]: [PaymentConfiguration] })]. Take a look at the readme to see examples')
+  Pay.withAssets(List<String> configAssets)
+      : _payPlatform = PayMethodChannel() {
+    _assetInitializationFuture = _loadConfigAssets(configAssets);
+  }
+
+  /// Load the list of configurations from the assets.
+  Future _loadConfigAssets(List<String> configurationAssets) async =>
+      _configurations = Map.fromEntries(await Future.wait(configurationAssets
+          .map((ca) => PaymentConfiguration.fromAsset(ca))
+          .map((c) async => MapEntry(((await c).provider), await c))));
 
   /// Determines whether a user can pay with the selected [provider].
   ///
@@ -36,9 +54,9 @@ class Pay {
   /// makes sure that the [provider] exists and is available in the platform
   /// running the logic.
   Future<bool> userCanPay(PayProvider provider) async {
-    throwIfProviderIsNotDefined(provider);
+    await throwIfProviderIsNotDefined(provider);
     if (supportedProviders[defaultTargetPlatform]!.contains(provider)) {
-      return _payPlatform.userCanPay(_configurations[provider]!);
+      return _payPlatform.userCanPay(_configurations![provider]!);
     }
 
     return Future.value(false);
@@ -53,15 +71,16 @@ class Pay {
     PayProvider provider,
     List<PaymentItem> paymentItems,
   ) async {
-    throwIfProviderIsNotDefined(provider);
+    await throwIfProviderIsNotDefined(provider);
     return _payPlatform.showPaymentSelector(
-        _configurations[provider]!, paymentItems);
+        _configurations![provider]!, paymentItems);
   }
 
   /// Verifies that the selected provider has been previously configured or
   /// throws otherwise.
-  void throwIfProviderIsNotDefined(PayProvider provider) {
-    if (!_configurations.containsKey(provider)) {
+  Future throwIfProviderIsNotDefined(PayProvider provider) async {
+    await _assetInitializationFuture;
+    if (!_configurations!.containsKey(provider)) {
       throw Exception(
           'No configuration has been provided for the provider: $provider');
     }

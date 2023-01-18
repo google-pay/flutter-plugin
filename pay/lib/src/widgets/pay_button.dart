@@ -55,7 +55,9 @@ abstract class PayButton extends StatefulWidget {
   PayButton(
     Key? key,
     this.buttonProvider,
-    final PaymentConfiguration paymentConfiguration,
+    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
+        final String? paymentConfigurationAsset,
+    final PaymentConfiguration? paymentConfiguration,
     this.onPaymentResult,
     this.width,
     this.height,
@@ -63,7 +65,9 @@ abstract class PayButton extends StatefulWidget {
     this.onError,
     this.childOnError,
     this.loadingIndicator,
-  )   : _payClient = Pay({buttonProvider: paymentConfiguration}),
+  )   : _payClient = paymentConfigurationAsset != null
+            ? Pay.withAssets([paymentConfigurationAsset])
+            : Pay({buttonProvider: paymentConfiguration!}),
         super(key: key);
 
   /// Callback function to respond to tap events.

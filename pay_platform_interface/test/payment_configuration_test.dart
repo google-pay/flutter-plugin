@@ -19,7 +19,6 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
-import 'package:pay_platform_interface/util/configurations.dart';
 
 String _fixtureAsset(String name) {
   var currentPath = Directory.current.path;

@@ -9,7 +9,7 @@ part of '../../pay.dart';
 /// Example usage:
 /// ```dart
 /// ApplePayButton(
-///   paymentConfigurationAsset: _paymentConfiguration,
+///   paymentConfiguration: _paymentConfiguration,
 ///   paymentItems: _paymentItems,
 ///   style: ApplePayButtonStyle.black,
 ///   type: ApplePayButtonType.buy,
@@ -25,7 +25,9 @@ class ApplePayButton extends PayButton {
 
   ApplePayButton({
     Key? key,
-    required PaymentConfiguration paymentConfiguration,
+    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
+        String? paymentConfigurationAsset,
+    PaymentConfiguration? paymentConfiguration,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
@@ -42,6 +44,7 @@ class ApplePayButton extends PayButton {
         super(
           key,
           PayProvider.apple_pay,
+          paymentConfigurationAsset,
           paymentConfiguration,
           onPaymentResult,
           width,
