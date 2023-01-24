@@ -124,6 +124,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
               fontSize: 15,
             ),
           ),
+          // Example pay button configured using an asset
           FutureBuilder<PaymentConfiguration>(
               future: _googlePayConfigFuture,
               builder: (context, snapshot) => snapshot.hasData
@@ -138,6 +139,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
                       ),
                     )
                   : const SizedBox.shrink()),
+          // Example pay button configured using a string
           ApplePayButton(
             paymentConfiguration: PaymentConfiguration.fromJsonString(
                 payment_configurations.defaultApplePay),
