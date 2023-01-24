@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3 (2023-01-24)
+Populate the configuration in the initializer list to simplify the business logic perception.
+
 ## 1.0.2 (2021-05-25)
 Enrich `dartdoc` comments to facilitate the adoption of the package.
 
