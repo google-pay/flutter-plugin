@@ -117,14 +117,15 @@ const _paymentItems = [
   )
 ];
 
-final Map<PayProvider, PaymentConfiguration> providerConfig = {
-  PayProvider.apple_pay:
-      PaymentConfiguration.fromJsonString(defaultApplePayConfigString),
-  PayProvider.google_pay:
-      PaymentConfiguration.fromJsonString(defaultGooglePayConfigString)
-};
+late final Pay _payClient;
 
-Pay _payClient = Pay(providerConfig);
+// When you are ready to load your configuration
+_payClient = Pay({
+    PayProvider.google_pay: PaymentConfiguration.fromJsonString(
+        payment_configurations.defaultGooglePay),
+    PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
+        payment_configurations.defaultApplePay),
+  });
 ```
 
 As you can see, you can add multiple configurations to your payment client, one for each payment provider supported.
@@ -140,12 +141,15 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
           return RawGooglePayButton(
-            type: GooglePayButtonType.pay,
-            onPressed: onGooglePayPressed);
+              type: GooglePayButtonType.pay,
+              onPressed: onGooglePayPressed);
         } else {
           // userCanPay returned false
           // Consider showing an alternative payment method
         }
+      } else {
+        // The operation hasn't finished loading
+        // Consider showing a loading indicator 
       }
     },
   );
@@ -156,8 +160,8 @@ Finally, handle the `onPressed` event and trigger the payment selector as follow
 ```dart
 void onGooglePayPressed() async {
   final result = await _payClient.showPaymentSelector(
-    provider: PayProvider.google_pay,
-    paymentItems: _paymentItems,
+    PayProvider.google_pay,
+    _paymentItems,
   );
   // Send the resulting Google Pay token to your server / PSP
 }
