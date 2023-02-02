@@ -18,8 +18,8 @@ version: 1.1.0
 repository: https://github.com/google-pay/flutter-plugin/tree/main/pay
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 flutter:
   plugin:
@@ -34,7 +34,9 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  pay_android: ^1.0.9
+  # pay_android: ^1.1.0
+  pay_android:
+    path: ../pay_android
   pay_ios: ^1.0.8
   pay_platform_interface: ^1.0.3
   meta: ^1.3.0
