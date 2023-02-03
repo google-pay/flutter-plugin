@@ -68,7 +68,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   pay_platform_interface: ^1.0.3
-  flutter_svg: ^2.0.0
+  flutter_svg: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:
