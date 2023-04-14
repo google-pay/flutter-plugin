@@ -112,6 +112,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     let arguments = args as! Dictionary<String, AnyObject>
     let buttonType = arguments["type"] as! String
     let buttonStyle = arguments["style"] as! String
+    let cornerRadius = arguments["cornerRadius"] as! Double
     
     // Instantiate the channel to talk to the Flutter end.
     channel = FlutterMethodChannel(name: "\(ApplePayButtonView.buttonMethodChannelName)/\(viewId)",
@@ -119,7 +120,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     
     super.init()
     channel.setMethodCallHandler(handleFlutterCall)
-    createApplePayView(type: buttonType, style: buttonStyle)
+    createApplePayView(type: buttonType, style: buttonStyle, radius: cornerRadius)
   }
   
   /// No-op handler that resonds to calls received from Flutter.
@@ -138,7 +139,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
   
   /// Creates the actual `PKPaymentButton` with the defined styles and constraints.
-  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String){
+  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String, radius cornerRadius: Double){
     
     // Create the PK objects
     let paymentButtonType = PKPaymentButtonType.fromString(buttonTypeString) ?? .plain
@@ -150,6 +151,9 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     applePayButton.addTarget(self, action: #selector(handleApplePayButtonTapped), for: .touchUpInside)
     _view.addSubview(applePayButton)
     
+    if #available(iOS 12.0, *) {
+      applePayButton.cornerRadius = CGFloat(cornerRadius)
+    }
     // Enable constraints
     applePayButton.topAnchor.constraint(equalTo: _view.topAnchor).isActive = true
     applePayButton.bottomAnchor.constraint(equalTo: _view.bottomAnchor).isActive = true

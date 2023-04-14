@@ -146,6 +146,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
+            cornerRadius: 24.0,
             margin: const EdgeInsets.only(top: 15.0),
             onPaymentResult: onApplePayResult,
             loadingIndicator: const Center(

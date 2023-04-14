@@ -78,6 +78,10 @@ class RawApplePayButton extends StatelessWidget {
   /// The default height for the Apple Pay Button.
   static const double minimumButtonHeight = 30;
 
+  /// The default cornerRadius for the Apple Pay Button. 
+  /// (https://developer.apple.com/documentation/passkit/pkpaymentbutton/2999416-cornerradius)
+  static const double defaultCornerRadius = 4;
+
   /// The constraints used to limit the size of the button.
   final BoxConstraints constraints;
 
@@ -92,12 +96,16 @@ class RawApplePayButton extends StatelessWidget {
   /// transaction.
   final ApplePayButtonType type;
 
+  /// The cornerRadius of the Apple Pay button
+  final double cornerRadius;
+
   /// Creates an Apple Pay button widget with the parameters specified.
   RawApplePayButton({
     Key? key,
     this.onPressed,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
+    this.cornerRadius = RawApplePayButton.defaultCornerRadius,
   })  : constraints = BoxConstraints.tightFor(
           width: type.minimumAssetWidth,
           height: minimumButtonHeight,
@@ -122,6 +130,7 @@ class RawApplePayButton extends StatelessWidget {
           onPressed: onPressed,
           style: style,
           type: type,
+          cornerRadius: cornerRadius,
         );
       default:
         throw UnsupportedError(
@@ -140,12 +149,14 @@ class _UiKitApplePayButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
   final ApplePayButtonType type;
+  final double cornerRadius;
 
   _UiKitApplePayButton({
     Key? key,
     this.onPressed,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
+    this.cornerRadius = RawApplePayButton.defaultCornerRadius,
   }) : super(key: key);
 
   @override
@@ -153,7 +164,7 @@ class _UiKitApplePayButton extends StatelessWidget {
     return UiKitView(
       viewType: buttonId,
       creationParamsCodec: const StandardMessageCodec(),
-      creationParams: {'style': style.enumString, 'type': type.enumString},
+      creationParams: {'style': style.enumString, 'type': type.enumString, 'cornerRadius': cornerRadius},
       onPlatformViewCreated: (viewId) {
         methodChannel = MethodChannel('$buttonId/$viewId');
         methodChannel?.setMethodCallHandler((call) async {
