@@ -1,4 +1,4 @@
-flutter-pay-plugin
+## flutter-pay-plugin
 Fork Google Flutter Pay Plugin for Apple Pay and Google Pay
 
 
