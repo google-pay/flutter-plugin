@@ -72,6 +72,11 @@ class _PaySampleAppState extends State<PaySampleApp> {
 
   void onApplePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
+    Pay({
+      PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
+        payment_configurations.defaultApplePay,
+      ),
+    }).updatePaymentStatus(true);
   }
 
   @override
@@ -142,7 +147,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
           // Example pay button configured using a string
           ApplePayButton(
             paymentConfiguration: PaymentConfiguration.fromJsonString(
-                payment_configurations.defaultApplePay),
+              payment_configurations.defaultApplePay,
+            ),
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,

@@ -36,6 +36,9 @@ enum PaymentHandlerStatus {
 /// paymentHandler.canMakePayments(stringArguments)
 /// ```
 class PaymentHandler: NSObject {
+
+  /// Holds the completion handler so it can be updated later on from the Flutter side.
+  var completionHandler: PaymentCompletionHandler?
   
   /// Holds the current status of the payment process.
   var paymentHandlerStatus: PaymentHandlerStatus!
@@ -169,6 +172,12 @@ class PaymentHandler: NSObject {
     
     return paymentRequest
   }
+
+  func updatePaymentStatus(isSuccess: Bool) {
+    // Call completion handler with the given success status
+    completionHandler?(isSuccess)
+    completionHandler = nil
+  }
 }
 
 /// Extension that implements the completion methods in the delegate to respond to user selection.
@@ -179,6 +188,11 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
   }
     
   func paymentAuthorizationController(_: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+    // Store completion handler
+    completionHandler = { isSuccess in
+      let status: PKPaymentAuthorizationStatus = isSuccess ? .success : .failure
+      completion(PKPaymentAuthorizationResult(status: status, errors: nil))
+    }
     
     // Collect payment result or error and return if no payment was selected
     guard let paymentResultData = try? JSONSerialization.data(withJSONObject: payment.toDictionary()) else {
@@ -190,7 +204,6 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
     
     paymentHandlerStatus = .authorized
-    completion(PKPaymentAuthorizationResult(status: PKPaymentAuthorizationStatus.success, errors: nil))
   }
   
   func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {

@@ -65,4 +65,10 @@ class PayMethodChannel extends PayPlatform {
 
     return jsonDecode(paymentResult);
   }
+
+  /// Update the payment status with the native platform.
+  @override
+  Future<void> updatePaymentStatus(bool isSuccess) async {
+    return _channel.invokeMethod('updatePaymentStatus', isSuccess);
+  }
 }

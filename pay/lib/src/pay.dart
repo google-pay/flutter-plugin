@@ -76,6 +76,12 @@ class Pay {
         _configurations![provider]!, paymentItems);
   }
 
+  /// Update the payment status with the native platform.
+  Future<void> updatePaymentStatus(bool isSuccess) async {
+    await _assetInitializationFuture;
+    return _payPlatform.updatePaymentStatus(isSuccess);
+  }
+
   /// Verifies that the selected provider has been previously configured or
   /// throws otherwise.
   Future throwIfProviderIsNotDefined(PayProvider provider) async {
