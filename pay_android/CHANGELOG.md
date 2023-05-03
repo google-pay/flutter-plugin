@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.10 (2023-02-02)
+
+* Bump `flutter_svg` to version 2.0.5.
+
 ## 1.0.9 (2023-01-24)
 
 * Support for the latest platform interface.

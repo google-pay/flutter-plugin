@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 1.1.1 (2023-02-02)
+* Update `pay_android` to 1.0.10, which includes the latest version of the `flutter_svg` package.
+
 ## 1.1.0 (2023-01-24)
 
 ### ⚠ DEPRECATION WARNING
