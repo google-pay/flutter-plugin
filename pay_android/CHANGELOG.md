@@ -1,9 +1,5 @@
 # Changelog
 
-## 1.0.11 (2023-04-26)
-
-* Adds a `namespace` attribute to the Android build.gradle, for compatibility with Android Gradle Plugin 8.0.
-
 ## 1.0.10 (2023-02-02)
 
 * Bump `flutter_svg` to version 2.0.5.
