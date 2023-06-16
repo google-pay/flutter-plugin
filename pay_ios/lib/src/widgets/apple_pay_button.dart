@@ -73,7 +73,7 @@ extension on ApplePayButtonType {
 /// ```
 class RawApplePayButton extends StatelessWidget {
   /// The default width for the Apple Pay Button.
-  static const double minimumButonWidth = 100;
+  static const double minimumButtonWidth = 100;
 
   /// The default height for the Apple Pay Button.
   static const double minimumButtonHeight = 30;
@@ -88,7 +88,7 @@ class RawApplePayButton extends StatelessWidget {
   /// scheme of the application.
   final ApplePayButtonStyle style;
 
-  /// The tyoe of button depending on the activity initiated with the payment
+  /// The type of button depending on the activity initiated with the payment
   /// transaction.
   final ApplePayButtonType type;
 

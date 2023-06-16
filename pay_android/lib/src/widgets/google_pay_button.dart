@@ -87,7 +87,7 @@ class RawGooglePayButton extends StatelessWidget {
   /// Called when the button is pressed.
   final VoidCallback? onPressed;
 
-  /// The tyoe of button depending on the activity initiated with the payment
+  /// The type of button depending on the activity initiated with the payment
   /// transaction.
   final GooglePayButtonType type;
 
