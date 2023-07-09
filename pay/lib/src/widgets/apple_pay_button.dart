@@ -25,21 +25,22 @@ class ApplePayButton extends PayButton {
 
   ApplePayButton({
     Key? key,
-    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
-        String? paymentConfigurationAsset,
+    @Deprecated(
+        'Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
+    String? paymentConfigurationAsset,
     PaymentConfiguration? paymentConfiguration,
     required void Function(Map<String, dynamic> result) onPaymentResult,
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
     ApplePayButtonType type = ApplePayButtonType.plain,
-    double width = RawApplePayButton.minimumButonWidth,
+    double width = RawApplePayButton.minimumButtonWidth,
     double height = RawApplePayButton.minimumButtonHeight,
     EdgeInsets margin = EdgeInsets.zero,
     VoidCallback? onPressed,
     void Function(Object? error)? onError,
     Widget? childOnError,
     Widget? loadingIndicator,
-  })  : assert(width >= RawApplePayButton.minimumButonWidth),
+  })  : assert(width >= RawApplePayButton.minimumButtonWidth),
         assert(height >= RawApplePayButton.minimumButtonHeight),
         super(
           key,
