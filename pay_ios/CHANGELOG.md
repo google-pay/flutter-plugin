@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.9 (2023-07-31)
+
+* Fix typo in public property.
+
 ## 1.0.8 (2023-01-24)
 
 * Support for the latest platform interface.
