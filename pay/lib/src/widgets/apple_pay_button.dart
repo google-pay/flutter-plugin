@@ -35,6 +35,7 @@ class ApplePayButton extends PayButton {
     ApplePayButtonType type = ApplePayButtonType.plain,
     double width = RawApplePayButton.minimumButtonWidth,
     double height = RawApplePayButton.minimumButtonHeight,
+    double cornerRadius = RawApplePayButton.defaultCornerRadius,
     EdgeInsets margin = EdgeInsets.zero,
     VoidCallback? onPressed,
     void Function(Object? error)? onError,
@@ -58,6 +59,7 @@ class ApplePayButton extends PayButton {
     _applePayButton = RawApplePayButton(
         style: style,
         type: type,
+        cornerRadius: cornerRadius,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 
