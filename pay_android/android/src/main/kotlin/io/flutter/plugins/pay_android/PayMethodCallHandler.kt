@@ -35,8 +35,9 @@ private const val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
  * A simple class that configures and register a method handler for the `pay` plugin.
  */
 class PayMethodCallHandler private constructor(
-        messenger: BinaryMessenger,
-        activity: Activity,
+    messenger: BinaryMessenger,
+    activity: Activity,
+    private val activityBinding: ActivityPluginBinding?,
 ) : MethodCallHandler {
 
     private val channel: MethodChannel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
@@ -46,21 +47,24 @@ class PayMethodCallHandler private constructor(
         channel.setMethodCallHandler(this)
     }
 
-    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()!!) {
+    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()!!, null) {
         registrar.addActivityResultListener(googlePayHandler)
     }
 
     constructor(
-            flutterBinding: FlutterPlugin.FlutterPluginBinding,
-            activityBinding: ActivityPluginBinding,
-    ) : this(flutterBinding.binaryMessenger, activityBinding.activity) {
+        flutterBinding: FlutterPlugin.FlutterPluginBinding,
+        activityBinding: ActivityPluginBinding,
+    ) : this(flutterBinding.binaryMessenger, activityBinding.activity, activityBinding) {
         activityBinding.addActivityResultListener(googlePayHandler)
     }
 
     /**
      * Clears the handler in the method channel when not needed anymore.
      */
-    fun stopListening() = channel.setMethodCallHandler(null)
+    fun stopListening() {
+        channel.setMethodCallHandler(null)
+        activityBinding?.removeActivityResultListener(googlePayHandler)
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun onMethodCall(call: MethodCall, result: Result) {
@@ -68,9 +72,11 @@ class PayMethodCallHandler private constructor(
             METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments()!!)
             METHOD_SHOW_PAYMENT_SELECTOR -> {
                 val arguments = call.arguments<Map<String, Any>>()!!
-                googlePayHandler.loadPaymentData(result,
-                        arguments.getValue("payment_profile") as String,
-                        arguments.getValue("payment_items") as List<Map<String, Any?>>)
+                googlePayHandler.loadPaymentData(
+                    result,
+                    arguments.getValue("payment_profile") as String,
+                    arguments.getValue("payment_items") as List<Map<String, Any?>>
+                )
             }
 
             else -> result.notImplemented()
