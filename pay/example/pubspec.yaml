@@ -29,6 +29,8 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   pay:
     path: ../
 
@@ -45,6 +47,8 @@ dependency_overrides:
     path: ../../pay_platform_interface
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   integration_test:
    sdk: flutter
   flutter_lints: ^2.0.2
