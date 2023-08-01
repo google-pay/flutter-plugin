@@ -31,7 +31,8 @@ String _fixtureAsset(String name) {
 
 Future<Map<String, dynamic>> _testProfileLoader(
         String paymentConfigurationAsset) async =>
-    jsonDecode(_fixtureAsset(paymentConfigurationAsset));
+    jsonDecode(_fixtureAsset(paymentConfigurationAsset))
+        as Map<String, dynamic>;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

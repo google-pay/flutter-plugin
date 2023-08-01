@@ -31,7 +31,8 @@ String _fixtureAsset(String name) {
 
 Future<Map<String, dynamic>> _testProfileLoader(
         String paymentConfigurationAsset) async =>
-    jsonDecode(_fixtureAsset(paymentConfigurationAsset));
+    jsonDecode(_fixtureAsset(paymentConfigurationAsset))
+        as Map<String, dynamic>;
 
 const PayProvider _providerGooglePay = PayProvider.google_pay;
 final String _payConfigString =
@@ -67,7 +68,7 @@ void main() {
     expect(configParams['merchantInfo'].containsKey('softwareInfo'), isTrue);
 
     Map<String, dynamic> softwareInfo =
-        configParams['merchantInfo']['softwareInfo'];
+        configParams['merchantInfo']['softwareInfo'] as Map<String, dynamic>;
     expect(softwareInfo.containsKey('id'), isTrue);
     expect(softwareInfo.containsKey('version'), isTrue);
   });

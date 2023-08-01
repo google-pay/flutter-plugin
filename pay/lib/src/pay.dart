@@ -27,7 +27,7 @@ class Pay {
   Map<PayProvider, PaymentConfiguration>? _configurations;
 
   // Future to keep track of asynchronous initialization items.
-  Future? _assetInitializationFuture;
+  Future<void>? _assetInitializationFuture;
 
   /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
@@ -43,7 +43,7 @@ class Pay {
   }
 
   /// Load the list of configurations from the assets.
-  Future _loadConfigAssets(List<String> configurationAssets) async =>
+  Future<void> _loadConfigAssets(List<String> configurationAssets) async =>
       _configurations = Map.fromEntries(await Future.wait(configurationAssets
           .map((ca) => PaymentConfiguration.fromAsset(ca))
           .map((c) async => MapEntry(((await c).provider), await c))));
@@ -78,7 +78,7 @@ class Pay {
 
   /// Verifies that the selected provider has been previously configured or
   /// throws otherwise.
-  Future throwIfProviderIsNotDefined(PayProvider provider) async {
+  Future<void> throwIfProviderIsNotDefined(PayProvider provider) async {
     await _assetInitializationFuture;
     if (!_configurations!.containsKey(provider)) {
       throw ProviderNotConfiguredException(

@@ -56,16 +56,16 @@ class PaymentConfiguration {
   PaymentConfiguration._(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
-        assert(PayProviders.isValidProvider(configuration['provider'])),
-        provider = PayProviders.fromString(configuration['provider'])!,
-        _parameters = Configurations.buildParameters(
-            PayProviders.fromString(configuration['provider'])!,
-            configuration['data']);
+        assert(
+            PayProviders.isValidProvider(configuration['provider'] as String)),
+        provider =
+            PayProviders.fromString(configuration['provider'] as String)!,
+        _parameters = Configurations.extractParameters(configuration);
 
   /// Creates a [PaymentConfiguration] object from the
   /// [paymentConfigurationString] in JSON format.
   PaymentConfiguration.fromJsonString(String paymentConfigurationString)
-      : this._(jsonDecode(paymentConfigurationString));
+      : this._(jsonDecode(paymentConfigurationString) as Map<String, dynamic>);
 
   /// Creates a [PaymentConfiguration] object wrapped in a [Future] from a
   /// configuration loaded from an external source.
@@ -97,8 +97,8 @@ class PaymentConfiguration {
   /// caller.
   static Future<Map<String, dynamic>> _defaultProfileLoader(
           String paymentConfigurationAsset) async =>
-      await rootBundle.loadStructuredData(
-          'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
+      await rootBundle.loadStructuredData('assets/$paymentConfigurationAsset',
+          (s) async => jsonDecode(s) as Map<String, dynamic>);
 
   /// Returns the core configuration map in this object.
   Future<Map<String, dynamic>> parameterMap() async {
