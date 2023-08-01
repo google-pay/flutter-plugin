@@ -47,3 +47,4 @@ dependency_overrides:
 dev_dependencies:
   integration_test:
    sdk: flutter
+  flutter_lints: ^2.0.2
