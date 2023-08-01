@@ -102,7 +102,7 @@ class RawGooglePayButton extends StatelessWidget {
   ///
   /// The path is generated based on the button type and style, and the
   /// language code of the [context], and is returned as a [String].
-  String _assetPath(context) {
+  String _assetPath(BuildContext context) {
     final assetName = '${type.asset}.svg';
     if ([GooglePayButtonType.plain].contains(type)) {
       return 'assets/$assetName';
