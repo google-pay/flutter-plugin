@@ -55,7 +55,7 @@ class PaySampleApp extends StatefulWidget {
   const PaySampleApp({Key? key}) : super(key: key);
 
   @override
-  _PaySampleAppState createState() => _PaySampleAppState();
+  State<PaySampleApp> createState() => _PaySampleAppState();
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {

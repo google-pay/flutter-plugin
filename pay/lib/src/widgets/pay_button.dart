@@ -103,7 +103,7 @@ abstract class PayButton extends StatefulWidget {
       _supportedPlatforms.contains(defaultTargetPlatform);
 
   @override
-  _PayButtonState createState() => _PayButtonState();
+  State<PayButton> createState() => _PayButtonState();
 }
 
 /// Button state that adds the widgets to the tree and holds the result of the
