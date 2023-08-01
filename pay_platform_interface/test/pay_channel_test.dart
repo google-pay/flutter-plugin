@@ -43,7 +43,9 @@ void main() {
     };
 
     setUp(() {
-      channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
         log.add(methodCall);
         final response = testResponses[methodCall.method];
         if (response is Exception) {
@@ -75,7 +77,8 @@ void main() {
     });
 
     tearDown(() async {
-      channel.setMockMethodCallHandler(null);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
       log.clear();
     });
   });
