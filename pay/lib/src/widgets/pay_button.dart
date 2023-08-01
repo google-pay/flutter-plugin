@@ -55,8 +55,9 @@ abstract class PayButton extends StatefulWidget {
   PayButton(
     Key? key,
     this.buttonProvider,
-    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
-        final String? paymentConfigurationAsset,
+    @Deprecated(
+        'Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
+    final String? paymentConfigurationAsset,
     final PaymentConfiguration? paymentConfiguration,
     this.onPaymentResult,
     this.width,
