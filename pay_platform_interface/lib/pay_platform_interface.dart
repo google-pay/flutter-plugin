@@ -23,7 +23,4 @@ abstract class PayPlatform {
   Future<Map<String, dynamic>> showPaymentSelector(
       PaymentConfiguration paymentConfiguration,
       List<PaymentItem> paymentItems);
-
-  /// Update the payment status received from the backend server.
-  Future<void> updatePaymentStatus(bool isSuccess);
 }
