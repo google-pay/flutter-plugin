@@ -77,7 +77,8 @@ void main() {
     });
 
     tearDown(() async {
-      _mobilePlatform.channel.setMockMethodCallHandler(null);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(_mobilePlatform.channel, null);
       log.clear();
     });
   });
