@@ -12,6 +12,7 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pay/pay.dart';
@@ -44,6 +45,8 @@ class PayMaterialApp extends StatelessWidget {
         const Locale('es', ''),
         const Locale('de', ''),
       ],
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: PaySampleApp(),
     );
   }
@@ -63,6 +66,8 @@ class _PaySampleAppState extends State<PaySampleApp> {
   late final Future<PaymentConfiguration> _googlePayConfigFuture;
   late Pay _pay;
 
+  bool shouldPaymentSucceedOnIos = true;
+
   @override
   void initState() {
     super.initState();
@@ -80,7 +85,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
 
   void onApplePayResult(paymentResult) async {
     debugPrint(paymentResult.toString());
-    await _pay.updatePaymentStatus(true);
+    await _pay.updatePaymentStatus(shouldPaymentSucceedOnIos);
   }
 
   @override
@@ -163,6 +168,25 @@ class _PaySampleAppState extends State<PaySampleApp> {
               child: CircularProgressIndicator(),
             ),
           ),
+          // This allows you to control whether the payment shall succeed or not.
+          // This is only available on iOS.
+          // Usually you would want to wait for your backend to return a value,
+          // before you update the payment status.
+          if (defaultTargetPlatform == TargetPlatform.iOS)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Should the payment succeed?'),
+                Switch.adaptive(
+                  value: shouldPaymentSucceedOnIos,
+                  onChanged: (value) {
+                    setState(() {
+                      shouldPaymentSucceedOnIos = value;
+                    });
+                  },
+                ),
+              ],
+            ),
           const SizedBox(height: 15)
         ],
       ),
