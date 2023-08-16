@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -23,16 +23,16 @@ import 'package:pay_platform_interface/pay_channel.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late final PayMethodChannel _mobilePlatform;
+  late final PayMethodChannel mobilePlatform;
   const channel = MethodChannel('plugins.flutter.io/pay_channel');
 
-  const _providerApplePay = PayProvider.apple_pay;
-  final _payConfigString =
-      '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}';
-  final _dummyConfig = PaymentConfiguration.fromJsonString(_payConfigString);
+  const providerApplePay = PayProvider.apple_pay;
+  final payConfigString =
+      '{"provider": "${providerApplePay.toSimpleString()}", "data": {}}';
+  final dummyConfig = PaymentConfiguration.fromJsonString(payConfigString);
 
   setUpAll(() async {
-    _mobilePlatform = PayMethodChannel();
+    mobilePlatform = PayMethodChannel();
   });
 
   group('Verify channel I/O for', () {
@@ -43,7 +43,9 @@ void main() {
     };
 
     setUp(() {
-      channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
         log.add(methodCall);
         final response = testResponses[methodCall.method];
         if (response is Exception) {
@@ -54,7 +56,7 @@ void main() {
     });
 
     test('userCanPay', () async {
-      await _mobilePlatform.userCanPay(_dummyConfig);
+      await mobilePlatform.userCanPay(dummyConfig);
       expect(
         log,
         <Matcher>[isMethodCall('userCanPay', arguments: '{}')],
@@ -62,7 +64,7 @@ void main() {
     });
 
     test('showPaymentSelector', () async {
-      await _mobilePlatform.showPaymentSelector(_dummyConfig, []);
+      await mobilePlatform.showPaymentSelector(dummyConfig, []);
       expect(
         log,
         <Matcher>[
@@ -75,7 +77,8 @@ void main() {
     });
 
     tearDown(() async {
-      channel.setMockMethodCallHandler(null);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
       log.clear();
     });
   });

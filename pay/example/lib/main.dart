@@ -19,7 +19,7 @@ import 'package:pay/pay.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
 void main() {
-  runApp(PayMaterialApp());
+  runApp(const PayMaterialApp());
 }
 
 const _paymentItems = [
@@ -31,18 +31,20 @@ const _paymentItems = [
 ];
 
 class PayMaterialApp extends StatelessWidget {
+  const PayMaterialApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Pay for Flutter Demo',
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('en', ''),
-        const Locale('es', ''),
-        const Locale('de', ''),
+        Locale('en', ''),
+        Locale('es', ''),
+        Locale('de', ''),
       ],
       home: PaySampleApp(),
     );
@@ -50,10 +52,10 @@ class PayMaterialApp extends StatelessWidget {
 }
 
 class PaySampleApp extends StatefulWidget {
-  PaySampleApp({Key? key}) : super(key: key);
+  const PaySampleApp({Key? key}) : super(key: key);
 
   @override
-  _PaySampleAppState createState() => _PaySampleAppState();
+  State<PaySampleApp> createState() => _PaySampleAppState();
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {

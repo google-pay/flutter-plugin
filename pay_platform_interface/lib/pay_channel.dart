@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ class PayMethodChannel extends PayPlatform {
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
     return await _channel.invokeMethod(
-        'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()));
+            'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()))
+        as bool;
   }
 
   /// Shows the payment selector to complete the payment operation.
@@ -61,8 +62,8 @@ class PayMethodChannel extends PayPlatform {
     final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
       'payment_profile': jsonEncode(await paymentConfiguration.parameterMap()),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
-    });
+    }) as String;
 
-    return jsonDecode(paymentResult);
+    return jsonDecode(paymentResult) as Map<String, dynamic>;
   }
 }

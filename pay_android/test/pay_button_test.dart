@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 /// SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ void main() {
     testWidgets('defaults to type dark', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: RawGooglePayButton(onPressed: () => null),
+        child: RawGooglePayButton(onPressed: () {}),
       ));
 
       expect(
@@ -30,7 +30,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Center(
-            child: RawGooglePayButton(onPressed: () => null),
+            child: RawGooglePayButton(onPressed: () {}),
           ),
         ),
       );

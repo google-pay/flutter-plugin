@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ void main() {
     testWidgets('defaults to type plan and black', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: RawApplePayButton(onPressed: () => null),
+        child: RawApplePayButton(onPressed: () {}),
       ));
 
       expect(
@@ -46,7 +46,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Center(
-            child: RawApplePayButton(onPressed: () => null),
+            child: RawApplePayButton(onPressed: () {}),
           ),
         ),
       );

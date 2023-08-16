@@ -55,8 +55,9 @@ abstract class PayButton extends StatefulWidget {
   PayButton(
     Key? key,
     this.buttonProvider,
-    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
-        final String? paymentConfigurationAsset,
+    @Deprecated(
+        'Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
+    final String? paymentConfigurationAsset,
     final PaymentConfiguration? paymentConfiguration,
     this.onPaymentResult,
     this.width,
@@ -103,7 +104,7 @@ abstract class PayButton extends StatefulWidget {
       _supportedPlatforms.contains(defaultTargetPlatform);
 
   @override
-  _PayButtonState createState() => _PayButtonState();
+  State<PayButton> createState() => _PayButtonState();
 }
 
 /// Button state that adds the widgets to the tree and holds the result of the
@@ -173,7 +174,7 @@ class ButtonPlaceholder extends StatelessWidget {
   final Widget? child;
   final EdgeInsets margin;
 
-  ButtonPlaceholder({
+  const ButtonPlaceholder({
     Key? key,
     this.child,
     required this.margin,

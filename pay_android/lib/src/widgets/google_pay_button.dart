@@ -1,4 +1,4 @@
-/// Copyright 2021 Google LLC
+/// Copyright 2023 Google LLC
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ class RawGooglePayButton extends StatelessWidget {
   ///
   /// The path is generated based on the button type and style, and the
   /// language code of the [context], and is returned as a [String].
-  String _assetPath(context) {
+  String _assetPath(BuildContext context) {
     final assetName = '${type.asset}.svg';
     if ([GooglePayButtonType.plain].contains(type)) {
       return 'assets/$assetName';

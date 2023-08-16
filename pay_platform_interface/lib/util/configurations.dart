@@ -25,8 +25,13 @@ class Configurations {
   ///
   /// Takes the configuration included in [config] and returns and updated
   /// version of the object wrapped in a [Future] with additional metadata.
-  static Future<Map<String, dynamic>> buildParameters(
-      PayProvider provider, Map<String, dynamic> configurationParams) async {
+  static Future<Map<String, dynamic>> extractParameters(
+      Map<String, dynamic> configuration) async {
+    PayProvider provider =
+        PayProviders.fromString(configuration['provider'] as String)!;
+    Map<String, dynamic> configurationParams =
+        configuration['data'] as Map<String, dynamic>;
+
     switch (provider) {
       case PayProvider.apple_pay:
         return configurationParams;
@@ -50,9 +55,9 @@ class Configurations {
   }
 
   /// Retrieves package information from the `pubspec.yaml` file as a [Map].
-  static Future<Map> _getPackageConfiguration() async {
+  static Future<Map<dynamic, dynamic>> _getPackageConfiguration() async {
     final configurationFile = await rootBundle
         .loadString('packages/pay_platform_interface/pubspec.yaml');
-    return loadYaml(configurationFile);
+    return loadYaml(configurationFile) as Map<dynamic, dynamic>;
   }
 }
