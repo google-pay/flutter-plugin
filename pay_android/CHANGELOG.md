@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.11 (2023-07-31)
+
+* Update dependencies' versions
+
+### Fixes
+
+* (#206) Use the activity plugin to stop listening for changes in the activity result when the activity is detached.
+
 ## 1.0.10 (2023-02-02)
 
 * Bump `flutter_svg` to version 2.0.5.
