@@ -18,6 +18,7 @@ package io.flutter.plugins.pay_android
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.wallet.*
@@ -166,6 +167,19 @@ class GooglePayHandler(private val activity: Activity) :
                 LOAD_PAYMENT_DATA_REQUEST_CODE)
     }
 
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState);
+        if (loadPaymentDataResult != null) {
+            savedInstanceState.putSerializable("result", loadPaymentDataResult)
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val result = savedInstanceState.getSerializable("result") as Result?
+        if (result != null) loadPaymentDataResult = result
+    }
+
     override fun onActivityResult(
             requestCode: Int,
             resultCode: Int,
@@ -212,10 +226,14 @@ class GooglePayHandler(private val activity: Activity) :
      * Data](https://developers.google.com/pay/api/android/reference/object.PaymentData)
      */
     private fun handlePaymentSuccess(paymentData: PaymentData?) {
+        requireNotNull(loadPaymentDataResult) {
+            "GooglePayHandler.handlePaymentSuccess loadPaymentDataResult is null"
+        }
+
         if (paymentData != null) {
-            loadPaymentDataResult!!.success(paymentData.toJson())
+            loadPaymentDataResult?.success(paymentData.toJson())
         } else {
-            loadPaymentDataResult!!.error(
+            loadPaymentDataResult?.error(
                     CommonStatusCodes.INTERNAL_ERROR.toString(),
                     "Unexpected empty result data.",
                     null)
