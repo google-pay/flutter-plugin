@@ -109,7 +109,7 @@ class PaymentHandler: NSObject {
   ///
   /// - parameter paymentConfigurationString: A JSON string with the configuration to execute
   ///   this payment.
-  /// - returns: A  list of recognized networks supported for this operation.
+  /// - returns: A list of recognized networks supported for this operation.
   private static func supportedNetworks(from paymentConfigurationString: String) -> [PKPaymentNetwork]? {
     guard let paymentConfiguration = extractPaymentConfiguration(from: paymentConfigurationString) else {
       return nil
@@ -173,8 +173,12 @@ class PaymentHandler: NSObject {
     return paymentRequest
   }
 
+  /// Updates the payment result based on the value you pass to the `isSuccess` parameter.
+  ///
+  /// - parameter isSuccess: A boolean that determines whether the payment was successful or not.
+  /// - returns: nothing.
   func updatePaymentResult(isSuccess: Bool) {
-    // Call completion handler with the given success status
+    // Call completion handler with the given success status.
     completionHandler?(isSuccess)
     completionHandler = nil
   }
