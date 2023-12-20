@@ -84,7 +84,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
 
   void onApplePayResult(paymentResult) async {
     debugPrint(paymentResult.toString());
-    await _pay.updatePaymentStatus(shouldPaymentSucceedOnIos);
+    await _pay.updatePaymentResult(shouldPaymentSucceedOnIos);
   }
 
   @override

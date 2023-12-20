@@ -81,13 +81,13 @@ class Pay {
         _configurations![provider]!, paymentItems);
   }
 
-  /// Update the payment status with the native platform.
+  /// Update the payment result with the native platform.
   /// Works only on iOS.
-  Future<void> updatePaymentStatus(bool isSuccess) async {
+  Future<void> updatePaymentResult(bool isSuccess) async {
     if (_payPlatform is IosPayMethodChannel) {
       await _assetInitializationFuture;
       final iosPayPlatform = _payPlatform as IosPayMethodChannel;
-      return iosPayPlatform.updatePaymentStatus(isSuccess);
+      return iosPayPlatform.updatePaymentResult(isSuccess);
     }
   }
 

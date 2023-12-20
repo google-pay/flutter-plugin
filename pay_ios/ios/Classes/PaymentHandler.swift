@@ -173,7 +173,7 @@ class PaymentHandler: NSObject {
     return paymentRequest
   }
 
-  func updatePaymentStatus(isSuccess: Bool) {
+  func updatePaymentResult(isSuccess: Bool) {
     // Call completion handler with the given success status
     completionHandler?(isSuccess)
     completionHandler = nil

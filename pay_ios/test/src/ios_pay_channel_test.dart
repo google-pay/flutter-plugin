@@ -28,7 +28,7 @@ void main() {
   group('Verify channel I/O for', () {
     final log = <MethodCall>[];
     const testResponses = <String, Object?>{
-      'updatePaymentStatus': null,
+      'updatePaymentResult': null,
     };
 
     setUp(() {
@@ -46,11 +46,11 @@ void main() {
       );
     });
 
-    test('updatePaymentStatus', () async {
-      await _payChannel.updatePaymentStatus(true);
+    test('updatePaymentResult', () async {
+      await _payChannel.updatePaymentResult(true);
       expect(
         log,
-        <Matcher>[isMethodCall('updatePaymentStatus', arguments: true)],
+        <Matcher>[isMethodCall('updatePaymentResult', arguments: true)],
       );
     });
   });

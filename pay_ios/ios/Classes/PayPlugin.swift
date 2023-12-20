@@ -23,7 +23,7 @@ public class PayPlugin: NSObject, FlutterPlugin {
   private static let methodChannelName = "plugins.flutter.io/pay_channel"
   private let methodUserCanPay = "userCanPay"
   private let methodShowPaymentSelector = "showPaymentSelector"
-  private let methodUpdatePaymentStatus = "updatePaymentStatus"
+  private let methodUpdatePaymentResult = "updatePaymentResult"
   
   private let paymentHandler = PaymentHandler()
   
@@ -49,9 +49,9 @@ public class PayPlugin: NSObject, FlutterPlugin {
         paymentConfiguration: arguments["payment_profile"] as! String,
         paymentItems: arguments["payment_items"] as! [[String: Any?]])
       
-    case methodUpdatePaymentStatus:
+    case methodUpdatePaymentResult:
       let isSuccess = call.arguments as! Bool
-      paymentHandler.updatePaymentStatus(isSuccess: isSuccess)
+      paymentHandler.updatePaymentResult(isSuccess: isSuccess)
     
     default:
       result(FlutterMethodNotImplemented)
