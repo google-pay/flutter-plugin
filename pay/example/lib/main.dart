@@ -46,7 +46,6 @@ class PayMaterialApp extends StatelessWidget {
         const Locale('de', ''),
       ],
       theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
       home: PaySampleApp(),
     );
   }
