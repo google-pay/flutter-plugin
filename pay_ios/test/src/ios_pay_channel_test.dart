@@ -19,10 +19,10 @@ import 'package:pay_ios/pay_ios.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late final IOSPayMethodChannel _payChannel;
+  late final IosPayMethodChannel _payChannel;
 
   setUpAll(() async {
-    _payChannel = IOSPayMethodChannel();
+    _payChannel = IosPayMethodChannel();
   });
 
   group('Verify channel I/O for', () {

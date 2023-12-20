@@ -33,7 +33,7 @@ class Pay {
   /// instantiates the [_payPlatform] to communicate with the native platforms.
   Pay(this._configurations)
       : _payPlatform = defaultTargetPlatform == TargetPlatform.iOS
-            ? IOSPayMethodChannel()
+            ? IosPayMethodChannel()
             : PayMethodChannel();
 
   /// Alternative constructor to create a [Pay] object with a list of
@@ -42,7 +42,7 @@ class Pay {
       'Prefer to use [Pay({ [PayProvider]: [PaymentConfiguration] })]. Take a look at the readme to see examples')
   Pay.withAssets(List<String> configAssets)
       : _payPlatform = defaultTargetPlatform == TargetPlatform.iOS
-            ? IOSPayMethodChannel()
+            ? IosPayMethodChannel()
             : PayMethodChannel() {
     _assetInitializationFuture = _loadConfigAssets(configAssets);
   }
@@ -84,9 +84,9 @@ class Pay {
   /// Update the payment status with the native platform.
   /// Works only on iOS.
   Future<void> updatePaymentStatus(bool isSuccess) async {
-    if (_payPlatform is IOSPayMethodChannel) {
+    if (_payPlatform is IosPayMethodChannel) {
       await _assetInitializationFuture;
-      final iosPayPlatform = _payPlatform as IOSPayMethodChannel;
+      final iosPayPlatform = _payPlatform as IosPayMethodChannel;
       return iosPayPlatform.updatePaymentStatus(isSuccess);
     }
   }
