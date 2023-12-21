@@ -44,6 +44,7 @@ class PayMaterialApp extends StatelessWidget {
         const Locale('es', ''),
         const Locale('de', ''),
       ],
+      theme: ThemeData.light(),
       home: PaySampleApp(),
     );
   }
@@ -57,21 +58,35 @@ class PaySampleApp extends StatefulWidget {
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {
+  final _applePayConfig = PaymentConfiguration.fromJsonString(
+    payment_configurations.defaultApplePay,
+  );
   late final Future<PaymentConfiguration> _googlePayConfigFuture;
+  late Pay _pay;
 
   @override
   void initState() {
     super.initState();
-    _googlePayConfigFuture =
-        PaymentConfiguration.fromAsset('default_google_pay_config.json');
+    _googlePayConfigFuture = PaymentConfiguration.fromAsset(
+      'default_google_pay_config.json',
+    );
+    _pay = Pay({
+      PayProvider.apple_pay: _applePayConfig,
+    });
   }
 
   void onGooglePayResult(paymentResult) {
     debugPrint(paymentResult.toString());
   }
 
-  void onApplePayResult(paymentResult) {
+  void onApplePayResult(paymentResult) async {
     debugPrint(paymentResult.toString());
+
+    // This is where the payment result is fetched from the backend, and the
+    // payment result is updated accordingly.
+    bool isPaymentSuccessfull = true;
+
+    await _pay.updatePaymentResult(isPaymentSuccessfull);
   }
 
   @override
@@ -126,23 +141,25 @@ class _PaySampleAppState extends State<PaySampleApp> {
           ),
           // Example pay button configured using an asset
           FutureBuilder<PaymentConfiguration>(
-              future: _googlePayConfigFuture,
-              builder: (context, snapshot) => snapshot.hasData
-                  ? GooglePayButton(
-                      paymentConfiguration: snapshot.data!,
-                      paymentItems: _paymentItems,
-                      type: GooglePayButtonType.buy,
-                      margin: const EdgeInsets.only(top: 15.0),
-                      onPaymentResult: onGooglePayResult,
-                      loadingIndicator: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : const SizedBox.shrink()),
+            future: _googlePayConfigFuture,
+            builder: (context, snapshot) => snapshot.hasData
+                ? GooglePayButton(
+                    paymentConfiguration: snapshot.data!,
+                    paymentItems: _paymentItems,
+                    type: GooglePayButtonType.buy,
+                    margin: const EdgeInsets.only(top: 15.0),
+                    onPaymentResult: onGooglePayResult,
+                    loadingIndicator: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
           // Example pay button configured using a string
           ApplePayButton(
             paymentConfiguration: PaymentConfiguration.fromJsonString(
-                payment_configurations.defaultApplePay),
+              payment_configurations.defaultApplePay,
+            ),
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
