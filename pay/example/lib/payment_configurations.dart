@@ -88,7 +88,6 @@ const String defaultGooglePay = '''{
       }
     ],
     "merchantInfo": {
-      "merchantId": "01234567890123456789",
       "merchantName": "Example Merchant Name"
     },
     "transactionInfo": {
