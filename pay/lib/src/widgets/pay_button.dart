@@ -14,6 +14,8 @@
 
 part of '../../pay.dart';
 
+typedef PaymentResultCallback = Function(Map<String, dynamic> result);
+
 /// A widget that handles the API logic to facilitate the integration.
 ///
 /// This widget provides an alternative UI-based integration path that wraps
@@ -27,13 +29,13 @@ part of '../../pay.dart';
 /// method which starts the payment process.
 abstract class PayButton extends StatefulWidget {
   /// A resident client to issue requests against the APIs.
-  late final Pay _payClient;
+  final Pay _payClient;
 
   /// Specifies the payment provider supported by the button
   final PayProvider buttonProvider;
 
   /// A function called when the payment process yields a result.
-  final void Function(Map<String, dynamic> result) onPaymentResult;
+  late final PaymentResultCallback? paymentCallback;
 
   final double width;
   final double height;
@@ -59,7 +61,7 @@ abstract class PayButton extends StatefulWidget {
         'Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
     final String? paymentConfigurationAsset,
     final PaymentConfiguration? paymentConfiguration,
-    this.onPaymentResult,
+    this.paymentCallback,
     this.width,
     this.height,
     this.margin,
@@ -83,7 +85,7 @@ abstract class PayButton extends StatefulWidget {
       try {
         final result =
             await _payClient.showPaymentSelector(buttonProvider, paymentItems);
-        onPaymentResult(result);
+        paymentCallback?.call(result);
       } catch (error) {
         onError?.call(error);
       }

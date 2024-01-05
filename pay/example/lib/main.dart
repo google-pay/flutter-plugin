@@ -72,8 +72,10 @@ class _PaySampleAppState extends State<PaySampleApp> {
     debugPrint(paymentResult.toString());
   }
 
-  void onApplePayResult(paymentResult) {
+  onApplePayResultWithConfirm(
+      Map<String, dynamic> paymentResult, PaymentConfirmation handler) {
     debugPrint(paymentResult.toString());
+    handler.confirmPayment(true);
   }
 
   @override
@@ -149,7 +151,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
             margin: const EdgeInsets.only(top: 15.0),
-            onPaymentResult: onApplePayResult,
+            onPaymentResultWithConfirm: onApplePayResultWithConfirm,
             loadingIndicator: const Center(
               child: CircularProgressIndicator(),
             ),

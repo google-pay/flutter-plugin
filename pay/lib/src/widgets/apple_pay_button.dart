@@ -3,6 +3,18 @@
 
 part of '../../pay.dart';
 
+class PaymentConfirmation {
+  final Pay _payClient;
+  PaymentConfirmation(Pay payClient) : _payClient = payClient;
+
+  void confirmPayment(bool completedSuccessfully) {
+    _payClient.userCanPay(PayProvider.google_pay);
+  }
+}
+
+typedef PaymentConfirmCallback = Function(
+    Map<String, dynamic> result, PaymentConfirmation handler);
+
 /// A widget to show the Apple Pay button according to the rules and constraints
 /// specified in [PayButton].
 ///
@@ -29,7 +41,8 @@ class ApplePayButton extends PayButton {
         'Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
     String? paymentConfigurationAsset,
     PaymentConfiguration? paymentConfiguration,
-    required void Function(Map<String, dynamic> result) onPaymentResult,
+    PaymentResultCallback? onPaymentResult,
+    PaymentConfirmCallback? onPaymentResultWithConfirm,
     required List<PaymentItem> paymentItems,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
     ApplePayButtonType type = ApplePayButtonType.plain,
@@ -59,6 +72,12 @@ class ApplePayButton extends PayButton {
         style: style,
         type: type,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
+
+    paymentCallback = (result) => {
+          onPaymentResult?.call(result),
+          onPaymentResultWithConfirm?.call(
+              result, PaymentConfirmation(_payClient))
+        };
   }
 
   @override
