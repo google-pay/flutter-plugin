@@ -39,7 +39,7 @@ class ApplePayButton extends PayButton {
     void Function(Object? error)? onError,
     Widget? childOnError,
     Widget? loadingIndicator,
-  })  : assert(width >= RawApplePayButton.minimumButtonHeight),
+  })  : assert(width >= RawApplePayButton.minimumButtonWidth),
         assert(height >= RawApplePayButton.minimumButtonHeight),
         super(
           key,
