@@ -24,7 +24,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 private const val METHOD_CHANNEL_NAME = "plugins.flutter.io/pay_channel"
 
@@ -45,10 +44,6 @@ class PayMethodCallHandler private constructor(
 
     init {
         channel.setMethodCallHandler(this)
-    }
-
-    constructor(registrar: Registrar) : this(registrar.messenger(), registrar.activity()!!, null) {
-        registrar.addActivityResultListener(googlePayHandler)
     }
 
     constructor(
