@@ -49,7 +49,7 @@ class PaymentConfiguration {
   final PayProvider provider;
 
   /// The configuration parameters for a given payment provider.
-  late final Future<Map<String, dynamic>> _parameters;
+  final Future<Map<String, dynamic>> _parameters;
 
   /// Creates a [PaymentConfiguration] object with the properties in the map
   /// and ensures the necessary fields are present and valid.
