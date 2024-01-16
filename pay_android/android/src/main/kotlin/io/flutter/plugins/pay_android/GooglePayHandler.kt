@@ -43,7 +43,7 @@ private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
 class GooglePayHandler(private val activity: Activity) :
         PluginRegistry.ActivityResultListener {
 
-    private var loadPaymentDataResult: Result? = null
+    private lateinit var loadPaymentDataResult: Result
 
     companion object {
 
@@ -183,7 +183,7 @@ class GooglePayHandler(private val activity: Activity) :
                 }
 
                 Activity.RESULT_CANCELED -> {
-                    loadPaymentDataResult!!.error(
+                    loadPaymentDataResult.error(
                             "paymentCanceled",
                             "User canceled payment authorization",
                             null)
@@ -213,9 +213,9 @@ class GooglePayHandler(private val activity: Activity) :
      */
     private fun handlePaymentSuccess(paymentData: PaymentData?) {
         if (paymentData != null) {
-            loadPaymentDataResult!!.success(paymentData.toJson())
+            loadPaymentDataResult.success(paymentData.toJson())
         } else {
-            loadPaymentDataResult!!.error(
+            loadPaymentDataResult.error(
                     CommonStatusCodes.INTERNAL_ERROR.toString(),
                     "Unexpected empty result data.",
                     null)
@@ -235,5 +235,5 @@ class GooglePayHandler(private val activity: Activity) :
      * Wallet constants library](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants.constant-summary)
      */
     private fun handleError(statusCode: Int) =
-            loadPaymentDataResult!!.error(statusCode.toString(), "", null)
+            loadPaymentDataResult.error(statusCode.toString(), "", null)
 }
