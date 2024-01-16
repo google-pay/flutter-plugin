@@ -49,40 +49,6 @@ class RawGooglePayButton extends StatelessWidget {
   /// The default height for the Google Pay Button.
   static const double defaultButtonHeight = 48;
 
-  static const _defaultLocale = 'en';
-  static const _supportedLocales = [
-    _defaultLocale,
-    'ar',
-    'bg',
-    'ca',
-    'cs',
-    'da',
-    'de',
-    'el',
-    'es',
-    'et',
-    'fi',
-    'fr',
-    'hr',
-    'id',
-    'it',
-    'ja',
-    'ko',
-    'ms',
-    'nl',
-    'no',
-    'pl',
-    'pt',
-    'ru',
-    'sk',
-    'sl',
-    'sr',
-    'sv',
-    'th',
-    'tr',
-    'uk',
-    'zh'
-  ];
 
   /// Called when the button is pressed.
   final VoidCallback? onPressed;
@@ -98,74 +64,9 @@ class RawGooglePayButton extends StatelessWidget {
     this.type = GooglePayButtonType.pay,
   }) : super(key: key);
 
-  /// Utility method to generate the path to the asset for the button.
-  ///
-  /// The path is generated based on the button type and style, and the
-  /// language code of the [context], and is returned as a [String].
-  String _assetPath(BuildContext context) {
-    final assetName = '${type.asset}.svg';
-    if ([GooglePayButtonType.plain].contains(type)) {
-      return 'assets/$assetName';
-    }
-
-    final langCode = Localizations.maybeLocaleOf(context)?.languageCode;
-    final supportedLangCode =
-        _supportedLocales.contains(langCode) ? langCode : _defaultLocale;
-
-    return 'assets/$supportedLangCode/$assetName';
-  }
-
   @override
   Widget build(BuildContext context) {
-    final Widget rawButton = RawMaterialButton(
-      fillColor: Colors.black,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      elevation: 0,
-      focusElevation: 0,
-      hoverElevation: 0,
-      highlightElevation: 0,
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-        side: const BorderSide(
-          color: Color(0xFF747775),
-          width: 1,
-        ),
-      ),
-      child: SvgPicture.asset(
-        _assetPath(context),
-        package: 'pay_android',
-        semanticsLabel: 'Buy with Google Pay text',
-        height: 26,
-      ),
-    );
-
-    return SizedBox(
-      height: defaultButtonHeight,
-      child: rawButton,
-    );
   }
-}
 
-/// A set of utility methods associated to the [GooglePayButtonType]
-/// enumeration.
-extension _GooglePayButtonTypeAsset on GooglePayButtonType {
-  static const payLogoAsset = 'gpay_logo';
-  static const defaultAssetWidth = 168.0;
 
-  /// Returns the asset name for each [GooglePayButtonType] or falls back to
-  /// [payLogoAsset].
-  String get asset =>
-      {
-        GooglePayButtonType.add: 'add_to',
-        GooglePayButtonType.book: 'book_with',
-        GooglePayButtonType.buy: 'buy_with',
-        GooglePayButtonType.checkout: 'checkout_with',
-        GooglePayButtonType.donate: 'donate_with',
-        GooglePayButtonType.order: 'order_with',
-        GooglePayButtonType.pay: 'pay_with',
-        GooglePayButtonType.plain: payLogoAsset,
-        GooglePayButtonType.subscribe: 'subscribe_with'
-      }[this] ??
-      payLogoAsset;
 }

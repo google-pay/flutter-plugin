@@ -28,47 +28,12 @@ flutter:
         package: io.flutter.plugins.pay_android
         pluginClass: PayPlugin
 
-  assets:
-    - assets/
-    - assets/en/
-    - assets/ar/
-    - assets/bg/
-    - assets/ca/
-    - assets/cs/
-    - assets/da/
-    - assets/de/
-    - assets/el/
-    - assets/es/
-    - assets/et/
-    - assets/fi/
-    - assets/fr/
-    - assets/hr/
-    - assets/id/
-    - assets/it/
-    - assets/ja/
-    - assets/ko/
-    - assets/ms/
-    - assets/nl/
-    - assets/no/
-    - assets/pl/
-    - assets/pt/
-    - assets/ru/
-    - assets/sk/
-    - assets/sl/
-    - assets/sr/
-    - assets/sv/
-    - assets/th/
-    - assets/tr/
-    - assets/uk/
-    - assets/zh/
-
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   pay_platform_interface: ^1.0.3
-  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
