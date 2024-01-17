@@ -21,6 +21,7 @@
 /// backend server). That way, you benefit from being able to use multiple
 /// payment configurations that can be modified without the need to update your
 /// application.
+library;
 
 /// Sample configuration for Apple Pay. Contains the same content as the file
 /// under `assets/default_payment_profile_apple_pay.json`.
@@ -99,84 +100,96 @@ const String defaultGooglePay = '''{
 }''';
 
 const String basicGooglePayIsReadyToPay = '''{
-  "apiVersion": 2,
-  "apiVersionMinor": 0,
-  "allowedPaymentMethods": [
-    {
-      "type": "CARD",
-      "parameters": {
-        "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-        "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+  "provider": "google_pay",
+  "data": {
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
+        "parameters": {
+          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+        }
       }
-    }
-  ]
+    ]
+  }
 }''';
 
 const String basicGooglePayLoadPaymentData = '''{
-  "apiVersion": 2,
-  "apiVersionMinor": 0,
-  "merchantInfo": {
-    "merchantName": "Example Merchant"
-  },
-  "allowedPaymentMethods": [
-    {
-      "type": "CARD",
-      "parameters": {
-        "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-        "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-      },
-      "tokenizationSpecification": {
-        "type": "PAYMENT_GATEWAY",
+  "provider": "google_pay",
+  "data": {
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "merchantInfo": {
+      "merchantName": "Example Merchant"
+    },
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
         "parameters": {
-          "gateway": "example",
-          "gatewayMerchantId": "exampleGatewayMerchantId"
+          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+        },
+        "tokenizationSpecification": {
+          "type": "PAYMENT_GATEWAY",
+          "parameters": {
+            "gateway": "example",
+            "gatewayMerchantId": "exampleGatewayMerchantId"
+          }
         }
       }
+    ],
+    "transactionInfo": {
+      "totalPriceStatus": "FINAL",
+      "totalPrice": "12.34",
+      "currencyCode": "USD"
     }
-  ],
-  "transactionInfo": {
-    "totalPriceStatus": "FINAL",
-    "totalPrice": "12.34",
-    "currencyCode": "USD"
   }
 }''';
 
 const String invalidGooglePayIsReadyToPay = '''{
-  "apiVersion": 2,
-  "apiVersionMinor": 0,
-  "allowedPaymentMethods": [
-    {
-      "type": "CARD",
-      "parameters": {}
-    }
-  ]
+  "provider": "google_pay",
+  "data": {
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
+        "parameters": {}
+      }
+    ]
+  }
 }''';
 
 const String invalidGooglePayLoadPaymentData = '''{
-  "apiVersion": 2,
-  "apiVersionMinor": 0,
-  "merchantInfo": {
-    "merchantName": "Example Merchant"
-  },
-  "allowedPaymentMethods": [
-    {
-      "type": "CARD",
-      "parameters": {
-        "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-        "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-      },
-      "tokenizationSpecification": {
-        "type": "PAYMENT_GATEWAY",
+  "provider": "google_pay",
+  "data": {
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "merchantInfo": {
+      "merchantName": "Example Merchant"
+    },
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
         "parameters": {
-          "gateway": "example",
-          "gatewayMerchantId": "exampleGatewayMerchantId"
+          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          "allowedCardNetworks": ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+        },
+        "tokenizationSpecification": {
+          "type": "PAYMENT_GATEWAY",
+          "parameters": {
+            "gateway": "example",
+            "gatewayMerchantId": "exampleGatewayMerchantId"
+          }
         }
       }
+    ],
+    "transactionInfo": {
+      "totalPriceStatus": "FINAL",
+      "totalPrice": "12.34",
+      "currencyCode": "USD"
     }
-  ],
-  "transactionInfo": {
-    "totalPriceStatus": "FINAL",
-    "totalPrice": "12.34",
-    "currencyCode": "USD"
   }
 }''';
