@@ -138,7 +138,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
   
   /// Creates the actual `PKPaymentButton` with the defined styles and constraints.
-  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String){
+  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String) {
     
     // Create the PK objects
     let paymentButtonType = PKPaymentButtonType.fromString(buttonTypeString) ?? .plain

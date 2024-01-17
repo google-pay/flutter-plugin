@@ -59,7 +59,7 @@ GooglePayButton(
   paymentConfiguration: PaymentConfiguration.fromJsonString(
       defaultGooglePayConfigString),
   paymentItems: _paymentItems,
-  type: GooglePayButtonType.pay,
+  type: GooglePayButtonType.buy,
   margin: const EdgeInsets.only(top: 15.0),
   onPaymentResult: onGooglePayResult,
   loadingIndicator: const Center(
@@ -141,7 +141,7 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
           return RawGooglePayButton(
-              type: GooglePayButtonType.pay,
+              type: GooglePayButtonType.buy,
               onPressed: onGooglePayPressed);
         } else {
           // userCanPay returned false

@@ -20,7 +20,7 @@ void main() {
   setUp(() async {});
 
   group('Button style:', () {
-    testWidgets('defaults to type dark', (WidgetTester tester) async {
+    testWidgets('defaults to type buy and dark', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: RawGooglePayButton(onPressed: () {}),
@@ -28,7 +28,9 @@ void main() {
 
       expect(
           find.byWidgetPredicate((widget) =>
-              widget is RawMaterialButton && widget.fillColor == Colors.black),
+              widget is RawGooglePayButton &&
+              widget.style == GooglePayButtonStyle.dark &&
+              widget.type == GooglePayButtonType.buy),
           findsOneWidget);
     });
 
@@ -43,8 +45,8 @@ void main() {
         ),
       );
 
-      final buttonSize = tester.getSize(find.byType(RawMaterialButton));
-      expect(buttonSize.height, 48);
+      final buttonSize = tester.getSize(find.byType(RawGooglePayButton));
+      expect(buttonSize.height, RawGooglePayButton.defaultButtonHeight);
     });
   });
 }

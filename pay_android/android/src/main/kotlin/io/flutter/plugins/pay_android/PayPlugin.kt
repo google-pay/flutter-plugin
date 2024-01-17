@@ -19,16 +19,22 @@ package io.flutter.plugins.pay_android
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugins.pay_android.view.PayButtonViewFactory
 
 /**
  * Entry point handler for the plugin.
  */
 class PayPlugin : FlutterPlugin, ActivityAware {
 
+    private val googlePayButtonViewType = "plugins.flutter.io/pay/google_pay_button"
+
     private lateinit var flutterPluginBinding: FlutterPlugin.FlutterPluginBinding
     private lateinit var methodCallHandler: PayMethodCallHandler
 
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         this.flutterPluginBinding = flutterPluginBinding
+        flutterPluginBinding.platformViewRegistry.registerViewFactory(
+            googlePayButtonViewType, PayButtonViewFactory(flutterPluginBinding.binaryMessenger))
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit

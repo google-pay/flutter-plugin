@@ -50,7 +50,7 @@ object PaymentsUtil {
      * @throws IllegalArgumentException if the value provided is unrecognized.
      */
     fun environmentForString(environmentString: String?): Int =
-            when (environmentString?.toLowerCase(Locale.ROOT)) {
+            when (environmentString?.lowercase(Locale.ROOT)) {
                 "test" -> WalletConstants.ENVIRONMENT_TEST
                 "production" -> WalletConstants.ENVIRONMENT_PRODUCTION
                 else -> throw IllegalArgumentException(

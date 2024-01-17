@@ -38,7 +38,7 @@ class PayMaterialApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Pay for Flutter Demo',
       localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [

@@ -23,7 +23,8 @@ void main() {
   });
 
   group('Button style:', () {
-    testWidgets('defaults to type plan and black', (WidgetTester tester) async {
+    testWidgets('defaults to type plain and black',
+        (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: RawApplePayButton(onPressed: () {}),
