@@ -1,6 +1,6 @@
 # pay_example
 
-Demonstrates how to use the pay plugin.
+Demonstrates how to use the `pay` plugin.
 
 ## Getting Started
 
