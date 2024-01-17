@@ -22,7 +22,7 @@ part of '../../pay.dart';
 /// GooglePayButton(
 ///   paymentConfiguration: _paymentConfiguration,
 ///   paymentItems: _paymentItems,
-///   style: GooglePayButtonStyle.dark,
+///   theme: GooglePayButtonTheme.dark,
 ///   type: GooglePayButtonType.pay,
 ///   margin: const EdgeInsets.only(top: 15.0),
 ///   onPaymentResult: onGooglePayResult,
@@ -41,7 +41,7 @@ class GooglePayButton extends PayButton {
     super.onPaymentResult,
     required List<PaymentItem> paymentItems,
     int cornerRadius = RawGooglePayButton.defaultButtonHeight ~/ 2,
-    GooglePayButtonStyle style = GooglePayButtonStyle.dark,
+    GooglePayButtonTheme theme = GooglePayButtonTheme.dark,
     GooglePayButtonType type = GooglePayButtonType.buy,
     super.width = RawGooglePayButton.minimumButtonWidth,
     super.height = RawGooglePayButton.defaultButtonHeight,
@@ -56,7 +56,7 @@ class GooglePayButton extends PayButton {
     _googlePayButton = RawGooglePayButton(
         paymentConfiguration: paymentConfiguration,
         cornerRadius: cornerRadius,
-        style: style,
+        theme: theme,
         type: type,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }

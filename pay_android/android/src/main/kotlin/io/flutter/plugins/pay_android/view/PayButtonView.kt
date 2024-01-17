@@ -49,7 +49,7 @@ internal class PayButtonView(private val context: Context, binaryMessenger: Bina
     }
 
     private fun buildPayButton(buttonParams: Map<String, Any>) {
-        val buttonTheme = ButtonThemeFactory.fromString(buttonParams["style"] as String)
+        val buttonTheme = ButtonThemeFactory.fromString(buttonParams["theme"] as String)
         val buttonType = ButtonTypeFactory.fromString(buttonParams["type"] as String)
         val cornerRadiusDp = buttonParams["cornerRadius"] as Int
         val cornerRadius = (cornerRadiusDp * context.resources.displayMetrics.density).toInt()

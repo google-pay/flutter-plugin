@@ -32,7 +32,7 @@ export 'package:pay_platform_interface/core/payment_item.dart'
     show PaymentItem, PaymentItemType, PaymentItemStatus;
 
 export 'package:pay_android/pay_android.dart'
-    show RawGooglePayButton, GooglePayButtonStyle, GooglePayButtonType;
+    show RawGooglePayButton, GooglePayButtonTheme, GooglePayButtonType;
 
 export 'package:pay_ios/pay_ios.dart'
     show RawApplePayButton, ApplePayButtonStyle, ApplePayButtonType;

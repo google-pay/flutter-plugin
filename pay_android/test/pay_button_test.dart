@@ -25,7 +25,7 @@ final String _payConfigString =
 void main() {
   setUp(() async {});
 
-  group('Button style:', () {
+  group('Button theme:', () {
     testWidgets('defaults to type buy and dark', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
@@ -38,7 +38,7 @@ void main() {
       expect(
           find.byWidgetPredicate((widget) =>
               widget is RawGooglePayButton &&
-              widget.style == GooglePayButtonStyle.dark &&
+              widget.theme == GooglePayButtonTheme.dark &&
               widget.type == GooglePayButtonType.buy),
           findsOneWidget);
     });
