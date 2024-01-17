@@ -20,8 +20,12 @@ dependencies:
 Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) to communicate with the native end.
 
 ```dart
+final PaymentConfiguration configuration =
+    PaymentConfiguration.fromJsonString('<yourJsonString>');
+
 RawGooglePayButton(
-  type: GooglePayButtonType.buy);
+      paymentConfiguration: configuration,
+      type: GooglePayButtonType.buy),
 ```
 
 <br>
