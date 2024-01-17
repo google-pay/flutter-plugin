@@ -12,8 +12,8 @@ Before you start, create an account with the payment providers you are planning 
 
 #### Apple Pay:
 1. Take a look at the [integration requirements](https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay_requirements).
-2. Create a [merchant identifier](https://help.apple.com/developer-account/#/devb2e62b839?sub=dev103e030bb) for your business.
-3. Create a [payment processing certificate](https://help.apple.com/developer-account/#/devb2e62b839?sub=devf31990e3f) to encrypt payment information.
+2. Create a [merchant identifier](https://developer.apple.com/help/account/configure-app-capabilities/configure-apple-pay#create-a-merchant-identifier) for your business.
+3. Create a [payment processing certificate](https://developer.apple.com/help/account/configure-app-capabilities/configure-apple-pay#create-a-payment-processing-certificate) to encrypt payment information.
 
 #### Google Pay:
 1. Take a look at the [integration requirements](https://developers.google.com/pay/api/android/overview).
