@@ -20,7 +20,7 @@ Update the Google Pay button to support card last 4 digits, and extend configura
 ### ⚠ DEPRECATION WARNING
 
 ### Features
-* Widgets inheriting from `PayButton` now receive the payment configuration using the `paymentConfiguration` parameter, which expects a `PaymentConfiguration` object. This allows building configuration objects from assets or strings (see [#7](https://github.com/google-pay/flutter-plugin/issues/7)).
+* Widgets inheriting from `PayButton` now receive the payment configuration using the `paymentConfiguration` parameter, which expects a `PaymentConfiguration` object. This allows building configuration objects from assets or strings (see [#7](https://github.com/google-pay/flutter-plugin/issues/7)). The previous `paymentConfigurationAsset` property is still available and marked as deprecated for backwards compatibility, and will be removed in future releases. See the new example application and readme to learn more.
 * Use a `Map` to configure a `Pay` client, where the key is a `PayProvider` and the value is a `PaymentConfiguration`. 
 
 ## 1.0.11 (2022-09-14)
