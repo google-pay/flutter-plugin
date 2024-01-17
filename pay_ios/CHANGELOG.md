@@ -1,5 +1,12 @@
 # Changelog
 
+Bump versions of dependencies and update static analysis tooling.
+
+### Features
+
+* Use `flutter_lints` for static checks (#182, #210).
+* Update minimum supported SDK version to Flutter 3.10/Dart 3.0.
+
 ## 1.0.9 (2023-07-31)
 
 * Fix typo in public property.

@@ -37,6 +37,7 @@ class GooglePayButton extends PayButton {
   GooglePayButton({
     super.key,
     super.buttonProvider = PayProvider.google_pay,
+    required final PaymentConfiguration paymentConfiguration,
     super.onPaymentResult,
     required List<PaymentItem> paymentItems,
     int cornerRadius = RawGooglePayButton.defaultButtonHeight ~/ 2,
@@ -51,7 +52,9 @@ class GooglePayButton extends PayButton {
     super.loadingIndicator,
   })  : assert(width >= RawGooglePayButton.minimumButtonWidth),
         assert(height >= RawGooglePayButton.defaultButtonHeight),
+        super(paymentConfiguration: paymentConfiguration) {
     _googlePayButton = RawGooglePayButton(
+        paymentConfiguration: paymentConfiguration,
         cornerRadius: cornerRadius,
         style: style,
         type: type,

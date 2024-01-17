@@ -25,7 +25,7 @@ The methods in the interface are:
 ## Payment configuration
 The configuration to setup a payment provider is based on a open-ended schema (with provider-specific classes coming soon) with two required properties:
 * `provider`: with the target payment provider (eg.: `PayProvider.apple_pay`, `PayProvider.google_pay`).
-* `data`: a schemaless object with specific fields for the target payment provider. Take a look at the [test assets folder](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface/test/assets) to see examples configurations.
+* `data`: a schemaless object with specific fields for the target payment provider. Take a look at the [test assets folder](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface/test/assets) to see sample configurations.
 
 ## Note on breaking changes
 

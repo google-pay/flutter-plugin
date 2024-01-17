@@ -15,6 +15,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_android/pay_android.dart';
+import 'package:pay_platform_interface/core/payment_configuration.dart';
+
+const PayProvider _providerGooglePay = PayProvider.google_pay;
+final String _payConfigString =
+    '{"provider": "${_providerGooglePay.toSimpleString()}",'
+    '"data": { "allowedPaymentMethods": []}}';
 
 void main() {
   setUp(() async {});
@@ -23,7 +29,10 @@ void main() {
     testWidgets('defaults to type buy and dark', (WidgetTester tester) async {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: RawGooglePayButton(onPressed: () {}),
+        child: RawGooglePayButton(
+            paymentConfiguration:
+                PaymentConfiguration.fromJsonString(_payConfigString),
+            onPressed: () {}),
       ));
 
       expect(
@@ -40,7 +49,10 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Center(
-            child: RawGooglePayButton(onPressed: () {}),
+            child: RawGooglePayButton(
+                paymentConfiguration:
+                    PaymentConfiguration.fromJsonString(_payConfigString),
+                onPressed: () {}),
           ),
         ),
       );

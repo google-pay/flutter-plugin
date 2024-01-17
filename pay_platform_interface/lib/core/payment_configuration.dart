@@ -51,6 +51,9 @@ class PaymentConfiguration {
   /// The configuration parameters for a given payment provider.
   final Future<Map<String, dynamic>> _parameters;
 
+  /// The raw configuration provided
+  final String _rawConfigurationData;
+
   /// Creates a [PaymentConfiguration] object with the properties in the map
   /// and ensures the necessary fields are present and valid.
   PaymentConfiguration._(Map<String, dynamic> configuration)
@@ -60,6 +63,7 @@ class PaymentConfiguration {
             PayProviders.isValidProvider(configuration['provider'] as String)),
         provider =
             PayProviders.fromString(configuration['provider'] as String)!,
+        _rawConfigurationData = jsonEncode(configuration['data']),
         _parameters = Configurations.extractParameters(configuration);
 
   /// Creates a [PaymentConfiguration] object from the
@@ -103,6 +107,11 @@ class PaymentConfiguration {
   /// Returns the core configuration map in this object.
   Future<Map<String, dynamic>> parameterMap() async {
     return _parameters;
+  }
+
+  /// Returns the raw data in the configuration
+  String rawConfigurationData() {
+    return _rawConfigurationData;
   }
 }
 

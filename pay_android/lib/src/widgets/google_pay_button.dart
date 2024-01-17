@@ -47,6 +47,10 @@ enum GooglePayButtonStyle {
 ///   onPressed: () => print('Button pressed'));
 /// ```
 class RawGooglePayButton extends StatelessWidget {
+  /// The payment configuration for the button to show the last 4 digits of a
+  /// pre-selected card
+  final PaymentConfiguration _paymentConfiguration;
+
   /// The default width for the Google Pay Button.
   static const double minimumButtonWidth = 168;
 
@@ -78,12 +82,14 @@ class RawGooglePayButton extends StatelessWidget {
   /// Creates a Google Pay button widget with the parameters specified.
   RawGooglePayButton({
     super.key,
+    required final PaymentConfiguration paymentConfiguration,
     this.onPressed,
     this.cornerRadius = defaultButtonHeight ~/ 2,
     this.style = GooglePayButtonStyle.dark,
     this.type = GooglePayButtonType.buy,
     this.gestureRecognizers = const <Factory<OneSequenceGestureRecognizer>>{},
-  }) : constraints = const BoxConstraints.tightFor(
+  })  : _paymentConfiguration = paymentConfiguration,
+        constraints = const BoxConstraints.tightFor(
           width: minimumButtonWidth,
           height: defaultButtonHeight,
         ) {
@@ -120,6 +126,8 @@ class RawGooglePayButton extends StatelessWidget {
                     'style': style.enumString,
                     'type': type.enumString,
                     'cornerRadius': cornerRadius,
+                    'paymentConfiguration':
+                        _paymentConfiguration.rawConfigurationData(),
                   },
                   creationParamsCodec: const StandardMessageCodec(),
                   onFocus: () {

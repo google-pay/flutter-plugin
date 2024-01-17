@@ -17,5 +17,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:pay_platform_interface/core/payment_configuration.dart';
+
+export 'package:pay_platform_interface/core/payment_configuration.dart'
+    show PaymentConfiguration;
 
 part 'src/widgets/google_pay_button.dart';

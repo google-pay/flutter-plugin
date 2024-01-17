@@ -54,7 +54,10 @@ internal class PayButtonView(private val context: Context, binaryMessenger: Bina
         val cornerRadiusDp = buttonParams["cornerRadius"] as Int
         val cornerRadius = (cornerRadiusDp * context.resources.displayMetrics.density).toInt()
 
-        val allowedPaymentMethods: JSONArray = JSONArray().put(cardPaymentMethod())
+        // Parse payment configuration
+        val payConfiguration = JSONObject(buttonParams["paymentConfiguration"] as String)
+        val allowedPaymentMethods: JSONArray = payConfiguration["allowedPaymentMethods"] as JSONArray
+
         payButton.initialize(ButtonOptions.newBuilder()
             .setButtonTheme(buttonTheme)
             .setButtonType(buttonType)
@@ -70,52 +73,6 @@ internal class PayButtonView(private val context: Context, binaryMessenger: Bina
     override fun getView() = payButton
 
     override fun dispose() = Unit
-
-    private fun baseCardPaymentMethod(): JSONObject {
-
-        val allowedCardNetworks = JSONArray(listOf(
-            "AMEX",
-            "DISCOVER",
-            "JCB",
-            "MASTERCARD",
-            "VISA"))
-
-        val allowedCardAuthMethods = JSONArray(listOf(
-            "PAN_ONLY",
-            "CRYPTOGRAM_3DS"))
-
-        return JSONObject().apply {
-
-            val parameters = JSONObject().apply {
-                put("allowedAuthMethods", allowedCardAuthMethods)
-                put("allowedCardNetworks", allowedCardNetworks)
-                put("billingAddressRequired", true)
-                put("billingAddressParameters", JSONObject().apply {
-                    put("format", "FULL")
-                })
-            }
-
-            put("type", "CARD")
-            put("parameters", parameters)
-        }
-    }
-
-    private fun gatewayTokenizationSpecification(): JSONObject {
-        return JSONObject().apply {
-            put("type", "PAYMENT_GATEWAY")
-            put("parameters", JSONObject(mapOf(
-                "gateway" to "example",
-                "gatewayMerchantId" to "exampleGatewayMerchantId"
-            )))
-        }
-    }
-
-    private fun cardPaymentMethod(): JSONObject {
-        val cardPaymentMethod = baseCardPaymentMethod()
-        cardPaymentMethod.put("tokenizationSpecification", gatewayTokenizationSpecification())
-
-        return cardPaymentMethod
-    }
 }
 
 class ButtonThemeFactory {
