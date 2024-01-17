@@ -48,8 +48,7 @@ enum GooglePayButtonStyle {
 /// ```
 class RawGooglePayButton extends StatelessWidget {
   /// The default width for the Google Pay Button.
-  static const double minimumButtonWidth =
-      _GooglePayButtonTypeAsset.defaultAssetWidth;
+  static const double minimumButtonWidth = 168;
 
   /// The default height for the Google Pay Button.
   static const double defaultButtonHeight = 48;
