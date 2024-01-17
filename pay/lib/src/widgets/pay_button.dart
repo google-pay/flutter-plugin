@@ -33,7 +33,7 @@ abstract class PayButton extends StatefulWidget {
   final PayProvider buttonProvider;
 
   /// A function called when the payment process yields a result.
-  final void Function(Map<String, dynamic> result) onPaymentResult;
+  final void Function(Map<String, dynamic> result)? onPaymentResult;
 
   final double width;
   final double height;
@@ -52,14 +52,14 @@ abstract class PayButton extends StatefulWidget {
   final Widget? loadingIndicator;
 
   /// Initializes the button and the payment client that handles the requests.
-  PayButton(
-    Key? key,
-    this.buttonProvider,
-    final PaymentConfiguration? paymentConfiguration,
+  PayButton({
+    super.key,
+    required this.buttonProvider,
+    required final PaymentConfiguration paymentConfiguration,
     this.onPaymentResult,
-    this.width,
-    this.height,
-    this.margin,
+    this.width = 0,
+    this.height = 0,
+    this.margin = const EdgeInsets.all(0),
     this.onError,
     this.childOnError,
     this.loadingIndicator,
@@ -77,7 +77,7 @@ abstract class PayButton extends StatefulWidget {
       try {
         final result =
             await _payClient.showPaymentSelector(buttonProvider, paymentItems);
-        onPaymentResult(result);
+        onPaymentResult?.call(result);
       } catch (error) {
         onError?.call(error);
       }
