@@ -31,7 +31,7 @@ const _paymentItems = [
 ];
 
 class PayMaterialApp extends StatelessWidget {
-  const PayMaterialApp({Key? key}) : super(key: key);
+  const PayMaterialApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class PayMaterialApp extends StatelessWidget {
 }
 
 class PaySampleApp extends StatefulWidget {
-  const PaySampleApp({Key? key}) : super(key: key);
+  const PaySampleApp({super.key});
 
   @override
   State<PaySampleApp> createState() => _PaySampleAppState();

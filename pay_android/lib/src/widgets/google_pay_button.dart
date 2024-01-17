@@ -58,8 +58,8 @@ class RawGooglePayButton extends StatelessWidget {
   final GooglePayButtonType type;
 
   /// Creates a Google Pay button widget with the parameters specified.
-  const RawGooglePayButton({
-    Key? key,
+  RawGooglePayButton({
+    super.key,
     this.onPressed,
     this.type = GooglePayButtonType.pay,
   }) : super(key: key);

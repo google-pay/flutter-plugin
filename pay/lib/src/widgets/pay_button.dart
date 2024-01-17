@@ -175,10 +175,10 @@ class ButtonPlaceholder extends StatelessWidget {
   final EdgeInsets margin;
 
   const ButtonPlaceholder({
-    Key? key,
+    super.key,
     this.child,
     required this.margin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

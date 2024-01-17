@@ -58,7 +58,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
     }
 
     lintOptions {
@@ -67,7 +67,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-wallet:19.2.0'
+    implementation 'com.google.android.gms:play-services-wallet:19.2.1'
 
     testImplementation 'androidx.test:core:1.5.0'
     testImplementation 'androidx.test.ext:truth:1.5.0'
