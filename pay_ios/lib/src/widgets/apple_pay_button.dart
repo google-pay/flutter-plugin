@@ -151,6 +151,7 @@ class _UiKitApplePayButton extends StatelessWidget {
     this.type = ApplePayButtonType.plain,
     this.cornerRadius,
   });
+
   @override
   Widget build(BuildContext context) {
     return UiKitView(
