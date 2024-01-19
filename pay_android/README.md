@@ -14,7 +14,7 @@ If you prefer to integrate or extend this package separately, add it as a depend
 
 ```yaml
 dependencies:
-  pay_android: ^1.0.11
+  pay_android: ^1.1.0-beta01
 ```
 
 Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) to communicate with the native end.

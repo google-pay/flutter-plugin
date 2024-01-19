@@ -1,12 +1,17 @@
 # Changelog
 
-Update the Google Pay button to support card last 4 digits, and extend configuration capabilities.
+## 1.1.0-beta01 (2024-01-19)
+### ⚠ BREAKING CHANGE
+Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend its configuration capabilities.
 
 ### Features
 
-* Introduce the new dynamic button for Google Pay (#110). This view is part of the Google Pay Android SDK, and handles graphics and translations. The component also features the new design for the Google Pay button.
-* Add a configuration parameter to change the corner roundness of the button (#187).
-* Update minimum supported SDK version to Flutter 3.10/Dart 3.0 (#233).
+* Introduce the new dynamic button for Google Pay (#110). This view is part of the Google Pay Android SDK, and handles graphics and translations. The component also introduces updates to the Google Pay button. This includes:
+    * ⚠ Adding the `paymentConfiguration` mandatory parameter to configure the dynamic component of the button.
+    * ⚠ Removing the `add` property in `GooglePayButtonType`. If you are using this package to integrate the Google Wallet API, stay tuned for updates on [a new plugin for Google Wallet](https://github.com/google-wallet) coming soon.
+    * ⚠ Renaming the `GooglePayButtonStyle` to `GooglePayButtonTheme` to increase consistency with the Android API.
+    * Adding the `cornerRadius` parameter to let you adjust the corner roundness of the button (#187).
+* Update the minimum supported SDK version to Flutter 3.10/Dart 3.0 (#233).
 * Use `flutter_lints` for static checks (#182, #210).
 
 ## 1.0.11 (2023-07-31)
