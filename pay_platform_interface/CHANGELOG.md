@@ -1,5 +1,6 @@
 # Changelog
 
+## 1.0.4 (2024-01-17)
 Bump versions of dependencies and update static analysis tooling.
 
 ### Features
