@@ -1,13 +1,18 @@
 # Changelog
 
+## 1.2.0-beta01 (2024-01-19)
+### ⚠ BREAKING CHANGE
 Update the Google Pay button to support card last 4 digits, and extend configuration capabilities.
 
 ### Features
 
-* Introduce the new dynamic button for Google Pay on Android.
-* Add a configuration parameter to change the corner roundness of the button on Android (#187).
+* ⚠ Introduce the new dynamic button for Google Pay on Android. See the [changelog for `pay_android:1.1.0-beta01`](../pay_android/CHANGELOG.md#110-beta01-2024-01-19) for a detailed breakdown of changes.
 * Update minimum supported SDK version to Flutter 3.10/Dart 3.0 (#233).
 * Use `flutter_lints` for static checks (#182, #210).
+
+### Retired APIs
+
+* ⚠ Removed the `Pay.withAssets` constructor. See the [readme in the `pay_platform_interface` package](../pay_platform_interface/README.md#usage) to review the recommended logic to initialize the `Pay` client.
 
 ## 1.1.2 (2023-07-31)
 * Update `pay_android` to 1.0.11, which includes lifecycle fixes.
