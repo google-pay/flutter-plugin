@@ -1,14 +1,17 @@
 # Changelog
 
+## 1.2.0-beta02 (2024-01-21)
+Introduce new properties and fixes for the Apple Pay button. See the [changelog for `pay_ios:1.0.11`](../pay_ios/CHANGELOG.md#1011-2024-01-21) for a detailed breakdown of the changes.
+
 ## 1.2.0-beta01 (2024-01-19)
 ### ⚠ BREAKING CHANGE
-Update the Google Pay button to support card last 4 digits, and extend configuration capabilities.
+Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend configuration capabilities.
 
 ### Features
 
-* ⚠ Introduce the new dynamic button for Google Pay on Android. See the [changelog for `pay_android:1.1.0-beta01`](../pay_android/CHANGELOG.md#110-beta01-2024-01-19) for a detailed breakdown of changes.
-* Update minimum supported SDK version to Flutter 3.10/Dart 3.0 (#233).
-* Use `flutter_lints` for static checks (#182, #210).
+* ⚠ Introduce the new dynamic button for Google Pay on Android. See the [changelog for `pay_android:1.1.0-beta01`](../pay_android/CHANGELOG.md#110-beta01-2024-01-19) for a detailed breakdown of the changes.
+* Update minimum supported SDK version to Flutter 3.10/Dart 3.0 ([#233](https://github.com/google-pay/flutter-plugin/issues/233)).
+* Use `flutter_lints` for static checks ([#182](https://github.com/google-pay/flutter-plugin/issues/182), [#210](https://github.com/google-pay/flutter-plugin/issues/210)).
 
 ### Retired APIs
 

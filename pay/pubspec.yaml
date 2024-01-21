@@ -14,7 +14,7 @@
 
 name: pay
 description: A plug-in to add support for payments on Flutter applications.
-version: 1.2.0-beta01
+version: 1.2.0-beta02
 repository: https://github.com/google-pay/flutter-plugin/tree/main/pay
 
 environment:
@@ -35,7 +35,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   pay_android: ^1.1.0-beta01
-  pay_ios: ^1.0.10
+  pay_ios: ^1.0.11
   pay_platform_interface: ^1.0.4
   meta: ^1.10.0
 
