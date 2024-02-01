@@ -8,9 +8,43 @@ build/
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 
+# iOS
+Podfile.lock
+Pods/
+.symlinks/
+
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
 doc/api/
+
+# Generated files on example apps
+flutter_export_environment.sh
+.flutter-plugins*
+local.properties
+keystore.properties
+**/Flutter/Generated.xcconfig
+**/Flutter/App.framework/
+**/Flutter/ephemeral/
+**/Flutter/Flutter.podspec
+**/Flutter/Flutter.framework/
+**/Flutter/flutter_assets/
+
+ServiceDefinitions.json
+xcuserdata/
+**/DerivedData/
+
+generated_plugin_registrant.*
+GeneratedPluginRegistrant.*
+
+# Gradle 
+**/gradle-wrapper.jar
+.gradle/
+gradlew
+gradlew.bat
+
+.project
+.classpath
+.settings
 
 # Avoid committing generated Javascript files:
 *.dart.js
