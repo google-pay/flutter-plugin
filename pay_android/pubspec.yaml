@@ -14,7 +14,7 @@
 
 name: pay_android
 description: A plug-in to add support for payments on the Android side of Flutter applications.
-version: 1.1.0-beta01
+version: 2.0.0-beta01
 homepage: https://github.com/google-pay/flutter-plugin
 
 environment:

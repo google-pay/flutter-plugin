@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0-beta01 (2024-01-19)
+## 2.0.0-beta01 (2024-02-01)
 ### ⚠ BREAKING CHANGE
 Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend its configuration capabilities.
 
