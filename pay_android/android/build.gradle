@@ -41,7 +41,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    // Conditional for compatibility with AGP <4.2.
+    // Conditional for compatibility with AGP < 4.2.
     if (project.android.hasProperty("namespace")) {
       namespace 'io.flutter.plugins.pay_android'
     }
@@ -67,7 +67,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-wallet:19.2.1'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'com.google.android.gms:play-services-wallet:19.3.0'
 
     testImplementation 'androidx.test:core:1.5.0'
     testImplementation 'androidx.test.ext:truth:1.5.0'

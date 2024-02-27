@@ -17,16 +17,20 @@
 package io.flutter.plugins.pay_android
 
 import android.app.Activity
-import android.content.Intent
+import androidx.activity.ComponentActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.android.gms.wallet.*
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.PaymentData
+import com.google.android.gms.wallet.PaymentDataRequest
+import com.google.android.gms.wallet.PaymentsClient
+import com.google.android.gms.wallet.Wallet
+import com.google.android.gms.wallet.contract.ApiTaskResult
+import com.google.android.gms.wallet.contract.TaskResultContracts.GetPaymentDataResult
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.pay_android.util.PaymentsUtil
 import org.json.JSONObject
-
-private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
 
 /**
  * A simple helper to orchestrate fundamental calls to complete a payment operation.
@@ -40,10 +44,25 @@ private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
  * ```
  * @property activity the activity used by the plugin binding.
  */
-class GooglePayHandler(private val activity: Activity) :
-        PluginRegistry.ActivityResultListener {
+class GooglePayHandler(private val activity: Activity) {
 
     private lateinit var loadPaymentDataResult: Result
+    private val paymentDataLauncher =
+        (activity as ComponentActivity).registerForActivityResult(GetPaymentDataResult()) { taskResult: ApiTaskResult<PaymentData> ->
+            when (taskResult.status.statusCode) {
+                CommonStatusCodes.SUCCESS -> {
+                    taskResult.result!!.toJson().let(loadPaymentDataResult::success)
+                }
+
+                CommonStatusCodes.CANCELED -> loadPaymentDataResult.error(
+                    "paymentCanceled",
+                    "User canceled payment authorization",
+                    null
+                )
+
+                else -> handleError(taskResult.status)
+            }
+        }
 
     companion object {
 
@@ -160,66 +179,7 @@ class GooglePayHandler(private val activity: Activity) :
         val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
-        AutoResolveHelper.resolveTask(
-                client.loadPaymentData(ldpRequest),
-                activity,
-                LOAD_PAYMENT_DATA_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(
-            requestCode: Int,
-            resultCode: Int,
-            data: Intent?,
-    ): Boolean = when (requestCode) {
-        LOAD_PAYMENT_DATA_REQUEST_CODE -> {
-            when (resultCode) {
-
-                // The request ran successfully. Process the result.
-                Activity.RESULT_OK -> {
-                    data?.let { intent ->
-                        PaymentData.getFromIntent(intent).let(::handlePaymentSuccess)
-                    }
-                    true
-                }
-
-                Activity.RESULT_CANCELED -> {
-                    loadPaymentDataResult.error(
-                            "paymentCanceled",
-                            "User canceled payment authorization",
-                            null)
-                    true
-                }
-
-                AutoResolveHelper.RESULT_ERROR -> {
-                    AutoResolveHelper.getStatusFromIntent(data)?.let { status ->
-                        handleError(status.statusCode)
-                    }
-                    true
-                }
-
-                else -> false
-            }
-        }
-        else -> false
-    }
-
-    /**
-     * Takes the result after showing the payment selector and uses it to create a response.
-     *
-     * @param paymentData a response object returned by Google Pay after a payer approves payment.
-     *
-     * @see [Payment
-     * Data](https://developers.google.com/pay/api/android/reference/object.PaymentData)
-     */
-    private fun handlePaymentSuccess(paymentData: PaymentData?) {
-        if (paymentData != null) {
-            loadPaymentDataResult.success(paymentData.toJson())
-        } else {
-            loadPaymentDataResult.error(
-                    CommonStatusCodes.INTERNAL_ERROR.toString(),
-                    "Unexpected empty result data.",
-                    null)
-        }
+        client.loadPaymentData(ldpRequest).addOnCompleteListener(paymentDataLauncher::launch)
     }
 
     /**
@@ -228,12 +188,11 @@ class GooglePayHandler(private val activity: Activity) :
      * At this stage, the user has already seen a popup informing them an error occurred.
      * Normally, only logging is required.
      *
-     * @param statusCode the value of any constant from [CommonStatusCodes] or one of the
-     * []WalletConstants].ERROR_CODE_* constants.
+     * @param status the [Status] object returned by the API operation
      *
      * @see [
      * Wallet constants library](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants.constant-summary)
      */
-    private fun handleError(statusCode: Int) =
-            loadPaymentDataResult.error(statusCode.toString(), "", null)
+    private fun handleError(status: Status) =
+        loadPaymentDataResult.error(status.statusCode.toString(), status.statusMessage, status)
 }
