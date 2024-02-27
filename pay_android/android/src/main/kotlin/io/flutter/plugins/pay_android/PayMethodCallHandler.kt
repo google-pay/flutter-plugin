@@ -36,7 +36,6 @@ private const val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
 class PayMethodCallHandler private constructor(
     messenger: BinaryMessenger,
     activity: Activity,
-    private val activityBinding: ActivityPluginBinding?,
 ) : MethodCallHandler {
 
     private val channel: MethodChannel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
@@ -49,16 +48,13 @@ class PayMethodCallHandler private constructor(
     constructor(
         flutterBinding: FlutterPlugin.FlutterPluginBinding,
         activityBinding: ActivityPluginBinding,
-    ) : this(flutterBinding.binaryMessenger, activityBinding.activity, activityBinding) {
-        activityBinding.addActivityResultListener(googlePayHandler)
-    }
+    ) : this(flutterBinding.binaryMessenger, activityBinding.activity)
 
     /**
      * Clears the handler in the method channel when not needed anymore.
      */
     fun stopListening() {
         channel.setMethodCallHandler(null)
-        activityBinding?.removeActivityResultListener(googlePayHandler)
     }
 
     @Suppress("UNCHECKED_CAST")
