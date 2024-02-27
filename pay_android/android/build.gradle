@@ -14,38 +14,35 @@
  * limitations under the License.
  */
 
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+
 group 'io.flutter.plugins.pay_android'
 version '1.0-SNAPSHOT'
-
-buildscript {
-    ext.kotlin_version = '1.8.21'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-rootProject.allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 android {
     // Conditional for compatibility with AGP < 4.2.
     if (project.android.hasProperty("namespace")) {
       namespace 'io.flutter.plugins.pay_android'
     }
-    compileSdkVersion 33
+
+    compileSdk 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     kotlinOptions {
         jvmTarget = '1.8'
