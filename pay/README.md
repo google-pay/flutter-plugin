@@ -30,7 +30,7 @@ dependencies:
 Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).
 
 ### Example
-This snippet assumes the existence a payment configuration for Apple Pay ([`defaultApplePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)) and another one for Google Pay ([`defaultGooglePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L63)):
+This snippet assumes the existence of a payment configuration for Apple Pay ([`defaultApplePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)) and another one for Google Pay ([`defaultGooglePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L63)):
 ```dart
 import 'package:pay/pay.dart';
 
