@@ -88,6 +88,10 @@ class Pay {
       await _assetInitializationFuture;
       final iosPayPlatform = _payPlatform as IosPayMethodChannel;
       return iosPayPlatform.updatePaymentResult(isSuccess);
+    } else {
+      throw MethodNotForCurrentPlatformException(
+        'The method "updatePaymentResult" can only be called when the "defaultTargetPlatform" is iOS.',
+      );
     }
   }
 
@@ -112,4 +116,16 @@ class ProviderNotConfiguredException implements Exception {
 
   @override
   String toString() => 'ProviderNotConfiguredException: $message';
+}
+
+/// Thrown to indicate that the method called is not available for the current
+/// platform is has been called from.
+class MethodNotForCurrentPlatformException implements Exception {
+  MethodNotForCurrentPlatformException(this.message);
+
+  /// A human-readable error message, possibly null.
+  final String? message;
+
+  @override
+  String toString() => 'MethodNotForCurrentPlatformException: $message';
 }
