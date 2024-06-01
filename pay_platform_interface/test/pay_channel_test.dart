@@ -24,6 +24,8 @@ void main() {
 
   late final PayMethodChannel _mobilePlatform;
 
+  final _defaultBinaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   const _providerApplePay = PayProvider.apple_pay;
   final _payConfigString =
       '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}';
@@ -41,8 +43,7 @@ void main() {
     };
 
     setUp(() {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(
+      _defaultBinaryMessenger.setMockMethodCallHandler(
         _mobilePlatform.channel,
         (MethodCall methodCall) async {
           log.add(methodCall);
@@ -77,8 +78,10 @@ void main() {
     });
 
     tearDown(() async {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(_mobilePlatform.channel, null);
+      _defaultBinaryMessenger.setMockMethodCallHandler(
+        _mobilePlatform.channel,
+        null,
+      );
       log.clear();
     });
   });
