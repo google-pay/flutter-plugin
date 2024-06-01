@@ -192,12 +192,6 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
   }
     
   func paymentAuthorizationController(_: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-    // Store completion handler
-    completionHandler = { isSuccess in
-      let status: PKPaymentAuthorizationStatus = isSuccess ? .success : .failure
-      completion(PKPaymentAuthorizationResult(status: status, errors: nil))
-    }
-    
     // Collect payment result or error and return if no payment was selected
     guard let paymentResultData = try? JSONSerialization.data(withJSONObject: payment.toDictionary()) else {
       self.paymentResult(FlutterError(code: "paymentResultDeserializationFailed", message: nil, details: nil))
@@ -207,6 +201,12 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
     
+    // Store completion handler
+    completionHandler = { isSuccess in
+      let status: PKPaymentAuthorizationStatus = isSuccess ? .success : .failure
+      completion(PKPaymentAuthorizationResult(status: status, errors: nil))
+    }
+
     paymentHandlerStatus = .authorized
   }
   
