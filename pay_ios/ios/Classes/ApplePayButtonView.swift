@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,6 +112,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     let arguments = args as! Dictionary<String, AnyObject>
     let buttonType = arguments["type"] as! String
     let buttonStyle = arguments["style"] as! String
+    let cornerRadius = arguments["cornerRadius"]?.floatValue
     
     // Instantiate the channel to talk to the Flutter end.
     channel = FlutterMethodChannel(name: "\(ApplePayButtonView.buttonMethodChannelName)/\(viewId)",
@@ -119,7 +120,7 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
     
     super.init()
     channel.setMethodCallHandler(handleFlutterCall)
-    createApplePayView(type: buttonType, style: buttonStyle)
+    createApplePayView(type: buttonType, style: buttonStyle, cornerRadius: cornerRadius)
   }
   
   /// No-op handler that resonds to calls received from Flutter.
@@ -138,12 +139,15 @@ class ApplePayButtonView: NSObject, FlutterPlatformView {
   }
   
   /// Creates the actual `PKPaymentButton` with the defined styles and constraints.
-  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String){
+  func createApplePayView(type buttonTypeString: String, style buttonStyleString: String, cornerRadius: Float?) {
     
     // Create the PK objects
     let paymentButtonType = PKPaymentButtonType.fromString(buttonTypeString) ?? .plain
     let paymentButtonStyle = PKPaymentButtonStyle.fromString(buttonStyleString) ?? .black
     let applePayButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
+    if let cornerRadiusValue = cornerRadius {
+      applePayButton.cornerRadius = CGFloat(cornerRadiusValue)
+    }
     
     // Configure the button
     applePayButton.translatesAutoresizingMaskIntoConstraints = false

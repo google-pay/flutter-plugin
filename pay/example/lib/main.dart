@@ -1,16 +1,16 @@
-/// Copyright 2023 Google LLC
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     https://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,7 +19,7 @@ import 'package:pay/pay.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
 void main() {
-  runApp(PayMaterialApp());
+  runApp(const PayMaterialApp());
 }
 
 const _paymentItems = [
@@ -31,18 +31,20 @@ const _paymentItems = [
 ];
 
 class PayMaterialApp extends StatelessWidget {
+  const PayMaterialApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Pay for Flutter Demo',
       localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('en', ''),
-        const Locale('es', ''),
-        const Locale('de', ''),
+        Locale('en', ''),
+        Locale('es', ''),
+        Locale('de', ''),
       ],
       theme: ThemeData.light(),
       home: PaySampleApp(),
@@ -51,10 +53,10 @@ class PayMaterialApp extends StatelessWidget {
 }
 
 class PaySampleApp extends StatefulWidget {
-  PaySampleApp({Key? key}) : super(key: key);
+  const PaySampleApp({super.key});
 
   @override
-  _PaySampleAppState createState() => _PaySampleAppState();
+  State<PaySampleApp> createState() => _PaySampleAppState();
 }
 
 class _PaySampleAppState extends State<PaySampleApp> {

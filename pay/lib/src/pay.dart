@@ -1,5 +1,16 @@
-/// Copyright 2023 Google LLC.
-/// SPDX-License-Identifier: Apache-2.0
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 part of '../pay.dart';
 
@@ -16,18 +27,16 @@ const supportedProviders = {
 /// To use it, instantiate it with a list of configurations for the payment
 /// providers supported:
 /// ```dart
-/// final payClient = Pay.withAssets(paymentConfigurationAssets)
-/// await payClient.showPaymentSelector(paymentItems: paymentItems);
+/// final payConfiguration = PaymentConfiguration.fromJsonString(<string>);
+/// final payClient = Pay({<PayProvider>: payConfiguration});
+/// await payClient.showPaymentSelector(<PayProvider>, paymentItems);
 /// ```
 class Pay {
   /// The implementation of the platform interface to talk to the native ends.
   final PayPlatform _payPlatform;
 
   /// Map of configurations for the payment providers targeted.
-  Map<PayProvider, PaymentConfiguration>? _configurations;
-
-  // Future to keep track of asynchronous initialization items.
-  Future? _assetInitializationFuture;
+  final Map<PayProvider, PaymentConfiguration> _configurations;
 
   /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
@@ -35,23 +44,6 @@ class Pay {
       : _payPlatform = defaultTargetPlatform == TargetPlatform.iOS
             ? IosPayMethodChannel()
             : PayMethodChannel();
-
-  /// Alternative constructor to create a [Pay] object with a list of
-  /// configurations in [String] format.
-  @Deprecated(
-      'Prefer to use [Pay({ [PayProvider]: [PaymentConfiguration] })]. Take a look at the readme to see examples')
-  Pay.withAssets(List<String> configAssets)
-      : _payPlatform = defaultTargetPlatform == TargetPlatform.iOS
-            ? IosPayMethodChannel()
-            : PayMethodChannel() {
-    _assetInitializationFuture = _loadConfigAssets(configAssets);
-  }
-
-  /// Load the list of configurations from the assets.
-  Future _loadConfigAssets(List<String> configurationAssets) async =>
-      _configurations = Map.fromEntries(await Future.wait(configurationAssets
-          .map((ca) => PaymentConfiguration.fromAsset(ca))
-          .map((c) async => MapEntry(((await c).provider), await c))));
 
   /// Determines whether a user can pay with the selected [provider].
   ///
@@ -61,7 +53,7 @@ class Pay {
   Future<bool> userCanPay(PayProvider provider) async {
     await throwIfProviderIsNotDefined(provider);
     if (supportedProviders[defaultTargetPlatform]!.contains(provider)) {
-      return _payPlatform.userCanPay(_configurations![provider]!);
+      return _payPlatform.userCanPay(_configurations[provider]!);
     }
 
     return Future.value(false);
@@ -78,14 +70,13 @@ class Pay {
   ) async {
     await throwIfProviderIsNotDefined(provider);
     return _payPlatform.showPaymentSelector(
-        _configurations![provider]!, paymentItems);
+        _configurations[provider]!, paymentItems);
   }
 
   /// Update the payment result with the native platform.
   /// Works only on iOS.
   Future<void> updatePaymentResult(bool isSuccess) async {
     if (_payPlatform is IosPayMethodChannel) {
-      await _assetInitializationFuture;
       final iosPayPlatform = _payPlatform as IosPayMethodChannel;
       return iosPayPlatform.updatePaymentResult(isSuccess);
     } else {
@@ -97,9 +88,8 @@ class Pay {
 
   /// Verifies that the selected provider has been previously configured or
   /// throws otherwise.
-  Future throwIfProviderIsNotDefined(PayProvider provider) async {
-    await _assetInitializationFuture;
-    if (!_configurations!.containsKey(provider)) {
+  Future<void> throwIfProviderIsNotDefined(PayProvider provider) async {
+    if (!_configurations.containsKey(provider)) {
       throw ProviderNotConfiguredException(
           'No configuration has been provided for the provider ($provider)');
     }

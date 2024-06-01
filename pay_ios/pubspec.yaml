@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 
 name: pay_ios
 description: A plug-in to add support for payments on the iOS side on Flutter applications.
-version: 1.0.8
+version: 1.0.11
 homepage: https://github.com/google-pay/flutter-plugin
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 flutter:
   plugin:
@@ -30,10 +30,11 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  pay_platform_interface: ^1.0.3
+  pay_platform_interface: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.0.8
-  pedantic: ^1.11.0
+  flutter_lints: ^3.0.1

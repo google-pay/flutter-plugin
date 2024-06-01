@@ -14,14 +14,18 @@ If you prefer to integrate or extend this package separately, add it as a depend
 
 ```yaml
 dependencies:
-  pay_android: ^1.0.9
+  pay_android: ^2.0.0
 ```
 
 Now, you can use the buttons available for the supported payment providers and the methods exposed in [the interface that this package uses](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface) to communicate with the native end.
 
 ```dart
+final PaymentConfiguration configuration =
+    PaymentConfiguration.fromJsonString('<yourJsonString>');
+
 RawGooglePayButton(
-  type: GooglePayButtonType.pay);
+      paymentConfiguration: configuration,
+      type: GooglePayButtonType.buy),
 ```
 
 <br>

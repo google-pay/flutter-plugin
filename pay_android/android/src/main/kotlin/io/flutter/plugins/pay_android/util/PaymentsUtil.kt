@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ object PaymentsUtil {
      * @throws IllegalArgumentException if the value provided is unrecognized.
      */
     fun environmentForString(environmentString: String?): Int =
-            when (environmentString?.toLowerCase(Locale.ROOT)) {
+            when (environmentString?.lowercase(Locale.ROOT)) {
                 "test" -> WalletConstants.ENVIRONMENT_TEST
                 "production" -> WalletConstants.ENVIRONMENT_PRODUCTION
                 else -> throw IllegalArgumentException(

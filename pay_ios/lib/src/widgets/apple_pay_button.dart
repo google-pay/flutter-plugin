@@ -1,16 +1,16 @@
-/// Copyright 2021 Google LLC
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     https://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 part of '../../pay_ios.dart';
 
@@ -73,7 +73,7 @@ extension on ApplePayButtonType {
 /// ```
 class RawApplePayButton extends StatelessWidget {
   /// The default width for the Apple Pay Button.
-  static const double minimumButonWidth = 100;
+  static const double minimumButtonWidth = 100;
 
   /// The default height for the Apple Pay Button.
   static const double minimumButtonHeight = 30;
@@ -88,21 +88,24 @@ class RawApplePayButton extends StatelessWidget {
   /// scheme of the application.
   final ApplePayButtonStyle style;
 
-  /// The tyoe of button depending on the activity initiated with the payment
+  /// The type of button depending on the activity initiated with the payment
   /// transaction.
   final ApplePayButtonType type;
 
+  /// The amount of roundness applied to the corners of the button.
+  final double? cornerRadius;
+
   /// Creates an Apple Pay button widget with the parameters specified.
   RawApplePayButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
-  })  : constraints = BoxConstraints.tightFor(
+    this.cornerRadius,
+  }) : constraints = BoxConstraints.tightFor(
           width: type.minimumAssetWidth,
           height: minimumButtonHeight,
-        ),
-        super(key: key) {
+        ) {
     assert(constraints.debugAssertIsValid());
   }
 
@@ -122,6 +125,7 @@ class RawApplePayButton extends StatelessWidget {
           onPressed: onPressed,
           style: style,
           type: type,
+          cornerRadius: cornerRadius,
         );
       default:
         throw UnsupportedError(
@@ -133,32 +137,41 @@ class RawApplePayButton extends StatelessWidget {
 }
 
 /// A widget to draw the Apple Pay button through a [PlatforView].
-class _UiKitApplePayButton extends StatelessWidget {
+class _UiKitApplePayButton extends StatefulWidget {
   static const buttonId = 'plugins.flutter.io/pay/apple_pay_button';
-  late final MethodChannel? methodChannel;
 
   final VoidCallback? onPressed;
   final ApplePayButtonStyle style;
   final ApplePayButtonType type;
+  final double? cornerRadius;
 
-  _UiKitApplePayButton({
-    Key? key,
+  const _UiKitApplePayButton({
     this.onPressed,
     this.style = ApplePayButtonStyle.black,
     this.type = ApplePayButtonType.plain,
-  }) : super(key: key);
+    this.cornerRadius,
+  });
 
+  @override
+  State<_UiKitApplePayButton> createState() => _UiKitApplePayButtonState();
+}
+
+class _UiKitApplePayButtonState extends State<_UiKitApplePayButton> {
   @override
   Widget build(BuildContext context) {
     return UiKitView(
-      viewType: buttonId,
+      viewType: _UiKitApplePayButton.buttonId,
       creationParamsCodec: const StandardMessageCodec(),
-      creationParams: {'style': style.enumString, 'type': type.enumString},
+      creationParams: {
+        'style': widget.style.enumString,
+        'type': widget.type.enumString,
+        'cornerRadius': widget.cornerRadius
+      }..removeWhere((_, value) => value == null),
       onPlatformViewCreated: (viewId) {
-        methodChannel = MethodChannel('$buttonId/$viewId');
-        methodChannel?.setMethodCallHandler((call) async {
-          if (call.method == 'onPressed') onPressed?.call();
-          return;
+        MethodChannel methodChannel =
+            MethodChannel('${_UiKitApplePayButton.buttonId}/$viewId');
+        methodChannel.setMethodCallHandler((call) async {
+          if (call.method == 'onPressed') widget.onPressed?.call();
         });
       },
     );

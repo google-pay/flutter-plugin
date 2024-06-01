@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 
 name: pay_platform_interface
 description: A common platform interface for payment plugins for Flutter.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/google-pay/flutter-plugin
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 flutter:
   assets:
@@ -33,4 +33,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.11.0
+  flutter_lints: ^3.0.1

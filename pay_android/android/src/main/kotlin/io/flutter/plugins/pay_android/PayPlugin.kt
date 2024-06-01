@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,43 +16,37 @@
 
 package io.flutter.plugins.pay_android
 
-import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import io.flutter.plugin.common.PluginRegistry.Registrar
+import io.flutter.plugins.pay_android.view.PayButtonViewFactory
 
 /**
  * Entry point handler for the plugin.
  */
 class PayPlugin : FlutterPlugin, ActivityAware {
 
+    private val googlePayButtonViewType = "plugins.flutter.io/pay/google_pay_button"
+
     private lateinit var flutterPluginBinding: FlutterPlugin.FlutterPluginBinding
     private lateinit var methodCallHandler: PayMethodCallHandler
 
-    companion object {
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            PayMethodCallHandler(registrar)
-        }
-    }
-
-    override fun onAttachedToEngine(
-            @NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding,
-    ) {
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         this.flutterPluginBinding = flutterPluginBinding
+        flutterPluginBinding.platformViewRegistry.registerViewFactory(
+            googlePayButtonViewType, PayButtonViewFactory(flutterPluginBinding.binaryMessenger))
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
-    override fun onAttachedToActivity(@NonNull activityPluginBinding: ActivityPluginBinding) {
+    override fun onAttachedToActivity(activityPluginBinding: ActivityPluginBinding) {
         methodCallHandler = PayMethodCallHandler(flutterPluginBinding, activityPluginBinding)
     }
 
     override fun onDetachedFromActivity() = methodCallHandler.stopListening()
 
     override fun onReattachedToActivityForConfigChanges(
-            @NonNull activityPluginBinding: ActivityPluginBinding,
+            activityPluginBinding: ActivityPluginBinding,
     ) = onAttachedToActivity(activityPluginBinding)
 
     override fun onDetachedFromActivityForConfigChanges() = onDetachedFromActivity()

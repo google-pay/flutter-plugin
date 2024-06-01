@@ -1,16 +1,16 @@
-/// Copyright 2023 Google LLC
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     https://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import 'dart:convert';
 
@@ -49,23 +49,27 @@ class PaymentConfiguration {
   final PayProvider provider;
 
   /// The configuration parameters for a given payment provider.
-  late final Future<Map<String, dynamic>> _parameters;
+  final Future<Map<String, dynamic>> _parameters;
+
+  /// The raw configuration provided
+  final String _rawConfigurationData;
 
   /// Creates a [PaymentConfiguration] object with the properties in the map
   /// and ensures the necessary fields are present and valid.
   PaymentConfiguration._(Map<String, dynamic> configuration)
       : assert(configuration.containsKey('provider')),
         assert(configuration.containsKey('data')),
-        assert(PayProviders.isValidProvider(configuration['provider'])),
-        provider = PayProviders.fromString(configuration['provider'])!,
-        _parameters = Configurations.buildParameters(
-            PayProviders.fromString(configuration['provider'])!,
-            configuration['data']);
+        assert(
+            PayProviders.isValidProvider(configuration['provider'] as String)),
+        provider =
+            PayProviders.fromString(configuration['provider'] as String)!,
+        _rawConfigurationData = jsonEncode(configuration['data']),
+        _parameters = Configurations.extractParameters(configuration);
 
   /// Creates a [PaymentConfiguration] object from the
   /// [paymentConfigurationString] in JSON format.
   PaymentConfiguration.fromJsonString(String paymentConfigurationString)
-      : this._(jsonDecode(paymentConfigurationString));
+      : this._(jsonDecode(paymentConfigurationString) as Map<String, dynamic>);
 
   /// Creates a [PaymentConfiguration] object wrapped in a [Future] from a
   /// configuration loaded from an external source.
@@ -97,12 +101,17 @@ class PaymentConfiguration {
   /// caller.
   static Future<Map<String, dynamic>> _defaultProfileLoader(
           String paymentConfigurationAsset) async =>
-      await rootBundle.loadStructuredData(
-          'assets/$paymentConfigurationAsset', (s) async => jsonDecode(s));
+      await rootBundle.loadStructuredData('assets/$paymentConfigurationAsset',
+          (s) async => jsonDecode(s) as Map<String, dynamic>);
 
   /// Returns the core configuration map in this object.
   Future<Map<String, dynamic>> parameterMap() async {
     return _parameters;
+  }
+
+  /// Returns the raw data in the configuration
+  String rawConfigurationData() {
+    return _rawConfigurationData;
   }
 }
 

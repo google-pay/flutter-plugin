@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.0.11 (2024-01-21)
+Introduce new properties and fixes for the Apple Pay button.
+
+### Features
+
+* Surface the `cornerRadius` property to the `ApplePayButton` widget to allow changing the corner roundness of the Apple Pay button ([#127](https://github.com/google-pay/flutter-plugin/issues/127)).
+
+### Fixes
+
+* Make the `ApplePayButton` widget reactive to changes in the items used to calculate the price ([#235](https://github.com/google-pay/flutter-plugin/issues/235)).
+
+## 1.0.10 (2024-01-19)
+Bump versions of dependencies and update static analysis tooling.
+
+### Features
+
+* Use `flutter_lints` for static checks ([#182](https://github.com/google-pay/flutter-plugin/issues/182), [#210](https://github.com/google-pay/flutter-plugin/issues/210)).
+* Update minimum supported SDK version to Flutter 3.10/Dart 3.0.
+
+## 1.0.9 (2023-07-31)
+
+* Fix typo in public property.
+
 ## 1.0.8 (2023-01-24)
 
 * Support for the latest platform interface.

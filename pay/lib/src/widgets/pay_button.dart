@@ -1,16 +1,16 @@
-/// Copyright 2023 Google LLC
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     https://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 part of '../../pay.dart';
 
@@ -33,7 +33,7 @@ abstract class PayButton extends StatefulWidget {
   final PayProvider buttonProvider;
 
   /// A function called when the payment process yields a result.
-  final void Function(Map<String, dynamic> result) onPaymentResult;
+  final void Function(Map<String, dynamic> result)? onPaymentResult;
 
   final double width;
   final double height;
@@ -52,23 +52,18 @@ abstract class PayButton extends StatefulWidget {
   final Widget? loadingIndicator;
 
   /// Initializes the button and the payment client that handles the requests.
-  PayButton(
-    Key? key,
-    this.buttonProvider,
-    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
-        final String? paymentConfigurationAsset,
-    final PaymentConfiguration? paymentConfiguration,
+  PayButton({
+    super.key,
+    required this.buttonProvider,
+    required final PaymentConfiguration paymentConfiguration,
     this.onPaymentResult,
-    this.width,
-    this.height,
-    this.margin,
+    this.width = 0,
+    this.height = 0,
+    this.margin = const EdgeInsets.all(0),
     this.onError,
     this.childOnError,
     this.loadingIndicator,
-  )   : _payClient = paymentConfigurationAsset != null
-            ? Pay.withAssets([paymentConfigurationAsset])
-            : Pay({buttonProvider: paymentConfiguration!}),
-        super(key: key);
+  }) : _payClient = Pay({buttonProvider: paymentConfiguration});
 
   /// Callback function to respond to tap events.
   ///
@@ -82,7 +77,7 @@ abstract class PayButton extends StatefulWidget {
       try {
         final result =
             await _payClient.showPaymentSelector(buttonProvider, paymentItems);
-        onPaymentResult(result);
+        onPaymentResult?.call(result);
       } catch (error) {
         onError?.call(error);
       }
@@ -103,7 +98,7 @@ abstract class PayButton extends StatefulWidget {
       _supportedPlatforms.contains(defaultTargetPlatform);
 
   @override
-  _PayButtonState createState() => _PayButtonState();
+  State<PayButton> createState() => _PayButtonState();
 }
 
 /// Button state that adds the widgets to the tree and holds the result of the
@@ -173,11 +168,11 @@ class ButtonPlaceholder extends StatelessWidget {
   final Widget? child;
   final EdgeInsets margin;
 
-  ButtonPlaceholder({
-    Key? key,
+  const ButtonPlaceholder({
+    super.key,
     this.child,
     required this.margin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

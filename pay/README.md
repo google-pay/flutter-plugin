@@ -12,8 +12,8 @@ Before you start, create an account with the payment providers you are planning 
 
 #### Apple Pay:
 1. Take a look at the [integration requirements](https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay_requirements).
-2. Create a [merchant identifier](https://help.apple.com/developer-account/#/devb2e62b839?sub=dev103e030bb) for your business.
-3. Create a [payment processing certificate](https://help.apple.com/developer-account/#/devb2e62b839?sub=devf31990e3f) to encrypt payment information.
+2. Create a [merchant identifier](https://developer.apple.com/help/account/configure-app-capabilities/configure-apple-pay#create-a-merchant-identifier) for your business.
+3. Create a [payment processing certificate](https://developer.apple.com/help/account/configure-app-capabilities/configure-apple-pay#create-a-payment-processing-certificate) to encrypt payment information.
 
 #### Google Pay:
 1. Take a look at the [integration requirements](https://developers.google.com/pay/api/android/overview).
@@ -24,7 +24,7 @@ To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file
 
 ```yaml
 dependencies:
-  pay: ^1.1.0
+  pay: ^2.0.0
 ```
 
 Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).
@@ -59,7 +59,7 @@ GooglePayButton(
   paymentConfiguration: PaymentConfiguration.fromJsonString(
       defaultGooglePayConfigString),
   paymentItems: _paymentItems,
-  type: GooglePayButtonType.pay,
+  type: GooglePayButtonType.buy,
   margin: const EdgeInsets.only(top: 15.0),
   onPaymentResult: onGooglePayResult,
   loadingIndicator: const Center(
@@ -141,7 +141,7 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
           return RawGooglePayButton(
-              type: GooglePayButtonType.pay,
+              type: GooglePayButtonType.buy,
               onPressed: onGooglePayPressed);
         } else {
           // userCanPay returned false

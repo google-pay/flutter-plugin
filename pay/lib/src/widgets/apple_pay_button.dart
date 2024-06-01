@@ -1,5 +1,16 @@
-/// Copyright 2023 Google LLC.
-/// SPDX-License-Identifier: Apache-2.0
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 part of '../../pay.dart';
 
@@ -24,39 +35,27 @@ class ApplePayButton extends PayButton {
   late final Widget _applePayButton;
 
   ApplePayButton({
-    Key? key,
-    @Deprecated('Prefer to use [paymentConfiguration]. Take a look at the readme to see examples')
-        String? paymentConfigurationAsset,
-    PaymentConfiguration? paymentConfiguration,
-    required void Function(Map<String, dynamic> result) onPaymentResult,
+    super.key,
+    super.buttonProvider = PayProvider.apple_pay,
+    required super.paymentConfiguration,
+    super.onPaymentResult,
     required List<PaymentItem> paymentItems,
+    double? cornerRadius,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
     ApplePayButtonType type = ApplePayButtonType.plain,
-    double width = RawApplePayButton.minimumButonWidth,
-    double height = RawApplePayButton.minimumButtonHeight,
-    EdgeInsets margin = EdgeInsets.zero,
+    super.width = RawApplePayButton.minimumButtonWidth,
+    super.height = RawApplePayButton.minimumButtonHeight,
+    super.margin = EdgeInsets.zero,
     VoidCallback? onPressed,
-    void Function(Object? error)? onError,
-    Widget? childOnError,
-    Widget? loadingIndicator,
-  })  : assert(width >= RawApplePayButton.minimumButonWidth),
-        assert(height >= RawApplePayButton.minimumButtonHeight),
-        super(
-          key,
-          PayProvider.apple_pay,
-          paymentConfigurationAsset,
-          paymentConfiguration,
-          onPaymentResult,
-          width,
-          height,
-          margin,
-          onError,
-          childOnError,
-          loadingIndicator,
-        ) {
+    super.onError,
+    super.childOnError,
+    super.loadingIndicator,
+  })  : assert(width >= RawApplePayButton.minimumButtonWidth),
+        assert(height >= RawApplePayButton.minimumButtonHeight) {
     _applePayButton = RawApplePayButton(
         style: style,
         type: type,
+        cornerRadius: cornerRadius,
         onPressed: _defaultOnPressed(onPressed, paymentItems));
   }
 

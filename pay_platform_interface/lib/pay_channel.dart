@@ -1,16 +1,16 @@
-/// Copyright 2021 Google LLC
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     https://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import 'dart:async';
 import 'dart:convert';
@@ -34,7 +34,7 @@ import 'pay_platform_interface.dart';
 /// ```
 class PayMethodChannel extends PayPlatform {
   // The channel used to send messages down the native pipe.
-  final MethodChannel channel =
+  final MethodChannel _channel =
       const MethodChannel('plugins.flutter.io/pay_channel');
 
   /// Determines whether a user can pay with the provider in the configuration.
@@ -43,8 +43,9 @@ class PayMethodChannel extends PayPlatform {
   /// returns a boolean for the [paymentConfiguration] specified.
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
-    return await channel.invokeMethod(
-        'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()));
+    return await _channel.invokeMethod(
+            'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()))
+        as bool;
   }
 
   /// Shows the payment selector to complete the payment operation.
@@ -58,11 +59,11 @@ class PayMethodChannel extends PayPlatform {
     PaymentConfiguration paymentConfiguration,
     List<PaymentItem> paymentItems,
   ) async {
-    final paymentResult = await channel.invokeMethod('showPaymentSelector', {
+    final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
       'payment_profile': jsonEncode(await paymentConfiguration.parameterMap()),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
-    });
+    }) as String;
 
-    return jsonDecode(paymentResult);
+    return jsonDecode(paymentResult) as Map<String, dynamic>;
   }
 }
