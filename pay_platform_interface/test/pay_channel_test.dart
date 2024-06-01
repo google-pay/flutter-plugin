@@ -26,6 +26,7 @@ void main() {
 
   final _defaultBinaryMessenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+
   const _providerApplePay = PayProvider.apple_pay;
   final _payConfigString =
       '{"provider": "${_providerApplePay.toSimpleString()}", "data": {}}';

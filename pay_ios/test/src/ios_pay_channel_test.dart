@@ -21,6 +21,9 @@ void main() {
 
   late final IosPayMethodChannel _payChannel;
 
+  final _defaultBinaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+
   setUpAll(() async {
     _payChannel = IosPayMethodChannel();
   });
@@ -32,8 +35,7 @@ void main() {
     };
 
     setUp(() {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(
+      _defaultBinaryMessenger.setMockMethodCallHandler(
         _payChannel.channel,
         (MethodCall methodCall) async {
           log.add(methodCall);
@@ -52,6 +54,14 @@ void main() {
         log,
         <Matcher>[isMethodCall('updatePaymentResult', arguments: true)],
       );
+    });
+
+    tearDown(() async {
+      _defaultBinaryMessenger.setMockMethodCallHandler(
+        _payChannel.channel,
+        null,
+      );
+      log.clear();
     });
   });
 }
