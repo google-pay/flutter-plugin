@@ -35,19 +35,19 @@ class PayMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Pay for Flutter Demo',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         ...GlobalMaterialLocalizations.delegates,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', ''),
         Locale('es', ''),
         Locale('de', ''),
       ],
       theme: ThemeData.light(),
-      home: PaySampleApp(),
+      home: const PaySampleApp(),
     );
   }
 }

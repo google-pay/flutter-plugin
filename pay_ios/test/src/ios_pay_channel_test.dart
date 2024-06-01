@@ -11,6 +11,7 @@
 /// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
+library;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,13 +20,13 @@ import 'package:pay_ios/pay_ios.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late final IosPayMethodChannel _payChannel;
+  late final IosPayMethodChannel payChannel;
 
-  final _defaultBinaryMessenger =
+  final defaultBinaryMessenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   setUpAll(() async {
-    _payChannel = IosPayMethodChannel();
+    payChannel = IosPayMethodChannel();
   });
 
   group('Verify channel I/O for', () {
@@ -35,8 +36,8 @@ void main() {
     };
 
     setUp(() {
-      _defaultBinaryMessenger.setMockMethodCallHandler(
-        _payChannel.channel,
+      defaultBinaryMessenger.setMockMethodCallHandler(
+        payChannel.channel,
         (MethodCall methodCall) async {
           log.add(methodCall);
           final response = testResponses[methodCall.method];
@@ -49,7 +50,7 @@ void main() {
     });
 
     test('updatePaymentResult', () async {
-      await _payChannel.updatePaymentResult(true);
+      await payChannel.updatePaymentResult(true);
       expect(
         log,
         <Matcher>[isMethodCall('updatePaymentResult', arguments: true)],
@@ -57,8 +58,8 @@ void main() {
     });
 
     tearDown(() async {
-      _defaultBinaryMessenger.setMockMethodCallHandler(
-        _payChannel.channel,
+      defaultBinaryMessenger.setMockMethodCallHandler(
+        payChannel.channel,
         null,
       );
       log.clear();

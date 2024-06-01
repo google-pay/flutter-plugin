@@ -34,7 +34,7 @@ import 'pay_platform_interface.dart';
 /// ```
 class PayMethodChannel extends PayPlatform {
   // The channel used to send messages down the native pipe.
-  final MethodChannel _channel =
+  final MethodChannel channel =
       const MethodChannel('plugins.flutter.io/pay_channel');
 
   /// Determines whether a user can pay with the provider in the configuration.
@@ -43,7 +43,7 @@ class PayMethodChannel extends PayPlatform {
   /// returns a boolean for the [paymentConfiguration] specified.
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
-    return await _channel.invokeMethod(
+    return await channel.invokeMethod(
             'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()))
         as bool;
   }
@@ -59,7 +59,7 @@ class PayMethodChannel extends PayPlatform {
     PaymentConfiguration paymentConfiguration,
     List<PaymentItem> paymentItems,
   ) async {
-    final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
+    final paymentResult = await channel.invokeMethod('showPaymentSelector', {
       'payment_profile': jsonEncode(await paymentConfiguration.parameterMap()),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
     }) as String;
