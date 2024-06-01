@@ -14,6 +14,18 @@
 
 part of '../../pay.dart';
 
+class ApplePaymentConfirmation {
+  final Pay _payClient;
+  ApplePaymentConfirmation(Pay payClient) : _payClient = payClient;
+
+  Future<void> updatePaymentResult(bool completedSuccessfully) async {
+    await _payClient.updatePaymentResult(completedSuccessfully);
+  }
+}
+
+typedef ApplePaymentConfirmCallback = Function(
+    Map<String, dynamic> result, ApplePaymentConfirmation handler);
+
 /// A widget to show the Apple Pay button according to the rules and constraints
 /// specified in [PayButton].
 ///
@@ -38,7 +50,7 @@ class ApplePayButton extends PayButton {
     super.key,
     super.buttonProvider = PayProvider.apple_pay,
     required super.paymentConfiguration,
-    super.onPaymentResult,
+    required ApplePaymentConfirmCallback onPaymentResult,
     required List<PaymentItem> paymentItems,
     double? cornerRadius,
     ApplePayButtonStyle style = ApplePayButtonStyle.black,
@@ -51,7 +63,11 @@ class ApplePayButton extends PayButton {
     super.childOnError,
     super.loadingIndicator,
   })  : assert(width >= RawApplePayButton.minimumButtonWidth),
-        assert(height >= RawApplePayButton.minimumButtonHeight) {
+        assert(height >= RawApplePayButton.minimumButtonHeight),
+        super(paymentCallback: (result) {
+          final pay = Pay({buttonProvider: paymentConfiguration});
+          onPaymentResult(result, ApplePaymentConfirmation(pay));
+        }) {
     _applePayButton = RawApplePayButton(
         style: style,
         type: type,
