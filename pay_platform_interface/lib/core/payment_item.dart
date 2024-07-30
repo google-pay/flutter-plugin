@@ -73,7 +73,7 @@ extension on PaymentItemType {
 /// ```
 class PaymentItem {
   /// A text with basic information about the item.
-  final String? label;
+  final String label;
 
   ///  The price of the item in string format.
   final String amount;
@@ -88,7 +88,7 @@ class PaymentItem {
   /// a [total] [type], and an [unknown] [status].
   const PaymentItem({
     required this.amount,
-    this.label,
+    required this.label,
     this.type = PaymentItemType.total,
     this.status = PaymentItemStatus.unknown,
   });
