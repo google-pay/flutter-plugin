@@ -44,6 +44,7 @@ class GooglePayHandler(private val activity: Activity) :
         PluginRegistry.ActivityResultListener {
 
     private lateinit var loadPaymentDataResult: Result
+    private var hasResponseBeenSent = false
 
     companion object {
 
@@ -156,6 +157,7 @@ class GooglePayHandler(private val activity: Activity) :
 
         // Update the member to call the result when the operation completes
         loadPaymentDataResult = result
+        hasResponseBeenSent = false
 
         val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
         val client = paymentClientForProfile(paymentProfile)
@@ -183,16 +185,14 @@ class GooglePayHandler(private val activity: Activity) :
                 }
 
                 Activity.RESULT_CANCELED -> {
-                    loadPaymentDataResult.error(
-                            "paymentCanceled",
-                            "User canceled payment authorization",
-                            null)
+                    handleError("paymentCanceled",
+                        "User canceled payment authorization")
                     true
                 }
 
                 AutoResolveHelper.RESULT_ERROR -> {
                     AutoResolveHelper.getStatusFromIntent(data)?.let { status ->
-                        handleError(status.statusCode)
+                        handleError(status.statusCode.toString())
                     }
                     true
                 }
@@ -212,13 +212,16 @@ class GooglePayHandler(private val activity: Activity) :
      * Data](https://developers.google.com/pay/api/android/reference/object.PaymentData)
      */
     private fun handlePaymentSuccess(paymentData: PaymentData?) {
+        if (hasResponseBeenSent) return
+
         if (paymentData != null) {
             loadPaymentDataResult.success(paymentData.toJson())
+            hasResponseBeenSent = true
         } else {
-            loadPaymentDataResult.error(
-                    CommonStatusCodes.INTERNAL_ERROR.toString(),
-                    "Unexpected empty result data.",
-                    null)
+            handleError(
+                CommonStatusCodes.INTERNAL_ERROR.toString(),
+                "Unexpected empty result data."
+            )
         }
     }
 
@@ -228,12 +231,16 @@ class GooglePayHandler(private val activity: Activity) :
      * At this stage, the user has already seen a popup informing them an error occurred.
      * Normally, only logging is required.
      *
-     * @param statusCode the value of any constant from [CommonStatusCodes] or one of the
+     * @param statusCodeStr the value of any constant from [CommonStatusCodes] or one of the
      * []WalletConstants].ERROR_CODE_* constants.
+     * @param errorMessage the reason for the error.
      *
      * @see [
      * Wallet constants library](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants.constant-summary)
      */
-    private fun handleError(statusCode: Int) =
-            loadPaymentDataResult.error(statusCode.toString(), "", null)
+    private fun handleError(statusCodeStr: String, errorMessage: String = "") {
+        if (hasResponseBeenSent) return
+        loadPaymentDataResult.error(statusCodeStr, errorMessage, null)
+        hasResponseBeenSent = true
+    }
 }
