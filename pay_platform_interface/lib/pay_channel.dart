@@ -33,9 +33,8 @@ import 'pay_platform_interface.dart';
 ///     configuration, paymentItems);
 /// ```
 class PayMethodChannel extends PayPlatform {
-  // The channel used to send messages down the native pipe.
-  final MethodChannel _channel =
-      const MethodChannel('plugins.flutter.io/pay_channel');
+  // The method channel used to send messages down the native pipe.
+  final MethodChannel _channel = const MethodChannel('plugins.flutter.io/pay');
 
   /// Determines whether a user can pay with the provider in the configuration.
   ///

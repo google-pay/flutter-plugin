@@ -20,7 +20,8 @@ import UIKit
 
 /// A class that receives and handles calls from Flutter to complete the payment.
 public class PayPlugin: NSObject, FlutterPlugin {
-  private static let methodChannelName = "plugins.flutter.io/pay_channel"
+  private static let methodChannelName = "plugins.flutter.io/pay"
+  
   private let methodUserCanPay = "userCanPay"
   private let methodShowPaymentSelector = "showPaymentSelector"
   
