@@ -30,7 +30,7 @@ dependencies:
 Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).
 
 ### Example
-This snippet assumes the existence a payment configuration for Apple Pay ([`defaultApplePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)) and another one for Google Pay ([`defaultGooglePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L63)):
+This snippet assumes the existence of a payment configuration for Apple Pay ([`defaultApplePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L27)) and another one for Google Pay ([`defaultGooglePayConfigString`](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart#L63)):
 ```dart
 import 'package:pay/pay.dart';
 
@@ -117,15 +117,10 @@ const _paymentItems = [
   )
 ];
 
-late final Pay _payClient;
-
-// When you are ready to load your configuration
-_payClient = Pay({
-    PayProvider.google_pay: PaymentConfiguration.fromJsonString(
-        payment_configurations.defaultGooglePay),
-    PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
-        payment_configurations.defaultApplePay),
-  });
+final Pay _payClient = Pay({
+  PayProvider.google_pay: payment_configurations.defaultGooglePayConfig,
+  PayProvider.apple_pay: payment_configurations.defaultApplePayConfig,
+});
 ```
 
 As you can see, you can add multiple configurations to your payment client, one for each payment provider supported.
@@ -141,8 +136,10 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
           return RawGooglePayButton(
+              paymentConfiguration:
+                  payment_configurations.defaultGooglePayConfig,
               type: GooglePayButtonType.buy,
-              onPressed: onGooglePayPressed);
+              onPressed: _onGooglePayPressed);
         } else {
           // userCanPay returned false
           // Consider showing an alternative payment method
@@ -158,7 +155,7 @@ Widget build(BuildContext context) {
 Finally, handle the `onPressed` event and trigger the payment selector as follows:
 
 ```dart
-void onGooglePayPressed() async {
+void _onGooglePayPressed() async {
   final result = await _payClient.showPaymentSelector(
     PayProvider.google_pay,
     _paymentItems,
@@ -166,6 +163,33 @@ void onGooglePayPressed() async {
   // Send the resulting Google Pay token to your server / PSP
 }
 ```
+
+### Handling a payment result response (Android only)
+On Android, payment results are received using an event channel, in order to eliminate the effect of lost references during activity recreation events. Because of that, calls to `Pay.showPaymentSelector` only initiate the payment process and don't return any result.
+
+To subscribe to the result stream, create an `EventChannel` using the payment results channel name (`plugins.flutter.io/pay/payment_result`) and start listening to events:
+
+```dart
+static const eventChannel =
+    EventChannel('plugins.flutter.io/pay/payment_result');
+final _paymentResultSubscription = eventChannel
+    .receiveBroadcastStream()
+    .map((result) => jsonDecode(result as String) as Map<String, dynamic>)
+    .listen((result) {
+      // TODO: Send the resulting Google Pay token to your server / PSP
+    }, onError: (error) {
+      // TODO: Handle errors
+    });
+```
+
+Make sure to cancel the subscription and clear the reference when it is not needed anymore:
+
+```dart
+_paymentResultSubscription.cancel();
+_paymentResultSubscription = null;
+```
+
+See the [advanced example](https://github.com/google-pay/flutter-plugin/blob/main/pay/example/lib/advanced.dart) to see a working integration.
 
 ## Additional resources
 Take a look at the following resources to manage your payment accounts and learn more about the APIs for the supported providers:
