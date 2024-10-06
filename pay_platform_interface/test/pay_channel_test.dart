@@ -24,7 +24,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late final PayMethodChannel mobilePlatform;
-  const channel = MethodChannel('plugins.flutter.io/pay_channel');
+  const channel = MethodChannel('plugins.flutter.io/pay');
 
   const providerApplePay = PayProvider.apple_pay;
   final payConfigString =
