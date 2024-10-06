@@ -124,9 +124,9 @@ abstract class PayButton extends StatefulWidget {
 /// [_payButton] is added to the tree. Otherwise, if set, the replacement widget
 /// in [childOnError] is shown.
 class _PayButtonState extends State<PayButton> {
-  late final Future<bool> userCanPayFuture;
+  late final Future<bool> _userCanPayFuture;
 
-  Future<bool> userCanPay() async {
+  Future<bool> _userCanPay() async {
     try {
       return await widget._payClient.userCanPay(widget.buttonProvider);
     } catch (error) {
@@ -138,7 +138,7 @@ class _PayButtonState extends State<PayButton> {
   @override
   void initState() {
     super.initState();
-    userCanPayFuture = userCanPay();
+    _userCanPayFuture = _userCanPay();
   }
 
   @override
@@ -150,7 +150,7 @@ class _PayButtonState extends State<PayButton> {
     // Future builder running the `userCanPayFuture` and decides what to show
     // based on the result.
     return FutureBuilder<bool>(
-      future: userCanPayFuture,
+      future: _userCanPayFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
