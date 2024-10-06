@@ -34,7 +34,8 @@ class PayPlugin : FlutterPlugin, ActivityAware {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         this.flutterPluginBinding = flutterPluginBinding
         flutterPluginBinding.platformViewRegistry.registerViewFactory(
-            googlePayButtonViewType, PayButtonViewFactory(flutterPluginBinding.binaryMessenger))
+            googlePayButtonViewType, PayButtonViewFactory(flutterPluginBinding.binaryMessenger)
+        )
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
@@ -46,7 +47,7 @@ class PayPlugin : FlutterPlugin, ActivityAware {
     override fun onDetachedFromActivity() = methodCallHandler.stopListening()
 
     override fun onReattachedToActivityForConfigChanges(
-            activityPluginBinding: ActivityPluginBinding,
+        activityPluginBinding: ActivityPluginBinding,
     ) = onAttachedToActivity(activityPluginBinding)
 
     override fun onDetachedFromActivityForConfigChanges() = onDetachedFromActivity()
