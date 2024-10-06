@@ -27,7 +27,7 @@ part of '../../pay.dart';
 /// method which starts the payment process.
 abstract class PayButton extends StatefulWidget {
   /// A resident client to issue requests against the APIs.
-  late final Pay _payClient;
+  final Pay _payClient;
 
   /// Specifies the payment provider supported by the button
   final PayProvider buttonProvider;
