@@ -17,7 +17,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
-
 import 'package:pay_platform_interface/pay_channel.dart';
 
 void main() {
@@ -25,6 +24,8 @@ void main() {
 
   late final PayMethodChannel mobilePlatform;
   const channel = MethodChannel('plugins.flutter.io/pay_channel');
+  final defaultBinaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   const providerApplePay = PayProvider.apple_pay;
   final payConfigString =
@@ -43,9 +44,8 @@ void main() {
     };
 
     setUp(() {
-      TestWidgetsFlutterBinding.ensureInitialized();
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+      defaultBinaryMessenger.setMockMethodCallHandler(channel,
+          (MethodCall methodCall) async {
         log.add(methodCall);
         final response = testResponses[methodCall.method];
         if (response is Exception) {
@@ -77,8 +77,7 @@ void main() {
     });
 
     tearDown(() async {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(channel, null);
+      defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
       log.clear();
     });
   });

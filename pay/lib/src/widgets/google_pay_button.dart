@@ -14,6 +14,8 @@
 
 part of '../../pay.dart';
 
+typedef GooglePaymentCallback = Function(Map<String, dynamic> result);
+
 /// A widget to show the Google Pay button according to the rules and
 /// constraints specified in [PayButton].
 ///
@@ -38,7 +40,7 @@ class GooglePayButton extends PayButton {
     super.key,
     super.buttonProvider = PayProvider.google_pay,
     required final PaymentConfiguration paymentConfiguration,
-    super.onPaymentResult,
+    required GooglePaymentCallback onPaymentResult,
     required List<PaymentItem> paymentItems,
     int cornerRadius = RawGooglePayButton.defaultButtonHeight ~/ 2,
     GooglePayButtonTheme theme = GooglePayButtonTheme.dark,
@@ -52,7 +54,12 @@ class GooglePayButton extends PayButton {
     super.loadingIndicator,
   })  : assert(width >= RawGooglePayButton.minimumButtonWidth),
         assert(height >= RawGooglePayButton.defaultButtonHeight),
-        super(paymentConfiguration: paymentConfiguration) {
+        super(
+          paymentConfiguration: paymentConfiguration,
+          paymentCallback: (result) {
+            onPaymentResult(result);
+          },
+        ) {
     _googlePayButton = RawGooglePayButton(
         paymentConfiguration: paymentConfiguration,
         cornerRadius: cornerRadius,

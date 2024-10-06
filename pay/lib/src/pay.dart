@@ -40,7 +40,10 @@ class Pay {
 
   /// Creates an instance with a dictionary of [_configurations] and
   /// instantiates the [_payPlatform] to communicate with the native platforms.
-  Pay(this._configurations) : _payPlatform = PayMethodChannel();
+  Pay(this._configurations)
+      : _payPlatform = defaultTargetPlatform == TargetPlatform.iOS
+            ? IosPayMethodChannel()
+            : PayMethodChannel();
 
   /// Determines whether a user can pay with the selected [provider].
   ///
@@ -70,6 +73,19 @@ class Pay {
         _configurations[provider]!, paymentItems);
   }
 
+  /// Update the payment result with the native platform.
+  /// Works only on iOS.
+  Future<void> updatePaymentResult(bool isSuccess) async {
+    if (_payPlatform is IosPayMethodChannel) {
+      final iosPayPlatform = _payPlatform as IosPayMethodChannel;
+      return iosPayPlatform.updatePaymentResult(isSuccess);
+    } else {
+      throw MethodNotForCurrentPlatformException(
+        'The method "updatePaymentResult" can only be called when the "defaultTargetPlatform" is iOS.',
+      );
+    }
+  }
+
   /// Verifies that the selected provider has been previously configured or
   /// throws otherwise.
   Future<void> throwIfProviderIsNotDefined(PayProvider provider) async {
@@ -90,4 +106,16 @@ class ProviderNotConfiguredException implements Exception {
 
   @override
   String toString() => 'ProviderNotConfiguredException: $message';
+}
+
+/// Thrown to indicate that the method called is not available for the current
+/// platform is has been called from.
+class MethodNotForCurrentPlatformException implements Exception {
+  MethodNotForCurrentPlatformException(this.message);
+
+  /// A human-readable error message, possibly null.
+  final String? message;
+
+  @override
+  String toString() => 'MethodNotForCurrentPlatformException: $message';
 }
