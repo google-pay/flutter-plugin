@@ -14,10 +14,12 @@
 
 library pay;
 
+import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pay_ios/pay_ios.dart';
 import 'package:pay_android/pay_android.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';

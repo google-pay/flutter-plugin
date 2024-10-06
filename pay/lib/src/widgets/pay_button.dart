@@ -65,6 +65,13 @@ abstract class PayButton extends StatefulWidget {
     this.loadingIndicator,
   }) : _payClient = Pay({buttonProvider: paymentConfiguration});
 
+
+  /// Defines the strategy to return payment data information to the caller.
+  ///
+  /// This field is defined by implementations of this class to determine if the
+  /// payment result is returned right after calling [Pay.showPaymentSelector]
+  /// or rather received through asynchronous means (e.g.: an event stream).
+  bool get _returnsPaymentDataSynchronously;
   /// Callback function to respond to tap events.
   ///
   /// This is the default function for tap events. Calls the [onPressed]
@@ -77,9 +84,9 @@ abstract class PayButton extends StatefulWidget {
       try {
         final result =
             await _payClient.showPaymentSelector(buttonProvider, paymentItems);
-        onPaymentResult?.call(result);
+        if (_returnsPaymentDataSynchronously) _deliverPaymentResult(result);
       } catch (error) {
-        onError?.call(error);
+        _deliverError(error);
       }
     };
   }
@@ -96,9 +103,15 @@ abstract class PayButton extends StatefulWidget {
   /// Determines whether the current platform is supported by the button.
   bool get _isPlatformSupported =>
       _supportedPlatforms.contains(defaultTargetPlatform);
+  void _deliverPaymentResult(Map<String, dynamic> result) {
+    onPaymentResult?.call(result);
+  }
 
   @override
   State<PayButton> createState() => _PayButtonState();
+  void _deliverError(error) {
+    onError?.call(error);
+  }
 }
 
 /// Button state that adds the widgets to the tree and holds the result of the

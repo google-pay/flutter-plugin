@@ -26,6 +26,7 @@ import com.google.android.gms.wallet.PaymentData
 import com.google.android.gms.wallet.PaymentDataRequest
 import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.Wallet
+import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.pay_android.util.PaymentsUtil
@@ -47,7 +48,8 @@ private const val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
  */
 class GooglePayHandler(private val activity: Activity) : PluginRegistry.ActivityResultListener {
 
-    private lateinit var loadPaymentDataResult: Result
+    // The stream sink that relays messages back to the Flutter end
+    private var paymentResultEvents: EventSink? = null
 
     companion object {
 
@@ -101,6 +103,12 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
             activity, Wallet.WalletOptions.Builder().setEnvironment(environmentConstant).build()
         )
     }
+
+    /**
+     * Sets or unsets a new value for the stream sink to deliver messages back to Flutter.
+     */
+    fun setPaymentResultEventSink(eventSink: EventSink?) {
+        paymentResultEvents = eventSink
     }
 
     /**
@@ -150,10 +158,6 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
     fun loadPaymentData(
         paymentProfileString: String, paymentItems: List<Map<String, Any?>>
     ) {
-
-        // Update the member to call the result when the operation completes
-        loadPaymentDataResult = result
-
         val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())

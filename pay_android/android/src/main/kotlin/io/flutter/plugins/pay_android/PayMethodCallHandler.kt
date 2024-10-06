@@ -20,12 +20,16 @@ import android.app.Activity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.EventChannel.EventSink
+import io.flutter.plugin.common.EventChannel.StreamHandler
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 private const val METHOD_CHANNEL_NAME = "plugins.flutter.io/pay"
+private const val PAYMENT_EVENT_CHANNEL_NAME = "plugins.flutter.io/pay/payment_result"
 
 private const val METHOD_USER_CAN_PAY = "userCanPay"
 private const val METHOD_SHOW_PAYMENT_SELECTOR = "showPaymentSelector"
@@ -37,13 +41,18 @@ class PayMethodCallHandler private constructor(
     messenger: BinaryMessenger,
     activity: Activity,
     private val activityBinding: ActivityPluginBinding?,
-) : MethodCallHandler {
+) : MethodCallHandler, StreamHandler {
 
-    private val channel: MethodChannel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
+    private val methodChannel: MethodChannel = MethodChannel(messenger, METHOD_CHANNEL_NAME)
+    private var eventChannelIsActive = false
+    private val paymentResultEventChannel: EventChannel =
+        EventChannel(messenger, PAYMENT_EVENT_CHANNEL_NAME)
+
     private val googlePayHandler: GooglePayHandler = GooglePayHandler(activity)
 
     init {
-        channel.setMethodCallHandler(this)
+        methodChannel.setMethodCallHandler(this)
+        paymentResultEventChannel.setStreamHandler(this)
     }
 
     constructor(
@@ -57,24 +66,45 @@ class PayMethodCallHandler private constructor(
      * Clears the handler in the method channel when not needed anymore.
      */
     fun stopListening() {
-        channel.setMethodCallHandler(null)
+        methodChannel.setMethodCallHandler(null)
+        paymentResultEventChannel.setStreamHandler(null)
         activityBinding?.removeActivityResultListener(googlePayHandler)
     }
 
+    // MethodCallHandler interface
     @Suppress("UNCHECKED_CAST")
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments()!!)
             METHOD_SHOW_PAYMENT_SELECTOR -> {
-                val arguments = call.arguments<Map<String, Any>>()!!
-                googlePayHandler.loadPaymentData(
-                    result,
-                    arguments.getValue("payment_profile") as String,
-                    arguments.getValue("payment_items") as List<Map<String, Any?>>
-                )
+                if (eventChannelIsActive) {
+                    val arguments = call.arguments<Map<String, Any>>()!!
+                    googlePayHandler.loadPaymentData(
+                        arguments.getValue("payment_profile") as String,
+                        arguments.getValue("payment_items") as List<Map<String, Any?>>
+                    )
+                    result.success("")
+                } else {
+                    result.error(
+                        "illegalEventChannelState",
+                        "Your event channel stream needs to be initialized and listening before calling the `showPaymentSelector` method. See the integration tutorial to learn more (https://pub.dev/packages/pay#advanced-usage)",
+                        null
+                    )
+                }
             }
 
             else -> result.notImplemented()
         }
+    }
+
+    // StreamHandler interface
+    override fun onListen(arguments: Any?, events: EventSink?) {
+        googlePayHandler.setPaymentResultEventSink(events)
+        eventChannelIsActive = true
+    }
+
+    override fun onCancel(arguments: Any?) {
+        googlePayHandler.setPaymentResultEventSink(null)
+        eventChannelIsActive = false
     }
 }
