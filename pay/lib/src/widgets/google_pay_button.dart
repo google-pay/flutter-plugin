@@ -66,4 +66,46 @@ class GooglePayButton extends PayButton {
 
   @override
   late final Widget _payButton = _googlePayButton;
+
+  @override
+  final bool _returnsPaymentDataSynchronously = false;
+
+  @override
+  State<PayButton> createState() => _GooglePayButtonState();
+}
+
+class _GooglePayButtonState extends _PayButtonState {
+  static const eventChannel =
+      EventChannel('plugins.flutter.io/pay/payment_result');
+  StreamSubscription<Map<String, dynamic>>? _paymentResultSubscription;
+
+  /// A method to listen to events coming from the event channel on Android
+  ///
+  /// The Android implementation uses an event stream to receive payment results
+  /// in order to circumvent the loss of connection with the Flutter engine when
+  /// the main activity hosting the plugin gets recycled due to resource
+  /// exhaustion.
+  void _startListeningForPaymentResults() {
+    _paymentResultSubscription = eventChannel
+        .receiveBroadcastStream()
+        .map((result) => jsonDecode(result as String) as Map<String, dynamic>)
+        .listen((result) {
+      widget._deliverPaymentResult(result);
+    }, onError: (error) {
+      widget._deliverError(error);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startListeningForPaymentResults();
+  }
+
+  @override
+  void dispose() {
+    _paymentResultSubscription?.cancel();
+    _paymentResultSubscription = null;
+    super.dispose();
+  }
 }
