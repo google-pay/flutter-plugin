@@ -65,6 +65,14 @@ abstract class PayButton extends StatefulWidget {
     this.loadingIndicator,
   }) : _payClient = Pay({buttonProvider: paymentConfiguration});
 
+  /// Determines the list of supported platforms for the button.
+  List<TargetPlatform> get _supportedPlatforms;
+
+  /// Accessor for the widget to show as the payment button.
+  ///
+  /// This method returns a [Widget] that is conditionally shown based on the
+  /// result of the `isReadyToPay` request.
+  Widget get _payButton;
 
   /// Defines the strategy to return payment data information to the caller.
   ///
@@ -72,6 +80,14 @@ abstract class PayButton extends StatefulWidget {
   /// payment result is returned right after calling [Pay.showPaymentSelector]
   /// or rather received through asynchronous means (e.g.: an event stream).
   bool get _returnsPaymentDataSynchronously;
+
+  /// Determines whether the current platform is supported by the button.
+  bool get _isPlatformSupported =>
+      _supportedPlatforms.contains(defaultTargetPlatform);
+
+  @override
+  State<PayButton> createState() => _PayButtonState();
+
   /// Callback function to respond to tap events.
   ///
   /// This is the default function for tap events. Calls the [onPressed]
@@ -91,24 +107,10 @@ abstract class PayButton extends StatefulWidget {
     };
   }
 
-  /// Determines the list of supported platforms for the button.
-  List<TargetPlatform> get _supportedPlatforms;
-
-  /// Accessor for the widget to show as the payment button.
-  ///
-  /// This method returns a [Widget] that is conditionally shown based on the
-  /// result of the `isReadyToPay` request.
-  Widget get _payButton;
-
-  /// Determines whether the current platform is supported by the button.
-  bool get _isPlatformSupported =>
-      _supportedPlatforms.contains(defaultTargetPlatform);
   void _deliverPaymentResult(Map<String, dynamic> result) {
     onPaymentResult?.call(result);
   }
 
-  @override
-  State<PayButton> createState() => _PayButtonState();
   void _deliverError(error) {
     onError?.call(error);
   }
