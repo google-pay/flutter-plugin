@@ -169,6 +169,7 @@ class _PayAdvancedSampleAppState extends State<PayAdvancedSampleApp> {
               fontSize: 15,
             ),
           ),
+          const SizedBox(height: 15),
 
           // Google Pay button
           FutureBuilder<bool>(
@@ -215,7 +216,6 @@ class _PayAdvancedSampleAppState extends State<PayAdvancedSampleApp> {
               return const SizedBox.shrink();
             },
           ),
-          const SizedBox(height: 15)
         ],
       ),
     );
