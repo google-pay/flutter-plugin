@@ -88,7 +88,9 @@ class _GooglePayButtonState extends _PayButtonState {
   void _startListeningForPaymentResults() {
     _paymentResultSubscription = eventChannel
         .receiveBroadcastStream()
-        .map((result) => jsonDecode(result as String) as Map<String, dynamic>)
+        .cast<String>()
+        .map(jsonDecode)
+        .cast<Map<String, dynamic>>()
         .listen(widget._deliverPaymentResult, onError: widget._deliverError);
   }
 
