@@ -79,7 +79,7 @@ abstract class PayButton extends StatefulWidget {
   /// This field is defined by implementations of this class to determine if the
   /// payment result is returned right after calling [Pay.showPaymentSelector]
   /// or rather received through asynchronous means (e.g.: an event stream).
-  bool get _returnsPaymentDataSynchronously;
+  bool get _collectPaymentResultSynchronously;
 
   /// Determines whether the current platform is supported by the button.
   bool get _isPlatformSupported =>
@@ -100,7 +100,7 @@ abstract class PayButton extends StatefulWidget {
       try {
         final result =
             await _payClient.showPaymentSelector(buttonProvider, paymentItems);
-        if (_returnsPaymentDataSynchronously) _deliverPaymentResult(result);
+        if (_collectPaymentResultSynchronously) _deliverPaymentResult(result);
       } catch (error) {
         _deliverError(error);
       }

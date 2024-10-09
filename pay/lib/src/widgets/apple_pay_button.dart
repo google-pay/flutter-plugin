@@ -66,5 +66,5 @@ class ApplePayButton extends PayButton {
   late final Widget _payButton = _applePayButton;
 
   @override
-  final bool _returnsPaymentDataSynchronously = true;
+  final bool _collectPaymentResultSynchronously = true;
 }

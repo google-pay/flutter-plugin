@@ -68,7 +68,7 @@ class GooglePayButton extends PayButton {
   late final Widget _payButton = _googlePayButton;
 
   @override
-  final bool _returnsPaymentDataSynchronously = false;
+  final bool _collectPaymentResultSynchronously = false;
 
   @override
   State<PayButton> createState() => _GooglePayButtonState();
