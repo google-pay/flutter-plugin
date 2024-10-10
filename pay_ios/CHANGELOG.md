@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.12 (2024-10-10)
+Homogeneize the name of the method channel used to communicate with the platforms available.
+
 ## 1.0.11 (2024-01-21)
 Introduce new properties and fixes for the Apple Pay button.
 
