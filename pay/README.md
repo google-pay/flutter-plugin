@@ -88,9 +88,9 @@ final Future<PaymentConfiguration> _googlePayConfigFuture =
     PaymentConfiguration.fromAsset('google_pay_config.json');
 
 FutureBuilder<PaymentConfiguration>(
-  future: _googlePayConfigFuture,
-  builder: (context, snapshot) => snapshot.hasData
-      ? GooglePayButton(
+    future: _googlePayConfigFuture,
+    builder: (context, snapshot) => snapshot.hasData
+        ? GooglePayButton(
           paymentConfiguration: snapshot.data!,
           paymentItems: _paymentItems,
           type: GooglePayButtonType.buy,
@@ -100,7 +100,7 @@ FutureBuilder<PaymentConfiguration>(
             child: CircularProgressIndicator(),
           ),
         )
-      : const SizedBox.shrink()),
+        : const SizedBox.shrink()),
 ```
 
 ## Advanced usage
