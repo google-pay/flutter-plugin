@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.0-beta.1 (2024-10-10)
+### ⚠ BREAKING CHANGE
+Introduce an event channel to communicate the Flutter and native ends for Android integrations. This change is only breaking for users of the [advanced integration](https://pub.dev/packages/pay#advanced-usage). The other paths are unaffected and can use this version transparently.
+
+### Features
+
+* Use an event channel to handle payment result information on Android.
+* Add a complete example of the advanced integration path (see [`advanced.dart`](example/lib/advanced.dart)).
+
+### Fixes
+* ([#277](https://github.com/google-pay/flutter-plugin/issues/277), [#274](https://github.com/google-pay/flutter-plugin/issues/274), [#261](https://github.com/google-pay/flutter-plugin/issues/261), [#206](https://github.com/google-pay/flutter-plugin/issues/206)) Avoid lifecycle conflicts on Android when the activity managing the payment operation is re-created before the payment result is returned.
+
 ## 2.0.0 (2024-02-27)
 ### ⚠ BREAKING CHANGE
 Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend configuration capabilities.
