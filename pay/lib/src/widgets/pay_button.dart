@@ -126,6 +126,14 @@ abstract class PayButton extends StatefulWidget {
 class _PayButtonState extends State<PayButton> {
   late final Future<bool> _userCanPayFuture;
 
+  /// A method to initialize payment result streams
+  ///
+  /// Some platforms supported by this plugin, use [EventChannel]s to relay
+  /// payment results back to Flutter. This method lets platform-specific
+  /// implementations, set up necessary business logic to subscribe to event
+  /// channel streams and deliver results to implementers of the API.
+  void _preparePaymentResultStream() {}
+
   Future<bool> _userCanPay() async {
     try {
       return await widget._payClient.userCanPay(widget.buttonProvider);
@@ -139,6 +147,10 @@ class _PayButtonState extends State<PayButton> {
   void initState() {
     super.initState();
     _userCanPayFuture = _userCanPay();
+
+    if (!widget._collectPaymentResultSynchronously) {
+      _preparePaymentResultStream();
+    }
   }
 
   @override
