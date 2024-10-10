@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.5 (2024-10-10)
+Homogeneize the name of the method channel used to communicate with the platforms available.
+
 ## 1.0.4 (2024-01-17)
 Bump versions of dependencies and update static analysis tooling.
 
