@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0-beta.2 (2024-10-10)
+Include logic to prevent a subscription for payment result `EventChannel`s from being created on platforms that don't support it.
+
 ## 3.0.0-beta.1 (2024-10-10)
 ### ⚠ BREAKING CHANGE
 Introduce an event channel to communicate the Flutter and native ends for Android integrations. This change is only breaking for users of the [advanced integration](https://pub.dev/packages/pay#advanced-usage). The other paths are unaffected and can use this version transparently.
