@@ -1,6 +1,8 @@
-[![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay)
-
 A plugin to add payments to your Flutter application.
+  
+| <sub>pay</sub> | <sub>pay_android</sub> | <sub>pay_ios</sub> | <sub>pay_platform_interface |
+|:---:|:---:|:---:|:---:|
+| [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay) | [![pub package](https://img.shields.io/pub/v/pay_android.svg)](https://pub.dartlang.org/packages/pay_android) | [![pub package](https://img.shields.io/pub/v/pay_ios.svg)](https://pub.dartlang.org/packages/pay_ios) | [![pub package](https://img.shields.io/pub/v/pay_platform_interface.svg)](https://pub.dartlang.org/packages/pay_platform_interface) |
 
 ## Platform Support
 | Android | iOS |
