@@ -143,8 +143,7 @@ class _PaySampleAppState extends State<PaySampleApp> {
                   : const SizedBox.shrink()),
           // Example pay button configured using a string
           ApplePayButton(
-            paymentConfiguration: PaymentConfiguration.fromJsonString(
-                payment_configurations.defaultApplePay),
+            paymentConfiguration: payment_configurations.defaultApplePayConfig,
             paymentItems: _paymentItems,
             style: ApplePayButtonStyle.black,
             type: ApplePayButtonType.buy,
