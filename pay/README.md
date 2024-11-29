@@ -131,15 +131,13 @@ Now, you can use the `userCanPay` method to determine whether the user can start
 @override
 Widget build(BuildContext context) {
   return FutureBuilder<bool>(
-    future: _payClient.userCanPay(PayProvider.google_pay),
+    future: _payClient.userCanPay(PayProvider.apple_pay),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
-          return RawGooglePayButton(
-              paymentConfiguration:
-                  payment_configurations.defaultGooglePayConfig,
-              type: GooglePayButtonType.buy,
-              onPressed: _onGooglePayPressed);
+          return RawApplePayButton(
+              type: ApplePayButtonType.buy,
+              onPressed: _onApplePayPressed);
         } else {
           // userCanPay returned false
           // Consider showing an alternative payment method
@@ -155,9 +153,9 @@ Widget build(BuildContext context) {
 Finally, handle the `onPressed` event and trigger the payment selector as follows:
 
 ```dart
-void _onGooglePayPressed() async {
+void _onApplePayPressed() async {
   final result = await _payClient.showPaymentSelector(
-    PayProvider.google_pay,
+    PayProvider.apple_pay,
     _paymentItems,
   );
   // Send the resulting Google Pay token to your server / PSP
