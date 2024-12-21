@@ -163,6 +163,9 @@ extension PKPaymentNetwork {
     case "girocard":
       guard #available(iOS 14.0, *) else { return nil }
       return .girocard
+    case "meeza":
+      guard #available(iOS 17.0, *) else { return nil }
+      return .meeza
     default:
       return nil
     }
