@@ -13,6 +13,7 @@
 // limitations under the License.
 
 @TestOn('vm')
+library;
 
 import 'dart:io';
 import 'dart:convert';

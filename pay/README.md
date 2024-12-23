@@ -24,7 +24,7 @@ To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file
 
 ```yaml
 dependencies:
-  pay: ^2.0.0
+  pay: ^3.0.1
 ```
 
 Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).
@@ -88,9 +88,9 @@ final Future<PaymentConfiguration> _googlePayConfigFuture =
     PaymentConfiguration.fromAsset('google_pay_config.json');
 
 FutureBuilder<PaymentConfiguration>(
-  future: _googlePayConfigFuture,
-  builder: (context, snapshot) => snapshot.hasData
-      ? GooglePayButton(
+    future: _googlePayConfigFuture,
+    builder: (context, snapshot) => snapshot.hasData
+        ? GooglePayButton(
           paymentConfiguration: snapshot.data!,
           paymentItems: _paymentItems,
           type: GooglePayButtonType.buy,
@@ -100,7 +100,7 @@ FutureBuilder<PaymentConfiguration>(
             child: CircularProgressIndicator(),
           ),
         )
-      : const SizedBox.shrink()),
+        : const SizedBox.shrink()),
 ```
 
 ## Advanced usage
@@ -131,15 +131,13 @@ Now, you can use the `userCanPay` method to determine whether the user can start
 @override
 Widget build(BuildContext context) {
   return FutureBuilder<bool>(
-    future: _payClient.userCanPay(PayProvider.google_pay),
+    future: _payClient.userCanPay(PayProvider.apple_pay),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.data == true) {
-          return RawGooglePayButton(
-              paymentConfiguration:
-                  payment_configurations.defaultGooglePayConfig,
-              type: GooglePayButtonType.buy,
-              onPressed: _onGooglePayPressed);
+          return RawApplePayButton(
+              type: ApplePayButtonType.buy,
+              onPressed: _onApplePayPressed);
         } else {
           // userCanPay returned false
           // Consider showing an alternative payment method
@@ -155,9 +153,9 @@ Widget build(BuildContext context) {
 Finally, handle the `onPressed` event and trigger the payment selector as follows:
 
 ```dart
-void _onGooglePayPressed() async {
+void _onApplePayPressed() async {
   final result = await _payClient.showPaymentSelector(
-    PayProvider.google_pay,
+    PayProvider.apple_pay,
     _paymentItems,
   );
   // Send the resulting Google Pay token to your server / PSP

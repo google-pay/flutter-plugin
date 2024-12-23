@@ -80,14 +80,17 @@ class _PayAdvancedSampleAppState extends State<PayAdvancedSampleApp> {
   void _startListeningForPaymentResults() {
     _googlePayResultSubscription = eventChannel
         .receiveBroadcastStream()
-        .map((result) => result.toString())
+        .cast<String>()
         .listen(debugPrint, onError: (error) => debugPrint(error.toString()));
   }
+
+  final bool _collectPaymentResultSynchronously =
+      defaultTargetPlatform == TargetPlatform.iOS;
 
   @override
   void initState() {
     super.initState();
-    if (defaultTargetPlatform == TargetPlatform.android) {
+    if (!_collectPaymentResultSynchronously) {
       _startListeningForPaymentResults();
     }
 
@@ -106,7 +109,7 @@ class _PayAdvancedSampleAppState extends State<PayAdvancedSampleApp> {
     try {
       final result =
           await widget.payClient.showPaymentSelector(provider, _paymentItems);
-      debugPrint(result.toString());
+      if (_collectPaymentResultSynchronously) debugPrint(result.toString());
     } catch (error) {
       debugPrint(error.toString());
     }

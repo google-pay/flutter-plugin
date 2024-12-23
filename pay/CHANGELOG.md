@@ -1,7 +1,46 @@
 # Changelog
 
+## 3.0.1 (2024-12-24)
+
+### Fixes
+
+* Include a circuit-breaker in the payment buttons when the platform where the logic is running is not supported. This prevents running superflous business logic, and limits configuration complexity.
+
+## 3.0.0 (2024-12-23)
+### ⚠ BREAKING CHANGE
+
+Introduce an event channel to communicate the Flutter and native ends for Android integrations. This change is only breaking for users of the [advanced integration](https://pub.dev/packages/pay#advanced-usage). Other paths are unaffected and can use this version transparently.
+
+### Features
+
+* Use an event channel to handle payment result information on Android.
+* Add a complete example of the advanced integration path (see [`advanced.dart`](example/lib/advanced.dart)).
+
+### Fixes
+
+* ([#277](https://github.com/google-pay/flutter-plugin/issues/277), [#274](https://github.com/google-pay/flutter-plugin/issues/274), [#261](https://github.com/google-pay/flutter-plugin/issues/261), [#206](https://github.com/google-pay/flutter-plugin/issues/206)) Avoid lifecycle conflicts on Android when the activity managing the payment operation is re-created before the payment result is returned.
+
+## 3.0.0-beta.2 (2024-10-10)
+
+Include logic to prevent a subscription for payment result `EventChannel`s from being created on platforms that don't support it.
+
+## 3.0.0-beta.1 (2024-10-10)
+### ⚠ BREAKING CHANGE
+
+Introduce an event channel to communicate the Flutter and native ends for Android integrations. This change is only breaking for users of the [advanced integration](https://pub.dev/packages/pay#advanced-usage). The other paths are unaffected and can use this version transparently.
+
+### Features
+
+* Use an event channel to handle payment result information on Android.
+* Add a complete example of the advanced integration path (see [`advanced.dart`](example/lib/advanced.dart)).
+
+### Fixes
+
+* ([#277](https://github.com/google-pay/flutter-plugin/issues/277), [#274](https://github.com/google-pay/flutter-plugin/issues/274), [#261](https://github.com/google-pay/flutter-plugin/issues/261), [#206](https://github.com/google-pay/flutter-plugin/issues/206)) Avoid lifecycle conflicts on Android when the activity managing the payment operation is re-created before the payment result is returned.
+
 ## 2.0.0 (2024-02-27)
 ### ⚠ BREAKING CHANGE
+
 Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend configuration capabilities.
 
 ### Features
@@ -17,6 +56,7 @@ Update the Google Pay button to support the last 4 digits of a suitable card for
 
 ## 2.0.0-beta01 (2024-02-01)
 ### ⚠ BREAKING CHANGE
+
 Update the Google Pay button to support the last 4 digits of a suitable card for this payment, and extend configuration capabilities.
 
 ### Features
@@ -31,9 +71,11 @@ Update the Google Pay button to support the last 4 digits of a suitable card for
 * ⚠ Removed the `Pay.withAssets` constructor. See the [readme in the `pay_platform_interface` package](../pay_platform_interface/README.md#usage) to review the recommended logic to initialize the `Pay` client.
 
 ## 1.1.2 (2023-07-31)
+
 * Update `pay_android` to 1.0.11, which includes lifecycle fixes.
 
 ## 1.1.1 (2023-02-02)
+
 * Update `pay_android` to 1.0.10, which includes the latest version of the `flutter_svg` package.
 
 ## 1.1.0 (2023-01-24)
@@ -41,6 +83,7 @@ Update the Google Pay button to support the last 4 digits of a suitable card for
 ### ⚠ DEPRECATION WARNING
 
 ### Features
+
 * Widgets inheriting from `PayButton` now receive the payment configuration using the `paymentConfiguration` parameter, which expects a `PaymentConfiguration` object. This allows building configuration objects from assets or strings (see [#7](https://github.com/google-pay/flutter-plugin/issues/7)). The previous `paymentConfigurationAsset` property is still available and marked as deprecated for backwards compatibility, and will be removed in future releases. See the new example application and readme to learn more.
 * Use a `Map` to configure a `Pay` client, where the key is a `PayProvider` and the value is a `PaymentConfiguration`. 
 
@@ -68,10 +111,12 @@ Update the Google Pay button to support the last 4 digits of a suitable card for
 ## 1.0.6 (2021-10-04)
 
 ### Features
+
 * Make the package available for iOS versions lower than 12.0 ([#36](https://github.com/google-pay/flutter-plugin/issues/36)).
 * Capture the dismissal of the payment selector and expose it to the Flutter end through the `onError` callback ([#90](https://github.com/google-pay/flutter-plugin/issues/90), [#61](https://github.com/google-pay/flutter-plugin/issues/61)).
 
 ### Fixes
+
 * Fix not being able to capture a payment result on the second and further payment attempts ([#80](https://github.com/google-pay/flutter-plugin/issues/80)).
 
 ## 1.0.5 (2021-06-08)
@@ -82,6 +127,7 @@ Update the Google Pay button to support the last 4 digits of a suitable card for
 * Fix incorrect `late init` use at initialization time for the `Pay` class ([#54](https://github.com/google-pay/flutter-plugin/issues/54)).
 
 ## 1.0.4 (2021-06-01)
+
 Enrich `dartdoc` comments to facilitate the adoption of the package.
 
 ## 1.0.3 (2021-05-26)

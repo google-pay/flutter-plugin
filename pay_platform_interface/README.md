@@ -11,7 +11,7 @@ To implement a new platform-specific implementation, add `pay_platform_interface
 
 ```yaml
 dependencies:
-  pay_platform_interface: ^1.0.4
+  pay_platform_interface: ^2.0.0
 ```
 
 Start by extending [`PayPlatform`](https://github.com/google-pay/flutter-plugin/tree/main/pay_platform_interface/lib/pay_platform_interface.dart) with an implementation that performs the platform-specific behavior.
