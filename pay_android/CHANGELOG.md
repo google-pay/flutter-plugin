@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.0.0 (2024-12-23)
+### ⚠ BREAKING CHANGE
+Introduce an event channel to communicate the Flutter and native ends using a continuous stream of information. Take a look at the [README to see an example](../pay/README.md#handling-a-payment-result-response-android-only).
+
+### Features
+
+* Add a separate event channel (named `plugins.flutter.io/pay/payment_result`) to handle payment result information.
+
+### Fixes
+* ([#277](https://github.com/google-pay/flutter-plugin/issues/277), [#274](https://github.com/google-pay/flutter-plugin/issues/274), [#261](https://github.com/google-pay/flutter-plugin/issues/261), [#206](https://github.com/google-pay/flutter-plugin/issues/206)) Avoid lifecycle conflicts when the activity managing the payment operation is re-created before the payment result is returned.
+
 ## 3.0.0-beta.1 (2024-10-10)
 ### ⚠ BREAKING CHANGE
 Introduce an event channel to communicate the Flutter and native ends using a continuous stream of information. This addresses various challenges derived from activity lifecycle management events on Android
