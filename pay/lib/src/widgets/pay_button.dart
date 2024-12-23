@@ -146,6 +146,8 @@ class _PayButtonState extends State<PayButton> {
   @override
   void initState() {
     super.initState();
+    if (!widget._isPlatformSupported) return;
+
     _userCanPayFuture = _userCanPay();
 
     if (!widget._collectPaymentResultSynchronously) {
