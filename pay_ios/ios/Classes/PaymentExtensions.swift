@@ -116,11 +116,23 @@ extension PKPaymentNetwork {
     switch paymentNetworkString {
     case "amex":
       return .amex
+    case "bankAxept":
+      guard #available(iOS 17.5, *) else { return nil }
+      return .bankAxept
+    case "bancontact":
+      guard #available(iOS 16.0, *) else { return nil }
+      return .bancontact
+    case "barcode":
+      guard #available(iOS 14.0, *) else { return nil }
+      return .barcode
     case "cartesBancaires":
       guard #available(iOS 12.0, *) else { return nil }
       return .cartesBancaires
     case "chinaUnionPay":
       return .chinaUnionPay
+    case "dankort":
+      guard #available(iOS 15.1, *) else { return nil }
+      return .dankort
     case "discover":
       return .discover
     case "eftpos":
@@ -132,6 +144,9 @@ extension PKPaymentNetwork {
     case "elo":
       guard #available(iOS 12.1.1, *) else { return nil }
       return .elo
+    case "girocard":
+      guard #available(iOS 14.0, *) else { return nil }
+      return .girocard
     case "idCredit":
       return .idCredit
     case "interac":
@@ -146,23 +161,41 @@ extension PKPaymentNetwork {
       return .maestro
     case "masterCard":
       return .masterCard
+    case "meeza":
+      guard #available(iOS 17.4, *) else { return nil }
+      return .meeza
+    case "mir":
+      guard #available(iOS 14.5, *) else { return nil }
+      return .mir
+    case "nanaco":
+      guard #available(iOS 15.0, *) else { return nil }
+      return .nanaco
+    case "NAPAS":
+      guard #available(iOS 17.5, *) else { return nil }
+      return .NAPAS
+    case "pagoBancomat":
+      guard #available(iOS 17.0, *) else { return nil }
+      return .pagoBancomat
+    case "postFinance":
+      guard #available(iOS 16.4, *) else { return nil }
+      return .postFinance
     case "privateLabel":
       return .privateLabel
     case "quicPay":
       return .quicPay
     case "suica":
       return .suica
+    case "tmoney":
+      guard #available(iOS 17.0, *) else { return nil }
+      return .tmoney
     case "visa":
       return .visa
     case "vPay":
       guard #available(iOS 12.0, *) else { return nil }
       return .vPay
-    case "barcode":
-      guard #available(iOS 14.0, *) else { return nil }
-      return .barcode
-    case "girocard":
-      guard #available(iOS 14.0, *) else { return nil }
-      return .girocard
+    case "waon":
+      guard #available(iOS 15.0, *) else { return nil }
+      return .waon
     default:
       return nil
     }
