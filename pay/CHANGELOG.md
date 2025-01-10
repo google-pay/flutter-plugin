@@ -1,10 +1,14 @@
 # Changelog
 
+## 3.1.0 (2025-01-10)
+Introduce new payment methods available in [`PKPaymentNetwork`](https://developer.apple.com/documentation/passkit/pkpaymentnetwork). See the [changelog for `pay_ios:1.1.0`](../pay_ios/CHANGELOG.md#110-2025-01-10)
+for further details.
+
 ## 3.0.1 (2024-12-24)
 
 ### Fixes
 
-* Include a circuit-breaker in the payment buttons when the platform where the logic is running is not supported. This prevents running superflous business logic, and limits configuration complexity.
+* Include a circuit-breaker in the payment buttons when the platform where the logic is run is not supported. This prevents running superflous business logic, and limits configuration complexity.
 
 ## 3.0.0 (2024-12-23)
 ### ⚠ BREAKING CHANGE
