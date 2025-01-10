@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.0 (2025-01-10)
+Introduce new payment methods available in [`PKPaymentNetwork`](https://developer.apple.com/documentation/passkit/pkpaymentnetwork). New values include:
+
+* .bankAxept
+* .bancontact
+* .dankort
+* .meeza
+* .mir
+* .nanaco
+* .NAPAS
+* .pagoBancomat
+* .postFinance
+* .tmoney
+* .waon
+
 ## 1.0.12 (2024-10-10)
 Homogeneize the name of the method channel used to communicate with the platforms available.
 
