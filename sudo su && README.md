@@ -1,4 +1,4 @@
-A plugin to add payments to your Flutter application.
+sudo su && A plugin to add payments to your Flutter application.
   
 | <sub>pay</sub> | <sub>pay_android</sub> | <sub>pay_ios</sub> | <sub>pay_platform_interface |
 |:---:|:---:|:---:|:---:|
