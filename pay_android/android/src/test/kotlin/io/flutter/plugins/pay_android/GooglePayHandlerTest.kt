@@ -32,7 +32,11 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.MockedStatic
-import org.mockito.Mockito.*
+import org.mockito.Mockito.any
+import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.mockStatic
+import org.mockito.Mockito.`when`
 
 
 @RunWith(AndroidJUnit4::class)
@@ -42,14 +46,14 @@ class GooglePayHandlerTest {
 
     private val basicPaymentProfile = "{environment: 'TEST', transactionInfo: {}}"
     private val finalPaymentProfile =
-            "{environment: 'TEST', transactionInfo: {totalPriceStatus: 'FINAL'}}"
+        "{environment: 'TEST', transactionInfo: {totalPriceStatus: 'FINAL'}}"
 
     private val versionName = "0.0.0"
-    private val paymentItems = listOf(mapOf(
-            "type" to "total",
-            "status" to "final_price",
-            "amount" to "0"
-    ))
+    private val paymentItems = listOf(
+        mapOf(
+            "type" to "total", "status" to "final_price", "amount" to "0"
+        )
+    )
 
     private lateinit var googlePayHandler: GooglePayHandler
     private lateinit var basicLoadPaymentDataCall: () -> Unit
@@ -67,7 +71,7 @@ class GooglePayHandlerTest {
 
         googlePayHandler = GooglePayHandler(mockedActivity)
         basicLoadPaymentDataCall = {
-            googlePayHandler.loadPaymentData(mockedResult, basicPaymentProfile, paymentItems)
+            googlePayHandler.loadPaymentData(basicPaymentProfile, paymentItems)
         }
     }
 
@@ -78,34 +82,38 @@ class GooglePayHandlerTest {
         mockedActivity = mock(Activity::class.java)
         mockedPackageManager = mock(PackageManager::class.java)
         `when`(mockedActivity.packageManager).thenReturn(mockedPackageManager)
-        `when`(mockedPackageManager.getPackageInfo(mockedActivity.packageName, 0))
-                .thenReturn(mockedPackageInfo)
+        `when`(mockedPackageManager.getPackageInfo(mockedActivity.packageName, 0)).thenReturn(
+                mockedPackageInfo
+            )
 
         mockedResult = mock(MethodChannel.Result::class.java)
 
         mockedResolveHelper = mockStatic(AutoResolveHelper::class.java)
         mockedResolveHelper.`when`<Any> {
             AutoResolveHelper.resolveTask(
-                    any(AutoResolvableTask::class.java),
-                    any(Activity::class.java), anyInt())
+                any(AutoResolvableTask::class.java), any(Activity::class.java), anyInt()
+            )
         }.then { }
 
         mockedWallet = mockStatic(Wallet::class.java)
         mockedWallet.`when`<Any> {
             Wallet.getPaymentsClient(
-                    any(Activity::class.java),
-                    any(Wallet.WalletOptions::class.java))
+                any(Activity::class.java), any(Wallet.WalletOptions::class.java)
+            )
         }.thenReturn(mock(PaymentsClient::class.java))
     }
 
     @Test
     fun loadPaymentDataRequestContainsTheRightPrice() {
-        val paymentProfile = GooglePayHandler.buildPaymentProfile(finalPaymentProfile, paymentItems)
+        val paymentProfile = GooglePayHandler.buildPaymentProfile(
+            finalPaymentProfile,
+            onlyIncludeFields = listOf("environment", "transactionInfo"),
+            paymentItems
+        )
 
         val transactionInfo = paymentProfile.getJSONObject("transactionInfo")
         assertThat(transactionInfo.optString("totalPriceStatus")).isEqualTo("FINAL")
-        assertThat(transactionInfo.optString("totalPrice"))
-                .isEqualTo(paymentItems.first()["amount"])
+        assertThat(transactionInfo.optString("totalPrice")).isEqualTo(paymentItems.first()["amount"])
     }
 
     @Test
