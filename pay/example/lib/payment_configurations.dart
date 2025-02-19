@@ -84,7 +84,7 @@ const String defaultGooglePay = '''{
           "type": "PAYMENT_GATEWAY",
           "parameters": {
             "gateway": "example",
-            "gatewayMerchantId": "gatewayMerchantId"
+            "gatewayMerchantId": "exampleGatewayMerchantId"
           }
         },
         "parameters": {
