@@ -64,9 +64,11 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
          */
         @JvmStatic
         fun buildPaymentProfile(
-            paymentProfileString: String, paymentItems: List<Map<String, Any?>>? = null
+            paymentProfileString: String,
+            onlyIncludeFields: List<String>,
+            paymentItems: List<Map<String, Any?>>? = null
         ): JSONObject {
-            val paymentProfile = JSONObject(paymentProfileString)
+            val rawPaymentProfile = JSONObject(paymentProfileString)
 
             // Add payment information
             paymentItems?.find { it["type"] == "total" }.let {
@@ -76,13 +78,17 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
                     else -> "NOT_CURRENTLY_KNOWN"
                 }
 
-                paymentProfile.getJSONObject("transactionInfo").apply {
+                rawPaymentProfile.getJSONObject("transactionInfo").apply {
                     putOpt("totalPrice", it?.get("amount"))
                     put("totalPriceStatus", priceStatus)
                 }
             }
 
-            return paymentProfile
+            // Filter out unnecessary values for the call
+            return JSONObject(
+                onlyIncludeFields.filter(rawPaymentProfile::has)
+                    .associateWith(rawPaymentProfile::get)
+            )
         }
     }
 
@@ -126,10 +132,18 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
     fun isReadyToPay(result: Result, paymentProfileString: String) {
 
         // Construct profile and client
-        val paymentProfile = buildPaymentProfile(paymentProfileString)
-        val client = paymentClientForProfile(paymentProfile)
+        val paymentProfile = buildPaymentProfile(
+            paymentProfileString, onlyIncludeFields = listOf(
+                "environment",
+                "apiVersion",
+                "apiVersionMinor",
+                "allowedPaymentMethods",
+                "existingPaymentMethodRequired"
+            )
+        )
 
-        val rtpRequest = IsReadyToPayRequest.fromJson(paymentProfileString)
+        val client = paymentClientForProfile(paymentProfile)
+        val rtpRequest = IsReadyToPayRequest.fromJson(paymentProfile.toString())
         val task = client.isReadyToPay(rtpRequest)
         task.addOnCompleteListener { completedTask ->
             try {
@@ -158,7 +172,20 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
     fun loadPaymentData(
         paymentProfileString: String, paymentItems: List<Map<String, Any?>>
     ) {
-        val paymentProfile = buildPaymentProfile(paymentProfileString, paymentItems)
+        val paymentProfile = buildPaymentProfile(
+            paymentProfileString, onlyIncludeFields = listOf(
+                "environment",
+                "apiVersion",
+                "apiVersionMinor",
+                "allowedPaymentMethods",
+                "merchantInfo",
+                "transactionInfo",
+                "emailRequired",
+                "shippingAddressRequired",
+                "shippingAddressParameters"
+            ), paymentItems
+        )
+
         val client = paymentClientForProfile(paymentProfile)
         val ldpRequest = PaymentDataRequest.fromJson(paymentProfile.toString())
         AutoResolveHelper.resolveTask(
@@ -191,7 +218,7 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
 
                 AutoResolveHelper.RESULT_ERROR -> {
                     AutoResolveHelper.getStatusFromIntent(data)?.let { status ->
-                        handleError(status.statusCode)
+                        handleError(status.statusCode, status.statusMessage!!)
                     }
                     true
                 }
@@ -232,6 +259,6 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
      * @see [
      * Wallet constants library](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants.constant-summary)
      */
-    private fun handleError(statusCode: Int) =
-        paymentResultEvents?.error(statusCode.toString(), "", null)
+    private fun handleError(statusCode: Int, statusMessage: String) =
+        paymentResultEvents?.error(statusCode.toString(), statusMessage, null)
 }
