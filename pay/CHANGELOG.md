@@ -1,8 +1,12 @@
 # Changelog
 
+## 3.2.0 (2025-03-14)
+
+* Upgrade errors to relay more information to the Flutter layer.
+* Filter properties based on a per-call schema to make API calls more robust. See the [changelog for `pay_android:3.1.0`](../pay_android/CHANGELOG.md#310-2024-03-14) for further details.
+
 ## 3.1.0 (2025-01-10)
-Introduce new payment methods available in [`PKPaymentNetwork`](https://developer.apple.com/documentation/passkit/pkpaymentnetwork). See the [changelog for `pay_ios:1.1.0`](../pay_ios/CHANGELOG.md#110-2025-01-10)
-for further details.
+Introduce new payment methods available in [`PKPaymentNetwork`](https://developer.apple.com/documentation/passkit/pkpaymentnetwork). See the [changelog for `pay_ios:1.1.0`](../pay_ios/CHANGELOG.md#110-2025-01-10) for further details.
 
 ## 3.0.1 (2024-12-24)
 
