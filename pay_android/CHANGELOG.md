@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.0 (2024-03-14)
+
+### Features
+
+* Introduce more detailed error messages in the result of the payment operation object. You can use this information to  troubleshoot and debug your integrations at build time, and react to unexpected errors at runtime.
+
+### Fixes
+* ([#279](https://github.com/google-pay/flutter-plugin/issues/279)) Conform a schema for every call to prevent unexpected properties in requests.
+
 ## 3.0.0 (2024-12-23)
 ### ⚠ BREAKING CHANGE
 Introduce an event channel to communicate the Flutter and native ends using a continuous stream of information. Take a look at the [README to see an example](../pay/README.md#handling-a-payment-result-response-android-only).
