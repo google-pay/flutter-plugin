@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,7 @@ import com.google.android.gms.wallet.button.ButtonConstants.ButtonTheme
 import com.google.android.gms.wallet.button.ButtonConstants.ButtonType
 import com.google.android.gms.wallet.button.PayButton
 import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.platform.PlatformView
 import org.json.JSONArray
 import org.json.JSONObject
