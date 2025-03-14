@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,15 +71,15 @@ class GooglePayHandler(private val activity: Activity) : PluginRegistry.Activity
             val rawPaymentProfile = JSONObject(paymentProfileString)
 
             // Add payment information
-            paymentItems?.find { it["type"] == "total" }.let {
-                val priceStatus = when (it?.get("status")) {
+            paymentItems?.find { it["type"] == "total" }?.let {
+                val priceStatus = when (it.get("status")) {
                     "final_price" -> "FINAL"
                     "pending" -> "ESTIMATED"
                     else -> "NOT_CURRENTLY_KNOWN"
                 }
 
                 rawPaymentProfile.getJSONObject("transactionInfo").apply {
-                    putOpt("totalPrice", it?.get("amount"))
+                    putOpt("totalPrice", it.get("amount"))
                     put("totalPriceStatus", priceStatus)
                 }
             }
