@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.1 (2025-03-28)
+
+* Upgrade `pay_android` to `3.1.1` which fixes a version conflict for the `androidx.test:rules` dependency.
+
 ## 3.2.0 (2025-03-14)
 
 * Upgrade errors to relay more information to the Flutter layer.

@@ -20,11 +20,10 @@ Before you start, create an account with the payment providers you are planning 
 2. Sign up to the [business console](https://pay.google.com/business/console) and create an account.
 
 ## Usage
-To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/):
+To start using this plugin, add `pay` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/) with the following command:
 
-```yaml
-dependencies:
-  pay: ^3.2.0
+```shell
+flutter pub add pay
 ```
 
 Define the configuration for your payment provider(s). Take a look at the parameters available in the documentation for [Apple Pay](https://developer.apple.com/documentation/passkit/pkpaymentrequest) and [Google Pay](https://developers.google.com/pay/api/android/reference/request-objects), and explore the [sample configurations in this package](https://github.com/google-pay/flutter-plugin/tree/main/pay/example/lib/payment_configurations.dart).

@@ -22,9 +22,9 @@ Before you start, create an account with the payment providers you are planning 
 2. Sign up to the [business console](https://pay.google.com/business/console) and create an account.
 
 ## Installation
-This adds the `pay` package to the [list of dependencies in your pubspec.yaml file](https://flutter.io/platform-plugins/):
+This adds the `pay` package to the [list of dependencies in your pubspec.yaml file](https://flutter.io/platform-plugins/) with the following command:
 
-```sh
+```shell
 flutter pub add pay
 ```
 
