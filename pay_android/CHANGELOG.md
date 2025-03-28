@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1 (2024-03-28)
+
+* Remove inexisting version of the `androidx.test:rules` dependency.
+
 ## 3.1.0 (2024-03-14)
 
 ### Features
