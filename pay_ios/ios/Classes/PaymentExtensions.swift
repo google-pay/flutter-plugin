@@ -147,6 +147,9 @@ extension PKPaymentNetwork {
     case "girocard":
       guard #available(iOS 14.0, *) else { return nil }
       return .girocard
+    case "himyan":
+      guard #available(iOS 18.4, *) else { return nil }
+      return .himyan
     case "idCredit":
       return .idCredit
     case "interac":
