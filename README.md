@@ -2,7 +2,7 @@ A plugin to add payments to your Flutter application.
   
 | <sub>pay</sub> | <sub>pay_android</sub> | <sub>pay_ios</sub> | <sub>pay_platform_interface |
 |:---:|:---:|:---:|:---:|
-| [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dartlang.org/packages/pay) | [![pub package](https://img.shields.io/pub/v/pay_android.svg)](https://pub.dartlang.org/packages/pay_android) | [![pub package](https://img.shields.io/pub/v/pay_ios.svg)](https://pub.dartlang.org/packages/pay_ios) | [![pub package](https://img.shields.io/pub/v/pay_platform_interface.svg)](https://pub.dartlang.org/packages/pay_platform_interface) |
+| [![pub package](https://img.shields.io/pub/v/pay.svg)](https://pub.dev/packages/pay) | [![pub package](https://img.shields.io/pub/v/pay_android.svg)](https://pub.dev/packages/pay_android) | [![pub package](https://img.shields.io/pub/v/pay_ios.svg)](https://pub.dev/packages/pay_ios) | [![pub package](https://img.shields.io/pub/v/pay_platform_interface.svg)](https://pub.dev/packages/pay_platform_interface) |
 
 ## Platform Support
 | Android | iOS |
@@ -90,7 +90,7 @@ The packages in this repository follow the [federated plugin](https://docs.flutt
 | [pay](./pay/) | An app-facing package with support for all the platforms supported by this plugin. | This package offers an agnostic integration for the platforms supported in this plugin and features the easiest path to add payments to your Flutter application. |
 | [pay_android](./pay_android/) | The endorsed implementation of this plugin for Android. | This package contains the necessary business logic to support the Android platform. You can integrate this package separately or use it to build your own app-facing package. |
 | [pay_ios](./pay_ios/) | The endorsed implementation of this plugin for iOS. | This package contains the necessary business logic to support the iOS platform. You can integrate this package separately or use it to build your own app-facing package. |
-| [pay_platform_interface](./pay_platform_interface/) | A common API contract for platform-specific implementations. | Folow the contract in this package to add new platforms to the plugin or create your own Android or iOS implementations. Take a look at the [guide about plugin development](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#federated-plugins) to learn more. |
+| [pay_platform_interface](./pay_platform_interface/) | A common API contract for platform-specific implementations. | Folow the contract in this package to add new platforms to the plugin or create your own Android or iOS implementations. Take a look at the [guide about plugin development](https://docs.flutter.dev/development/development/packages-and-plugins/developing-packages#federated-plugins) to learn more. |
 
 ## Additional resources
 Check out the following resources to manage your payment accounts and learn more about the APIs for the supported providers:
