@@ -23,7 +23,8 @@ enum GooglePayButtonType {
   order,
   pay,
   plain,
-  subscribe
+  subscribe,
+  pix
 }
 
 /// The button themes supported on Google Pay.
@@ -166,6 +167,7 @@ extension on GooglePayButtonType {
         GooglePayButtonType.subscribe: 'subscribe',
         GooglePayButtonType.pay: 'pay',
         GooglePayButtonType.order: 'order',
+        GooglePayButtonType.pix: 'pix',
       }[this]!;
 }
 
