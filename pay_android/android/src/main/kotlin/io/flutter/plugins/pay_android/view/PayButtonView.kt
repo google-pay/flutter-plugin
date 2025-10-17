@@ -93,6 +93,7 @@ class ButtonTypeFactory {
             "order" -> ButtonType.ORDER
             "plain" -> ButtonType.PLAIN
             "subscribe" -> ButtonType.SUBSCRIBE
+            "pix" -> ButtonType.PIX
             else -> ButtonType.BUY
         }
     }
