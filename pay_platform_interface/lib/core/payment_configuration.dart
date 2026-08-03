@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import '../util/configurations.dart';
 
 /// The payment providers supported by this package.
+// ignore: constant_identifier_names
 enum PayProvider { apple_pay, google_pay }
 
 /// A type used to define the signature of methods and objects used to load

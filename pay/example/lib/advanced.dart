@@ -26,7 +26,7 @@ void main() {
   runApp(const PayAdvancedMaterialApp());
 }
 
-const googlePayEventChannelName = 'plugins.flutter.io/pay/payment_result';
+const kGooglePayEventChannelName = 'plugins.flutter.io/pay/payment_result';
 const _paymentItems = [
   PaymentItem(
     label: 'Total',
@@ -70,7 +70,7 @@ class PayAdvancedSampleApp extends StatefulWidget {
 }
 
 class _PayAdvancedSampleAppState extends State<PayAdvancedSampleApp> {
-  static const eventChannel = EventChannel(googlePayEventChannelName);
+  static const eventChannel = EventChannel(kGooglePayEventChannelName);
   StreamSubscription<String>? _googlePayResultSubscription;
 
   late final Future<bool> _canPayGoogleFuture;

@@ -19,6 +19,7 @@
 /// * [pending] expects changes to the final price in response to user selection
 /// or other circumstances that are not known when first requesting the payment.
 /// * [unknown] for any other scenario.
+// ignore: constant_identifier_names
 enum PaymentItemStatus { unknown, pending, final_price }
 
 /// A set of utility methods associated to the [PaymentItemStatus] enumeration.

@@ -19,7 +19,7 @@ import 'package:pay/pay.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets("correctly creates an instance of the client", (_) async {
+  testWidgets("correctly creates an instance of the client", (WidgetTester tester) async {
     Pay client = Pay({});
     await expectLater(client, isNotNull);
   });
