@@ -59,5 +59,24 @@ void main() {
       );
       debugDefaultTargetPlatformOverride = null;
     });
+
+    testWidgets('maps ApplePayButtonType.continue_ to "continue"',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: RawApplePayButton(
+          type: ApplePayButtonType.continue_,
+          onPressed: () {},
+        ),
+      ));
+
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is UiKitView &&
+              widget.creationParams['type'] == 'continue'),
+          findsOneWidget);
+
+      debugDefaultTargetPlatformOverride = null;
+    });
   });
 }

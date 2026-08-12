@@ -34,7 +34,8 @@ enum ApplePayButtonType {
   rent,
   support,
   contribute,
-  tip
+  tip,
+  continue_
 }
 
 /// The button styles supported on Apple Pay.
@@ -198,6 +199,7 @@ extension on ApplePayButtonType {
         ApplePayButtonType.support: 'support',
         ApplePayButtonType.contribute: 'contribute',
         ApplePayButtonType.tip: 'tip',
+        ApplePayButtonType.continue_: 'continue',
       }[this]!;
 }
 
