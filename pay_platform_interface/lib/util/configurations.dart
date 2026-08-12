@@ -56,8 +56,12 @@ class Configurations {
 
   /// Retrieves package information from the `pubspec.yaml` file as a [Map].
   static Future<Map<dynamic, dynamic>> _getPackageConfiguration() async {
-    final configurationFile = await rootBundle
-        .loadString('packages/pay_platform_interface/pubspec.yaml');
-    return loadYaml(configurationFile) as Map<dynamic, dynamic>;
+    try {
+      final configurationFile = await rootBundle
+          .loadString('packages/pay_platform_interface/pubspec.yaml');
+      return loadYaml(configurationFile) as Map<dynamic, dynamic>;
+    } catch (_) {
+      return const <dynamic, dynamic>{'version': 'unknown'};
+    }
   }
 }

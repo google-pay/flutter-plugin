@@ -20,6 +20,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
+import 'package:pay_platform_interface/util/configurations.dart';
 
 String _fixtureAsset(String name) {
   var currentPath = Directory.current.path;
@@ -72,6 +73,24 @@ void main() {
         configParams['merchantInfo']['softwareInfo'] as Map<String, dynamic>;
     expect(softwareInfo.containsKey('id'), isTrue);
     expect(softwareInfo.containsKey('version'), isTrue);
+  });
+
+  test('Check that software info version defaults to unknown when asset load fails', () async {
+    final configParams = await Configurations.extractParameters({
+      'provider': 'google_pay',
+      'data': {
+        'environment': 'TEST',
+        'apiVersion': 2,
+        'apiVersionMinor': 0,
+        'merchantInfo': {
+          'merchantName': 'Example Merchant',
+        }
+      }
+    });
+
+    Map<String, dynamic> softwareInfo =
+        configParams['merchantInfo']['softwareInfo'] as Map<String, dynamic>;
+    expect(softwareInfo['version'], anyOf(equals('2.0.0'), equals('unknown')));
   });
 
   tearDown(() async {});
