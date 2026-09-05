@@ -18,14 +18,14 @@ group 'io.flutter.plugins.pay_android'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.8.21'
+    ext.kotlin_version = '2.2.21'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.13.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -38,18 +38,20 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+
+def agpMajor = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0] as int
+def builtInKotlin = agpMajor >= 9 &&
+        project.findProperty('android.builtInKotlin')?.toString() != 'false'
+if (!builtInKotlin) {
+    apply plugin: 'kotlin-android'
+}
 
 android {
     // Conditional for compatibility with AGP <4.2.
     if (project.android.hasProperty("namespace")) {
       namespace 'io.flutter.plugins.pay_android'
     }
-    compileSdk 34
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+    compileSdk 36
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -63,6 +65,17 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
     }
 }
 

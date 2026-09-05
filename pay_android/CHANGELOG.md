@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.1 (2026-09-05)
+
+* Apply Kotlin Gradle Plugin only when AGP built-in Kotlin is inactive.
+
 ## 3.2.0 (2025-11-21)
 
 * Add `pix` to the `GooglePayButtonType` enum. This enables the PIX button type on the Google Pay button for Pix integrations.
