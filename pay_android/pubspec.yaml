@@ -31,8 +31,6 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
   pay_platform_interface: ^2.0.0
 
 
