@@ -13,7 +13,10 @@ let package = Package(
     targets: [
         .target(
             name: "pay_ios",
-            dependencies: []
+            dependencies: [],
+            resources: [
+                .copy("Resources/PrivacyInfo.xcprivacy")
+            ]
         )
     ]
 )
