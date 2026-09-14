@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:flutter/services.dart';
-
-import 'package:yaml/yaml.dart';
 import 'package:pay_platform_interface/core/payment_configuration.dart';
+import 'package:pay_platform_interface/generated/package_info.dart';
 
 /// A utility class to handle configuration objects and metadata associated
 /// with this plugin.
@@ -23,10 +21,10 @@ class Configurations {
   /// Complements the payment configuration object with metadata about the
   /// package.
   ///
-  /// Takes the configuration included in [config] and returns and updated
-  /// version of the object wrapped in a [Future] with additional metadata.
-  static Future<Map<String, dynamic>> extractParameters(
-      Map<String, dynamic> configuration) async {
+  /// Takes the configuration included in [configuration] and returns an updated
+  /// version of the object with additional metadata.
+  static Map<String, dynamic> extractParameters(
+      Map<String, dynamic> configuration) {
     PayProvider provider =
         PayProviders.fromString(configuration['provider'] as String)!;
     Map<String, dynamic> configurationParams =
@@ -43,7 +41,7 @@ class Configurations {
           ...(configurationParams['merchantInfo'] ?? {}) as Map,
           'softwareInfo': {
             'id': 'flutter/pay-plugin',
-            'version': (await _getPackageConfiguration())['version']
+            'version': PackageInfo.version
           }
         };
 
@@ -52,12 +50,5 @@ class Configurations {
 
         return updatedPaymentConfiguration;
     }
-  }
-
-  /// Retrieves package information from the `pubspec.yaml` file as a [Map].
-  static Future<Map<dynamic, dynamic>> _getPackageConfiguration() async {
-    final configurationFile = await rootBundle
-        .loadString('packages/pay_platform_interface/pubspec.yaml');
-    return loadYaml(configurationFile) as Map<dynamic, dynamic>;
   }
 }
