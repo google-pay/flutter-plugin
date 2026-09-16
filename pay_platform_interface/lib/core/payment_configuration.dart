@@ -50,7 +50,7 @@ class PaymentConfiguration {
   final PayProvider provider;
 
   /// The configuration parameters for a given payment provider.
-  final Future<Map<String, dynamic>> _parameters;
+  final Map<String, dynamic> _parameters;
 
   /// The raw configuration provided
   final String _rawConfigurationData;
@@ -106,7 +106,7 @@ class PaymentConfiguration {
           (s) async => jsonDecode(s) as Map<String, dynamic>);
 
   /// Returns the core configuration map in this object.
-  Future<Map<String, dynamic>> parameterMap() async {
+  Map<String, dynamic> parameterMap() {
     return _parameters;
   }
 
