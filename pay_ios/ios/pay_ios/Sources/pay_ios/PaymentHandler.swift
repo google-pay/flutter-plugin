@@ -36,26 +36,30 @@ enum PaymentHandlerStatus {
 /// paymentHandler.canMakePayments(stringArguments)
 /// ```
 class PaymentHandler: NSObject {
-  
+
   /// Holds the current status of the payment process.
   var paymentHandlerStatus: PaymentHandlerStatus!
-  
+
   /// Stores a reference to the Flutter result while the operation completes.
   var paymentResult: FlutterResult!
-  
+
   /// Determines whether a user can make a payment with the selected provider.
   ///
   /// - parameter paymentConfiguration: A JSON string with the configuration to execute
   ///   this payment.
-  /// - returns: A boolean with the result: whether the use can make payments.
-  func canMakePayments(_ paymentConfiguration: String) -> Bool {
-    if let supportedNetworks = PaymentHandler.supportedNetworks(from: paymentConfiguration) {
+  /// - parameter existingPaymentMethodRequired: If true, requires a card; if false, only checks device support.
+  /// - returns: A boolean with the result: whether the user can make payments.
+  func canMakePayments(_ paymentConfiguration: String, existingPaymentMethodRequired: Bool = true) -> Bool {
+    if existingPaymentMethodRequired {
+      guard let supportedNetworks = PaymentHandler.supportedNetworks(from: paymentConfiguration) else {
+        return false
+      }
       return PKPaymentAuthorizationController.canMakePayments(usingNetworks: supportedNetworks)
-    } else {
-      return false
     }
+
+    return PKPaymentAuthorizationController.canMakePayments()
   }
-  
+
   /// Initiates the payment process with the selected payment provider.
   ///
   /// Calling this method starts the payment process and opens up the payment selector. Once the user
@@ -73,13 +77,13 @@ class PaymentHandler: NSObject {
 
     // Reset payment handler status
     paymentHandlerStatus = .started
-    
+
     // Deserialize payment configuration.
     guard let paymentRequest = PaymentHandler.createPaymentRequest(from: paymentConfiguration, paymentItems: paymentItems) else {
       result(FlutterError(code: "invalidPaymentConfiguration", message: "It was not possible to create a payment request from the provided configuration. Review your payment configuration and run again", details: nil))
       return
     }
-    
+
     // Display the payment selector with the request created.
     let paymentController = PKPaymentAuthorizationController(paymentRequest: paymentRequest)
     paymentController.delegate = self
@@ -91,7 +95,7 @@ class PaymentHandler: NSObject {
       }
     })
   }
-  
+
   /// Utility function to turn the payment configuration received through the method channel into a `Dictionary`.
   ///
   /// - parameter paymentConfigurationString: A JSON string with the configuration to execute
@@ -101,7 +105,7 @@ class PaymentHandler: NSObject {
     let paymentConfigurationData = paymentConfigurationString.data(using: .utf8)
     return try? JSONSerialization.jsonObject(with: paymentConfigurationData!) as? [String: Any]
   }
-  
+
   /// Extracts and parses the list of supported networks in the payment configuration.
   ///
   /// - parameter paymentConfigurationString: A JSON string with the configuration to execute
@@ -111,10 +115,10 @@ class PaymentHandler: NSObject {
     guard let paymentConfiguration = extractPaymentConfiguration(from: paymentConfigurationString) else {
       return nil
     }
-    
+
     return (paymentConfiguration["supportedNetworks"] as! [String]).compactMap { networkString in PKPaymentNetwork.fromString(networkString) }
   }
-  
+
   /// Creates a valid payment request for Apple Pay with the information included in the payment configuration.
   ///
   /// - parameter paymentConfigurationString: A JSON string with the configuration to execute
@@ -125,7 +129,7 @@ class PaymentHandler: NSObject {
     guard let paymentConfiguration = extractPaymentConfiguration(from: paymentConfigurationString) else {
       return nil
     }
-    
+
     // Create payment request and include summary items
     let paymentRequest = PKPaymentRequest()
     paymentRequest.paymentSummaryItems = paymentItems.map { item in
@@ -135,38 +139,38 @@ class PaymentHandler: NSObject {
         type: (PKPaymentSummaryItemType.fromString(item["status"] as? String ?? "final_price"))
       )
     }
-    
+
     // Configure the payment.
     paymentRequest.merchantIdentifier = paymentConfiguration["merchantIdentifier"] as! String
     paymentRequest.countryCode = paymentConfiguration["countryCode"] as! String
     paymentRequest.currencyCode = paymentConfiguration["currencyCode"] as! String
-    
+
     // Add merchant capabilities.
     if let merchantCapabilities = paymentConfiguration["merchantCapabilities"] as? Array<String> {
       paymentRequest.merchantCapabilities = PKMerchantCapability(merchantCapabilities.compactMap { capabilityString in
         PKMerchantCapability.fromString(capabilityString)
       })
     }
-    
+
     // Include the shipping fields required.
     if let requiredShippingFields = paymentConfiguration["requiredShippingContactFields"] as? Array<String> {
       paymentRequest.requiredShippingContactFields = Set(requiredShippingFields.compactMap { shippingField in
         PKContactField.fromString(shippingField)
       })
     }
-    
+
     // Include the billing fields required.
     if let requiredBillingFields = paymentConfiguration["requiredBillingContactFields"] as? Array<String> {
       paymentRequest.requiredBillingContactFields = Set(requiredBillingFields.compactMap { billingField in
         PKContactField.fromString(billingField)
       })
     }
-    
+
     // Add supported networks if available.
     if let supportedNetworks = supportedNetworks(from: paymentConfigurationString) {
       paymentRequest.supportedNetworks = supportedNetworks
     }
-    
+
     return paymentRequest
   }
 }
@@ -177,22 +181,22 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
   func paymentAuthorizationControllerWillAuthorizePayment(_ controller: PKPaymentAuthorizationController) {
       paymentHandlerStatus = .authorizationStarted
   }
-    
+
   func paymentAuthorizationController(_: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-    
+
     // Collect payment result or error and return if no payment was selected
     guard let paymentResultData = try? JSONSerialization.data(withJSONObject: payment.toDictionary()) else {
       self.paymentResult(FlutterError(code: "paymentResultDeserializationFailed", message: nil, details: nil))
       return
     }
-    
+
     // Return the result back to the channel
     self.paymentResult(String(decoding: paymentResultData, as: UTF8.self))
-    
+
     paymentHandlerStatus = .authorized
     completion(PKPaymentAuthorizationResult(status: PKPaymentAuthorizationStatus.success, errors: nil))
   }
-  
+
   func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
     controller.dismiss {
       DispatchQueue.main.async {

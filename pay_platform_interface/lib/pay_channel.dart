@@ -41,10 +41,13 @@ class PayMethodChannel extends PayPlatform {
   /// Completes with a [PlatformException] if the native call fails or otherwise
   /// returns a boolean for the [paymentConfiguration] specified.
   @override
-  Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
+  Future<bool> userCanPay(PaymentConfiguration paymentConfiguration, {bool existingPaymentMethodRequired = false}) async {
     return await _channel.invokeMethod(
-            'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()))
-        as bool;
+      'userCanPay', {
+        'paymentConfiguration': jsonEncode(await paymentConfiguration.parameterMap()),
+        'existingPaymentMethodRequired': existingPaymentMethodRequired,
+      },
+    ) as bool;
   }
 
   /// Shows the payment selector to complete the payment operation.

@@ -75,7 +75,12 @@ class PayMethodCallHandler private constructor(
     @Suppress("UNCHECKED_CAST")
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
-            METHOD_USER_CAN_PAY -> googlePayHandler.isReadyToPay(result, call.arguments()!!)
+            METHOD_USER_CAN_PAY -> {
+                val args = call.arguments as? Map<String, Any>
+                val paymentProfileString = args!!["paymentConfiguration"] as String
+                val existingPaymentMethodRequired = args!!["existingPaymentMethodRequired"] as? Boolean ?: false
+                googlePayHandler.isReadyToPay(result, paymentProfileString, existingPaymentMethodRequired)
+            }
             METHOD_SHOW_PAYMENT_SELECTOR -> {
                 if (eventChannelIsActive) {
                     val arguments = call.arguments<Map<String, Any>>()!!

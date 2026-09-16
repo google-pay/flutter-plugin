@@ -60,7 +60,12 @@ void main() {
       await mobilePlatform.userCanPay(dummyConfig);
       expect(
         log,
-        <Matcher>[isMethodCall('userCanPay', arguments: '{}')],
+        <Matcher>[
+          isMethodCall('userCanPay', arguments: <String, Object>{
+            'paymentConfiguration': '{}',
+            'existingPaymentMethodRequired': false,
+          })
+        ],
       );
     });
 

@@ -47,10 +47,14 @@ class Pay {
   /// This method wraps the [userCanPay] method in the platform interface. It
   /// makes sure that the [provider] exists and is available in the platform
   /// running the logic.
-  Future<bool> userCanPay(PayProvider provider) async {
+  ///
+  /// [existingPaymentMethodRequired]:
+  ///   - If true (default), only returns true if a supported payment method is available.
+  ///   - If false, returns true if the device and user support the payment method, even if none is currently available.
+  Future<bool> userCanPay(PayProvider provider, {bool existingPaymentMethodRequired = true}) async {
     await throwIfProviderIsNotDefined(provider);
     if (supportedProviders[defaultTargetPlatform]!.contains(provider)) {
-      return _payPlatform.userCanPay(_configurations[provider]!);
+      return _payPlatform.userCanPay(_configurations[provider]!, existingPaymentMethodRequired: existingPaymentMethodRequired);
     }
 
     return Future.value(false);
