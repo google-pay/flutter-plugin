@@ -24,6 +24,10 @@ import io.flutter.plugin.platform.PlatformViewFactory
 
 class PayButtonViewFactory(private val binaryMessenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        return PayButtonView(context, binaryMessenger, viewId, args as Map<String, Any>)
+        @Suppress("UNCHECKED_CAST")
+        val creationParams = args as? Map<String, Any?>
+            ?: throw IllegalArgumentException("PayButtonView requires populated creation parameters. Confirm that you are populating a valid creationParams object from the Flutter end.")
+            
+        return PayButtonView(context, binaryMessenger, viewId, creationParams)
     }
 }
