@@ -204,6 +204,9 @@ extension PKPaymentButtonType {
         return .contribute
       case "tip":
         return .tip
+      case "continue":
+        guard #available(iOS 15.0, *) else { return nil }
+        return .continue
       default:
         return nil
       }
