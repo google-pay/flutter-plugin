@@ -1,0 +1,1 @@
+rootProject.name = "Google Pay Flutter plug-in"
