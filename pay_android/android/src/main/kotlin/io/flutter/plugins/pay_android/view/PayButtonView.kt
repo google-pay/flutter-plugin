@@ -31,24 +31,20 @@ private const val VIEW_TYPE = "plugins.flutter.io/pay/google_pay_button"
 
 private const val METHOD_ON_PRESSED = "onPressed"
 
-internal class PayButtonView(private val context: Context, binaryMessenger: BinaryMessenger, viewId: Int, creationParams: Map<String, Any>) : PlatformView {
+internal class PayButtonView(private val context: Context, binaryMessenger: BinaryMessenger, viewId: Int, creationParams: Map<String, Any?>) : PlatformView {
 
-    private val payButton: PayButton
-    private val methodChannel: MethodChannel
+    private val payButton: PayButton = PayButton(context)
+
+    private val methodChannel: MethodChannel = MethodChannel(binaryMessenger, "$VIEW_TYPE/$viewId")
 
     init {
-        // Instantiate method channel
-        methodChannel = MethodChannel(binaryMessenger, "$VIEW_TYPE/$viewId");
-
-        // Build pay button
-        payButton = PayButton(context)
         buildPayButton(creationParams)
     }
 
-    private fun buildPayButton(buttonParams: Map<String, Any>) {
-        val buttonTheme = ButtonThemeFactory.fromString(buttonParams["theme"] as String)
-        val buttonType = ButtonTypeFactory.fromString(buttonParams["type"] as String)
-        val cornerRadiusDp = buttonParams["cornerRadius"] as Int
+    private fun buildPayButton(buttonParams: Map<String, Any?>) {
+        val buttonTheme = (buttonParams["theme"] as? String)?.let(ButtonThemeFactory::fromString) ?: ButtonTheme.DARK
+        val buttonType = (buttonParams["type"] as? String)?.let(ButtonTypeFactory::fromString) ?: ButtonType.BUY
+        val cornerRadiusDp = (buttonParams["cornerRadius"] as? Number)?.toInt() ?: 0
         val cornerRadius = (cornerRadiusDp * context.resources.displayMetrics.density).toInt()
 
         // Parse payment configuration
