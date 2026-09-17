@@ -24,14 +24,11 @@ enum GooglePayButtonType {
   pay,
   plain,
   subscribe,
-  pix
+  pix,
 }
 
 /// The button themes supported on Google Pay.
-enum GooglePayButtonTheme {
-  dark,
-  light,
-}
+enum GooglePayButtonTheme { dark, light }
 
 /// A button widget that follows the Google Pay button themes and design
 /// guidelines.
@@ -50,7 +47,7 @@ enum GooglePayButtonTheme {
 class RawGooglePayButton extends StatelessWidget {
   /// The payment configuration for the button to show the last 4 digits of a
   /// pre-selected card
-  final PaymentConfiguration _paymentConfiguration;
+  final PaymentConfiguration paymentConfiguration;
 
   /// The default width for the Google Pay Button.
   static const double minimumButtonWidth = 168;
@@ -83,26 +80,22 @@ class RawGooglePayButton extends StatelessWidget {
   /// Creates a Google Pay button widget with the parameters specified.
   RawGooglePayButton({
     super.key,
-    required final PaymentConfiguration paymentConfiguration,
+    required this.paymentConfiguration,
     this.onPressed,
     this.cornerRadius = defaultButtonHeight ~/ 2,
     this.theme = GooglePayButtonTheme.dark,
     this.type = GooglePayButtonType.buy,
     this.gestureRecognizers = const <Factory<OneSequenceGestureRecognizer>>{},
-  })  : _paymentConfiguration = paymentConfiguration,
-        constraints = const BoxConstraints.tightFor(
-          width: minimumButtonWidth,
-          height: defaultButtonHeight,
-        ) {
+  }) : constraints = const BoxConstraints.tightFor(
+         width: minimumButtonWidth,
+         height: defaultButtonHeight,
+       ) {
     assert(constraints.debugAssertIsValid());
   }
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: constraints,
-      child: _platformButton,
-    );
+    return ConstrainedBox(constraints: constraints, child: _platformButton);
   }
 
   /// Wrapper method to deliver the button
@@ -110,16 +103,16 @@ class RawGooglePayButton extends StatelessWidget {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return PlatformViewLink(
-            viewType: viewType,
-            surfaceFactory: (context, controller) {
-              return AndroidViewSurface(
-                controller: controller as AndroidViewController,
-                gestureRecognizers: gestureRecognizers,
-                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-              );
-            },
-            onCreatePlatformView: (params) =>
-                PlatformViewsService.initAndroidView(
+          viewType: viewType,
+          surfaceFactory: (context, controller) {
+            return AndroidViewSurface(
+              controller: controller as AndroidViewController,
+              gestureRecognizers: gestureRecognizers,
+              hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+            );
+          },
+          onCreatePlatformView: (params) =>
+              PlatformViewsService.initAndroidView(
                   id: params.id,
                   viewType: viewType,
                   layoutDirection: TextDirection.ltr,
@@ -127,21 +120,22 @@ class RawGooglePayButton extends StatelessWidget {
                     'theme': theme.enumString,
                     'type': type.enumString,
                     'cornerRadius': cornerRadius,
-                    'paymentConfiguration':
-                        _paymentConfiguration.rawConfigurationData(),
+                    'paymentConfiguration': paymentConfiguration
+                        .rawConfigurationData(),
                   },
                   creationParamsCodec: const StandardMessageCodec(),
                   onFocus: () {
                     params.onFocusChanged(true);
                   },
                 )
-                  ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
-                  ..addOnPlatformViewCreatedListener(
-                      params.onPlatformViewCreated)
-                  ..create());
+                ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..create(),
+        );
       default:
         throw UnsupportedError(
-            'This platform $defaultTargetPlatform does not support Google Pay');
+          'This platform $defaultTargetPlatform does not support Google Pay',
+        );
     }
   }
 
@@ -159,23 +153,23 @@ class RawGooglePayButton extends StatelessWidget {
 extension on GooglePayButtonType {
   /// Creates a string representation of the [GooglePayButtonType] enumeration.
   String get enumString => {
-        GooglePayButtonType.plain: 'plain',
-        GooglePayButtonType.buy: 'buy',
-        GooglePayButtonType.donate: 'donate',
-        GooglePayButtonType.checkout: 'checkout',
-        GooglePayButtonType.book: 'book',
-        GooglePayButtonType.subscribe: 'subscribe',
-        GooglePayButtonType.pay: 'pay',
-        GooglePayButtonType.order: 'order',
-        GooglePayButtonType.pix: 'pix',
-      }[this]!;
+    GooglePayButtonType.plain: 'plain',
+    GooglePayButtonType.buy: 'buy',
+    GooglePayButtonType.donate: 'donate',
+    GooglePayButtonType.checkout: 'checkout',
+    GooglePayButtonType.book: 'book',
+    GooglePayButtonType.subscribe: 'subscribe',
+    GooglePayButtonType.pay: 'pay',
+    GooglePayButtonType.order: 'order',
+    GooglePayButtonType.pix: 'pix',
+  }[this]!;
 }
 
 /// A set of utility methods associated to the [GooglePayButtonTheme] enumeration.
 extension on GooglePayButtonTheme {
   /// Creates a string representation of the [GooglePayButtonTheme] enumeration.
   String get enumString => {
-        GooglePayButtonTheme.dark: 'dark',
-        GooglePayButtonTheme.light: 'light',
-      }[this]!;
+    GooglePayButtonTheme.dark: 'dark',
+    GooglePayButtonTheme.light: 'light',
+  }[this]!;
 }
