@@ -22,6 +22,10 @@ extensions.configure<ApplicationExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    sourceSets.named("main") {
+        kotlin.directories += "src/main/kotlin"
+    }
 }
 
 kotlin {
