@@ -13,6 +13,8 @@ Pod::Spec.new do |s|
   s.author           = { 'Google Pay Developer Relations' => 'payments-devrel-flutter@googlegroups.com' }
   s.source           = { :http => 'https://github.com/google-pay/flutter-plugin' }
   s.source_files = 'pay_ios/Sources/pay_ios/**/*'
+  s.exclude_files = 'pay_ios/Sources/pay_ios/Resources/**/*'
+  s.resource_bundles = { 'pay_ios_privacy' => ['pay_ios/Sources/pay_ios/Resources/PrivacyInfo.xcprivacy'] }
   s.dependency 'Flutter'
   s.platform = :ios, '13.0'
   s.frameworks  = 'PassKit'
