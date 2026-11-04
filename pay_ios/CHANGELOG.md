@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0 (2026-11-03)
+Add `continue_` to the `ApplePayButtonType` enum, which maps to [`PKPaymentButtonType.continue`](https://developer.apple.com/documentation/passkit/pkpaymentbuttontype/continue). This button type is available on iOS 15.0 and above (#333).
+
 ## 1.2.0 (2026-06-19)
 Add support for Swift Package Manager (SPM).
 

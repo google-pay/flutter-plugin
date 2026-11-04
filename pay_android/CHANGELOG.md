@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.0.0 (2026-11-03)
+### ⚠ BREAKING CHANGE
+
+Update the Android build to the latest toolchain (#341). Apps using this version need to meet the following requirements:
+* Flutter 3.44 / Dart 3.12 or newer.
+* Android Gradle Plugin (AGP) 9 with built-in Kotlin support.
+* Java 17 (`sourceCompatibility`, `targetCompatibility` and Kotlin `jvmTarget`).
+
+### Features
+* Migrate Gradle build files to the Kotlin DSL (`build.gradle.kts`, `settings.gradle.kts`).
+* Use the `compileSdk` version provided by Flutter instead of a hardcoded value.
+* Remove the deprecated `package` attribute from `AndroidManifest.xml` in favor of the Gradle `namespace`, and drop Jetifier.
+* Expose `paymentConfiguration` as a public, immutable property of `RawGooglePayButton`.
+
+### Fixes
+* Make the parsing of the Google Pay button creation parameters more resilient: missing or mistyped values fall back to sensible defaults, and missing creation parameters result in a descriptive error.
+
 ## 3.2.0 (2025-11-21)
 
 * Add `pix` to the `GooglePayButtonType` enum. This enables the PIX button type on the Google Pay button for Pix integrations.

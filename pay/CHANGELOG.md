@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.0.0 (2026-11-03)
+### ⚠ BREAKING CHANGE
+
+Upgrade `pay_android` to `4.0.0`, which moves the Android build to AGP 9 with built-in Kotlin and Java 17, and requires Flutter 3.44 / Dart 3.12 or newer. See the [changelog for `pay_android:4.0.0`](../pay_android/CHANGELOG.md#400-2026-11-03) for further details.
+
+### Features
+
+* Upgrade `pay_ios` to `1.3.0`, which adds `continue_` to the `ApplePayButtonType` enum (iOS 15.0+). See the [changelog for `pay_ios:1.3.0`](../pay_ios/CHANGELOG.md#130-2026-11-03) for further details.
+
 ## 3.3.0 (2025-11-21)
 
 * Upgrade `pay_android` to `3.2.0`, which adds `pix` to the `GooglePayButtonType` enum.
