@@ -21,34 +21,38 @@ import UIKit
 /// A class that receives and handles calls from Flutter to complete the payment.
 public class PayPlugin: NSObject, FlutterPlugin {
   private static let methodChannelName = "plugins.flutter.io/pay"
-  
+
   private let methodUserCanPay = "userCanPay"
   private let methodShowPaymentSelector = "showPaymentSelector"
-  
+
   private let paymentHandler = PaymentHandler()
-  
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let messenger = registrar.messenger()
     let channel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: messenger)
     registrar.addMethodCallDelegate(PayPlugin(), channel: channel)
-    
+
     // Register the PlatformView to show the Apple Pay button.
     let buttonFactory = ApplePayButtonViewFactory(messenger: messenger)
     registrar.register(buttonFactory, withId: ApplePayButtonView.buttonMethodChannelName)
   }
-  
+
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case methodUserCanPay:
-      result(paymentHandler.canMakePayments(call.arguments as! String))
-      
+      let args = call.arguments as! [String: Any]
+
+      result(paymentHandler.canMakePayments(
+        args["paymentConfiguration"] as! String,
+        existingPaymentMethodRequired: args["existingPaymentMethodRequired"] as? Bool ?? false)
+      )
     case methodShowPaymentSelector:
       let arguments = call.arguments as! [String: Any]
       paymentHandler.startPayment(
         result: result,
         paymentConfiguration: arguments["payment_profile"] as! String,
         paymentItems: arguments["payment_items"] as! [[String: Any?]])
-      
+
     default:
       result(FlutterMethodNotImplemented)
     }

@@ -21,9 +21,10 @@ abstract class PayPlatform {
   /// Determines whether the caller can make a payment with a given
   /// configuration.
   ///
-  /// Returns a [Future] that resolves to a boolean value with the result based
-  /// on a given [paymentConfiguration].
-  Future<bool> userCanPay(PaymentConfiguration paymentConfiguration);
+  /// [existingPaymentMethodRequired]:
+  ///   - If true, only returns true if a supported payment method is available.
+  ///   - If false (default), returns true if the device and user support the payment method, even if none is currently available.
+  Future<bool> userCanPay(PaymentConfiguration paymentConfiguration, {bool existingPaymentMethodRequired = false});
 
   /// Triggers the action to show the payment selector to complete a payment
   /// with the configuration and a list of [PaymentItem] that help determine
