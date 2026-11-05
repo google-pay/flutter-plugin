@@ -123,8 +123,8 @@ abstract class PayButton extends StatefulWidget {
 /// button loads. If the payment provider is available for a given user, the
 /// [_payButton] is added to the tree. Otherwise, if set, the replacement widget
 /// in [childOnError] is shown.
-class _PayButtonState extends State<PayButton> {
-  late final Future<bool> _userCanPayFuture;
+class _PayButtonState extends State<PayButton> with WidgetsBindingObserver {
+  late Future<bool> _userCanPayFuture;
 
   /// A method to initialize payment result streams
   ///
@@ -146,12 +146,30 @@ class _PayButtonState extends State<PayButton> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (!widget._isPlatformSupported) return;
 
     _userCanPayFuture = _userCanPay();
 
     if (!widget._collectPaymentResultSynchronously) {
       _preparePaymentResultStream();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (widget._isPlatformSupported) {
+        setState(() {
+          _userCanPayFuture = _userCanPay();
+        });
+      }
     }
   }
 
