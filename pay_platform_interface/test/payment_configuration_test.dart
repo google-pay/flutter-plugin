@@ -47,7 +47,7 @@ void main() {
   test('Load payment configuration from a string', () async {
     final configuration = PaymentConfiguration.fromJsonString(_payConfigString);
     expect(configuration.provider, _providerGooglePay);
-    expect(await configuration.parameterMap(), isNotEmpty);
+    expect(configuration.parameterMap(), isNotEmpty);
   });
 
   test('Load payment configuration from an asset', () async {
@@ -56,7 +56,7 @@ void main() {
         profileLoader: _testProfileLoader);
 
     expect(configuration.provider, _providerGooglePay);
-    expect(await configuration.parameterMap(), isNotEmpty);
+    expect(configuration.parameterMap(), isNotEmpty);
   });
 
   test('Check that software info is included in Google Pay requests', () async {
@@ -64,7 +64,7 @@ void main() {
         'google_pay_prod_payment_profile.json',
         profileLoader: _testProfileLoader);
 
-    final configParams = await config.parameterMap();
+    final configParams = config.parameterMap();
     expect(configParams.containsKey('merchantInfo'), isTrue);
     expect(configParams['merchantInfo'].containsKey('softwareInfo'), isTrue);
 

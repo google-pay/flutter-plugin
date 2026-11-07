@@ -43,8 +43,7 @@ class PayMethodChannel extends PayPlatform {
   @override
   Future<bool> userCanPay(PaymentConfiguration paymentConfiguration) async {
     return await _channel.invokeMethod(
-            'userCanPay', jsonEncode(await paymentConfiguration.parameterMap()))
-        as bool;
+        'userCanPay', jsonEncode(paymentConfiguration.parameterMap())) as bool;
   }
 
   /// Shows the payment selector to complete the payment operation.
@@ -59,7 +58,7 @@ class PayMethodChannel extends PayPlatform {
     List<PaymentItem> paymentItems,
   ) async {
     final paymentResult = await _channel.invokeMethod('showPaymentSelector', {
-      'payment_profile': jsonEncode(await paymentConfiguration.parameterMap()),
+      'payment_profile': jsonEncode(paymentConfiguration.parameterMap()),
       'payment_items': paymentItems.map((item) => item.toMap()).toList(),
     }) as String;
 
